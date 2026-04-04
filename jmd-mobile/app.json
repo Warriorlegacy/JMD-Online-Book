@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "JMD Online Book",
+    "slug": "jmd-online-book",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#080b12"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jmd.onlinebook"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#080b12"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.jmd.onlinebook",
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-web-browser",
+        {
+          "browserPackage": "com.android.chrome"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c101fd15-ba01-4b8c-b081-c45567f8a6f5"
+      }
+    },
+    "owner": "soloxpiyush"
+  }
+}
