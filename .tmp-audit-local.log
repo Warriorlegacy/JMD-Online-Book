@@ -1,0 +1,36 @@
+▲ Next.js 16.2.2 (Turbopack)
+- Local:         http://localhost:3003
+- Network:       http://192.168.31.172:3003
+- Environments: .env.local
+✓ Ready in 888ms
+
+ POST /api/auth/login 200 in 4.6s (next.js: 965ms, proxy.ts: 409ms, application-code: 3.3s)
+admin login audit branch {
+  adminId: 'af883d4c-ed6f-428a-8d28-503458a62a92',
+  email: 'admin@jmdonlinebook.com'
+}
+addNotification inserted {
+  id: '5823fd32-d39c-4435-bfdb-c9645d55e23d',
+  user_id: 'af883d4c-ed6f-428a-8d28-503458a62a92',
+  title: 'Admin login',
+  type: 'system',
+  metadata: {
+    event: 'admin_login',
+    scope: 'admin_audit',
+    actor_email: 'admin@jmdonlinebook.com'
+  }
+}
+ POST /api/auth/login 200 in 3.3s (next.js: 130ms, proxy.ts: 10ms, application-code: 3.1s)
+ POST /api/auth/register 500 in 3.1s (next.js: 228ms, proxy.ts: 9ms, application-code: 2.9s)
+ POST /api/wallet/deposit 500 in 378ms (next.js: 357ms, proxy.ts: 7ms, application-code: 14ms)
+ POST /api/auth/login 200 in 2.9s (next.js: 120ms, proxy.ts: 7ms, application-code: 2.8s)
+ GET /api/admin/transactions 200 in 548ms (next.js: 247ms, proxy.ts: 10ms, application-code: 291ms)
+ POST /api/auth/register 201 in 1388ms (next.js: 7ms, proxy.ts: 10ms, application-code: 1371ms)
+ POST /api/wallet/deposit 201 in 1145ms (next.js: 4ms, proxy.ts: 7ms, application-code: 1133ms)
+ POST /api/auth/login 200 in 1472ms (next.js: 5ms, proxy.ts: 9ms, application-code: 1458ms)
+ GET /api/admin/transactions 200 in 297ms (next.js: 4ms, proxy.ts: 6ms, application-code: 287ms)
+ POST /api/admin/transactions/approve 200 in 2.1s (next.js: 208ms, proxy.ts: 7ms, application-code: 1869ms)
+ POST /api/auth/login 200 in 1636ms (next.js: 4ms, proxy.ts: 7ms, application-code: 1624ms)
+○ Compiling /admin/settings ...
+ GET /admin/settings 200 in 6.3s (next.js: 3.7s, proxy.ts: 13ms, application-code: 2.6s)
+[?25h

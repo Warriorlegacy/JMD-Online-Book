@@ -32,10 +32,15 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
 
+JMD_AUTOBUILD_PROMPT.md
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel

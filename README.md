@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JMD Online Book - SaaS Platform
 
-## Getting Started
+Multi-tenant gaming wallet platform built with Next.js 16 + Supabase.
 
-First, run the development server:
+## Quick Deploy
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd jmd-online-book
+npm install
+npm run build
+vercel --prod
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend**: Next.js 16, React 19, Tailwind CSS 4
+- **Backend**: Next.js API Routes, Supabase
+- **Auth**: Email/Password (Supabase Auth)
+- **State**: Zustand
+- **Forms**: React Hook Form + Zod
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment Variables
 
-## Learn More
+```
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+OTP_SECRET=your-otp-secret
+Legacy_JWT_Secret=your-jwt-secret
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Routes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Route | Description |
+|-------|-------------|
+| `/login` | User login |
+| `/register` | User registration |
+| `/home` | User dashboard |
+| `/wallet` | Wallet balance |
+| `/deposit` | Deposit request |
+| `/withdraw` | Withdraw request |
+| `/transactions` | Transaction history |
+| `/admin/dashboard` | Admin panel |
+| `/super-admin/dashboard` | Super admin panel |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Database Migrations
 
-## Deploy on Vercel
+Run in Supabase SQL Editor:
+1. `supabase/migrations/001_jmd_online_book.sql`
+2. `supabase/migrations/002_multi_tenant.sql`
+3. `supabase/migrations/003_performance_indexes.sql`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Email/Password authentication (no OTP)
+- Wallet management (deposit/withdraw)
+- Transaction approval workflow
+- Referral system with commissions
+- Multi-tenant support
+- Super admin dashboard
+
+## Build Status
+
+✅ Build Clean - Ready for deployment
