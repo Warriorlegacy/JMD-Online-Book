@@ -61,6 +61,7 @@ export default async function HomePage() {
   }
 
   if (!data?.session) {
+    // Return plain HTML without any client components to avoid hydration issues
     return (
       <div className="min-h-screen bg-[#080b12] text-white flex flex-col items-center justify-center gap-6 p-6 text-center">
         <h1 className="text-3xl font-black">
@@ -75,13 +76,13 @@ export default async function HomePage() {
         <div className="flex gap-4">
           <a
             href="/login"
-            className="rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 font-bold text-slate-900 hover:from-amber-400 hover:to-amber-500 transition-all"
+            className="rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 font-bold text-slate-900 hover:from-amber-400 hover:to-amber-500 transition-all inline-block"
           >
             Sign In
           </a>
           <a
             href="/register"
-            className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white hover:bg-white/10 transition-all"
+            className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white hover:bg-white/10 transition-all inline-block"
           >
             Create Account
           </a>
