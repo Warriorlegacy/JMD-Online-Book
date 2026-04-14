@@ -16,6 +16,14 @@ interface MatchState {
   lays: PriceLevel[];
 }
 
+interface OrderbookUpdate {
+  room: string;
+  snapshot: {
+    backs: [string, number][];
+    lays: [string, number][];
+  };
+}
+
 export function OddsGrid({ matchId }: { matchId: string }) {
   const { connected, subscribe, on } = useSocket();
   const [matchData, setMatchData] = useState<MatchState>({
@@ -29,12 +37,12 @@ export function OddsGrid({ matchId }: { matchId: string }) {
     if (connected) subscribe(matchId);
     
     // Define a cleanup function
-    const unsubscribe = on("orderbook_update", (data) => {
-      if (data.room === matchId) {
+    const unsubscribe = on<OrderbookUpdate>("orderbook_update", (update) => {
+      if (update.room === matchId) {
         setMatchData(prev => ({
           ...prev,
-          backs: (data.snapshot.backs || []).map(([p, s]: any) => ({ price: p, size: s })),
-          lays: (data.snapshot.lays || []).map(([p, s]: any) => ({ price: p, size: s })),
+          backs: (update.snapshot.backs || []).map(([p, s]) => ({ price: p, size: s })),
+          lays: (update.snapshot.lays || []).map(([p, s]) => ({ price: p, size: s })),
         }));
       }
     });

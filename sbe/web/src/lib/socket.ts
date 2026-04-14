@@ -1,45 +1,45 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 
-export type SocketMessage = {
-  topic: string;
-  room?: string;
-  [key: string]: any;
-};
+type MessageHandler = (data: any) => void;
 
 export function useSocket() {
-  const socketRef = useRef<WebSocket | null>(null);
   const [connected, setConnected] = useState(false);
-  const listeners = useRef<Map<string, Set<(data: any) => void>>>(new Map());
+  const socketRef = useRef<WebSocket | null>(null);
+  const handlersRef = useRef<Map<string, Set<MessageHandler>>>(new Map());
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:4000/ws");
-    socketRef.current = ws;
+    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:4000/ws";
+    const socket = new WebSocket(wsUrl);
+    socketRef.current = socket;
 
-    ws.onopen = () => {
+    socket.onopen = () => {
       setConnected(true);
-      console.log("[Socket] Connected to SBE Backend");
+      console.log("[Socket] Connected to Exchange");
     };
 
-    ws.onmessage = (event) => {
+    socket.onmessage = (event) => {
       try {
-        const data: SocketMessage = JSON.parse(event.data);
-        const topicListeners = listeners.current.get(data.topic);
-        if (topicListeners) {
-          topicListeners.forEach((cb) => cb(data));
+        const data = JSON.parse(event.data);
+        const topic = data.topic;
+        const topicHandlers = handlersRef.current.get(topic);
+        if (topicHandlers) {
+          topicHandlers.forEach(handler => handler(data));
         }
       } catch (e) {
         console.error("[Socket] Message parse error", e);
       }
     };
 
-    ws.onclose = () => {
+    socket.onclose = () => {
       setConnected(false);
       console.log("[Socket] Disconnected");
     };
 
-    return () => ws.close();
+    return () => {
+      socket.close();
+    };
   }, []);
 
   const subscribe = useCallback((room: string) => {
@@ -48,12 +48,16 @@ export function useSocket() {
     }
   }, []);
 
-  const on = useCallback((topic: string, callback: (data: any) => void) => {
-    if (!listeners.current.has(topic)) {
-      listeners.current.set(topic, new Set());
+  const on = useCallback(<T = any>(topic: string, handler: (data: T) => void) => {
+    const messageHandler = handler as unknown as MessageHandler;
+    if (!handlersRef.current.has(topic)) {
+      handlersRef.current.set(topic, new Set());
     }
-    listeners.current.get(topic)!.add(callback);
-    return () => listeners.current.get(topic)?.delete(callback);
+    handlersRef.current.get(topic)!.add(messageHandler);
+    
+    return () => {
+      handlersRef.current.get(topic)?.delete(messageHandler);
+    };
   }, []);
 
   return { connected, subscribe, on };

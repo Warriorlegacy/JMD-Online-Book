@@ -5,6 +5,6 @@
   "framework": "nextjs",
   "regions": ["cle1"],
   "env": {
-    "NEXT_PUBLIC_API_URL": "https://sbe-backend.koyeb.app"
+    "NEXT_PUBLIC_API_URL": "https://sbe-backend.onrender.com"
   }
 }

@@ -75,20 +75,9 @@ jobs:
         with:
           submodules: false
 
-      - name: Deploy Backend to Koyeb
-        uses: koyeb/action-git-deploy@v1
+      - name: Deploy Backend to Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          koyeb-api-token: ${{ secrets.KOYEB_API_TOKEN }}
-          app-name: 'sbe-backend'
-          service-name: 'api'
-          git-builder: 'docker'
-          git-workdir: './sbe/backend'
-          service-type: 'web'
-          service-ports: '4000:http'
-          service-routes: '/:4000'
-          service-env: |
-            DATABASE_URL=@DATABASE_URL
-            REDIS_URL=@REDIS_URL
-            JWT_SECRET=@JWT_SECRET
-          service-scale: '1'
-          service-deployment-strategy: 'rolling'
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
+          wait-for-success: true

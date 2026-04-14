@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -28,16 +29,16 @@ export default function RootLayout({
           <header className="sticky top-0 z-50 w-full border-b border-slate-800/50 bg-slate-950/70 backdrop-blur-xl">
             <div className="container flex h-16 items-center justify-between px-4">
               <div className="flex items-center gap-6">
-                <a href="/" className="flex items-center space-x-2">
+                <Link href="/" className="flex items-center space-x-2">
                   <span className="bg-linear-to-r from-cyan-400 to-blue-600 bg-clip-text text-2xl font-bold tracking-tight text-transparent">
                     SBE
                   </span>
-                </a>
+                </Link>
                 <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
-                  <a href="/markets" className="hover:text-cyan-400 transition-colors">In-Play</a>
-                  <a href="/markets" className="hover:text-cyan-400 transition-colors">Football</a>
-                  <a href="/markets" className="hover:text-cyan-400 transition-colors">Tennis</a>
-                  <a href="/markets" className="hover:text-cyan-400 transition-colors">Cricket</a>
+                  <Link href="/markets" className="hover:text-cyan-400 transition-colors">In-Play</Link>
+                  <Link href="/markets" className="hover:text-cyan-400 transition-colors">Football</Link>
+                  <Link href="/markets" className="hover:text-cyan-400 transition-colors">Tennis</Link>
+                  <Link href="/markets" className="hover:text-cyan-400 transition-colors">Cricket</Link>
                 </nav>
               </div>
               <div className="flex items-center gap-4">
@@ -55,6 +56,7 @@ export default function RootLayout({
           {/* Main Content */}
           <main className="flex-1">
             <div className="container mx-auto p-4 lg:p-6">
+              <h1 className="sr-only">SBE Sports Betting Exchange Dashboard</h1>
               {children}
             </div>
           </main>

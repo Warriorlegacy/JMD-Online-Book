@@ -18,7 +18,7 @@ function TradesTicker() {
   const [recentTrades, setRecentTrades] = useState<TradeEvent[]>([]);
 
   useEffect(() => {
-    const unsubscribe = on("match_events", (data) => {
+    const unsubscribe = on<{ events: TradeEvent[] }>("match_events", (data) => {
       setRecentTrades(prev => [data.events[0], ...prev].slice(0, 5));
     });
     return () => {
@@ -52,9 +52,18 @@ function TradesTicker() {
   );
 }
 
+interface Match {
+  id: string;
+  title?: string;
+  teamA: string;
+  teamB: string;
+  startTime: string;
+  status: string;
+}
+
 export default function Home() {
   const { connected } = useSocket();
-  const [activeMatch, setActiveMatch] = useState<any>(null);
+  const [activeMatch, setActiveMatch] = useState<Match | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -139,7 +148,7 @@ export default function Home() {
           <PriceLadder matchId={matchId} />
           <TradesTicker />
           <div className="hidden lg:block">
-            <BetSlip />
+            <BetSlip matchId={matchId} />
           </div>
         </aside>
       </div>
