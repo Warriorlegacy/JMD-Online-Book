@@ -1,30 +1,33 @@
-# --- Stage 1: Build the Rust Matching Engine ---
-FROM rust:1.81-slim-bullseye as engine-builder
-WORKDIR /app/engine
-COPY engine/ .
-RUN cargo build --release
-
-# --- Stage 2: Build the Node.js Backend ---
+# Multi-stage build for SBE Backend
 FROM node:22-slim as backend-builder
-WORKDIR /app/backend
-COPY backend/package*.json ./
-RUN npm install
-COPY backend/ .
-RUN npm run build # Assuming a build script exists for TS
+WORKDIR /app
 
-# --- Stage 3: Final Production Image ---
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Build TypeScript
+RUN npm run build
+
+# Production stage
 FROM node:22-slim
 WORKDIR /app
 
-# Install system dependencies if any
+# Install system dependencies
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
-# Copy from builders
-COPY --from=backend-builder /app/backend /app/backend
-COPY --from=engine-builder /app/engine/target/release/sbe-engine /app/backend/bin/sbe-engine
+# Copy built application
+COPY --from=backend-builder /app /app
 
-WORKDIR /app/backend
+# Expose API port
 EXPOSE 4000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:4000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})" || exit 1
 
 # Start command
 CMD ["node", "dist/index.js"]

@@ -74,9 +74,21 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: false
-      
-      - name: Deploy Backend
-        run: |
-          echo "Backend deployment configured per your cloud provider"
-          echo "Current working directory: $(pwd)"
-          ls -la sbe/backend/dist || echo "Build output not found"
+
+      - name: Deploy Backend to Koyeb
+        uses: koyeb/action-git-deploy@v1
+        with:
+          koyeb-api-token: ${{ secrets.KOYEB_API_TOKEN }}
+          app-name: 'sbe-backend'
+          service-name: 'api'
+          git-builder: 'docker'
+          git-workdir: './sbe/backend'
+          service-type: 'web'
+          service-ports: '4000:http'
+          service-routes: '/:4000'
+          service-env: |
+            DATABASE_URL=@DATABASE_URL
+            REDIS_URL=@REDIS_URL
+            JWT_SECRET=@JWT_SECRET
+          service-scale: '1'
+          service-deployment-strategy: 'rolling'
