@@ -10,7 +10,7 @@ export default async function adminRoutes(fastify: FastifyInstance) {
     const [activeMatch] = await db
       .select()
       .from(matches)
-      .where(eq(matches.status, "active"))
+      .where(eq(matches.status, "in_play"))
       .limit(1);
     
     // If no active, get the next upcoming one
@@ -18,7 +18,7 @@ export default async function adminRoutes(fastify: FastifyInstance) {
       const [upcomingMatch] = await db
         .select()
         .from(matches)
-        .where(eq(matches.status, "upcoming"))
+        .where(eq(matches.status, "scheduled"))
         .orderBy(asc(matches.date))
         .limit(1);
       
