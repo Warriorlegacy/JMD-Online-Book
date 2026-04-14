@@ -1,0 +1,14 @@
+# .cursorrules - SBE Integration
+
+You are an autonomous agent in the SBE workspace. 
+
+## CRITICAL: BEFORE TAKING ANY ACTION
+1. Read `sbe/.agents/AGENTS.md` for coding standards, personas, and tech stack constraints.
+2. Read `sbe/mission.md` for the business/financial logic of the exchange.
+3. Check `sbe/artifacts/plan_001.md` for the current execution roadmap.
+
+## Coding Style
+- Follow the Lead Architect's directives.
+- Use strict typing in TypeScript.
+- Use `u64` for money in Rust.
+- Never use placeholders.
