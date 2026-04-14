@@ -6,15 +6,17 @@ import { EventEmitter } from "events";
 const REDIS_URL = process.env.REDIS_URL;
 
 class PubSubService {
-  private client: Redis;
+  private client: any; // Using any for hybrid Mock/Real Redis compatibility in ESM
   private localEmitter = new EventEmitter();
 
   constructor() {
     if (REDIS_URL) {
-      this.client = new Redis(REDIS_URL);
+      // @ts-ignore - ioredis ESM compatibility
+      this.client = new Redis.default(REDIS_URL);
       console.log("Redis PubSub Initialized");
     } else {
-      this.client = new RedisMock();
+      // @ts-ignore - ioredis-mock compatibility
+      this.client = new RedisMock.default();
       console.log("In-memory Mock Redis Initialized");
     }
   }

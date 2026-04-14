@@ -19,7 +19,7 @@ export default async function adminRoutes(fastify: FastifyInstance) {
         .select()
         .from(matches)
         .where(eq(matches.status, "scheduled"))
-        .orderBy(asc(matches.date))
+        .orderBy(asc(matches.startTime))
         .limit(1);
       
       return upcomingMatch || { error: "No matches found" };
@@ -30,11 +30,13 @@ export default async function adminRoutes(fastify: FastifyInstance) {
 
   // Create a match
   fastify.post("/admin/matches", async (request, reply) => {
-    const { title, date } = request.body as any;
+    const { teamA, teamB, tournamentId, startTime } = request.body as any;
     const [match] = await db.insert(matches).values({ 
-      title, 
-      date: new Date(date),
-      status: 'upcoming'
+      teamA,
+      teamB,
+      tournamentId,
+      startTime: new Date(startTime),
+      status: 'scheduled'
     }).returning();
     return match;
   });

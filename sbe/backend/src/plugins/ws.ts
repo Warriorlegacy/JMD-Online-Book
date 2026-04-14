@@ -17,11 +17,11 @@ export default fp(async function wsManagerPlugin(fastify: FastifyInstance) {
   const userConnections = new Map<string, any>();
   const roomSubscriptions = new Map<string, Set<string>>(); // room -> Set<userId>
 
-  fastify.get("/ws", { websocket: true }, (connection, req) => {
+  fastify.get("/ws", { websocket: true }, (connection: any, req: FastifyRequest) => {
     const userId = (req.query as any).userId || `anon_${Math.random().toString(36).slice(2, 7)}`;
     userConnections.set(userId, connection);
 
-    connection.socket.on("message", (raw: Buffer) => {
+    connection.on("message", (raw: Buffer) => {
       try {
         const msg = JSON.parse(raw.toString());
         if (msg.type === "subscribe") {
@@ -38,12 +38,12 @@ export default fp(async function wsManagerPlugin(fastify: FastifyInstance) {
       }
     });
 
-    connection.socket.on("close", () => {
+    connection.on("close", () => {
       userConnections.delete(userId);
       roomSubscriptions.forEach((subs) => subs.delete(userId));
     });
-    
-    connection.socket.send(JSON.stringify({ type: "connection_ack", userId }));
+
+    connection.send(JSON.stringify({ type: "connection_ack", userId }));
   });
 
   const manager: WsManager = {
@@ -56,8 +56,8 @@ export default fp(async function wsManagerPlugin(fastify: FastifyInstance) {
     },
     sendToUser: (userId, message) => {
       const conn = userConnections.get(userId);
-      if (conn && conn.socket.readyState === 1) {
-        conn.socket.send(JSON.stringify(message));
+      if (conn && conn.readyState === 1) {
+        conn.send(JSON.stringify(message));
       }
     },
     publishToRoom: (room, topic, message) => {
@@ -65,8 +65,8 @@ export default fp(async function wsManagerPlugin(fastify: FastifyInstance) {
       if (subscribers) {
         subscribers.forEach(uid => {
           const conn = userConnections.get(uid);
-          if (conn && conn.socket.readyState === 1) {
-            conn.socket.send(JSON.stringify({ topic, room, ...message }));
+          if (conn && conn.readyState === 1) {
+            conn.send(JSON.stringify({ topic, room, ...message }));
           }
         });
       }
