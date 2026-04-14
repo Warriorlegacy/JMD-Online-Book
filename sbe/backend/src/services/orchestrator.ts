@@ -5,6 +5,15 @@ import { orders as ordersTable } from "../db/schema.js";
 import { pubsub } from "./pubsub.js";
 import crypto from "crypto";
 
+interface Order {
+  id: string;
+  userId: string;
+  type: "back" | "lay";
+  price: number;
+  stake: number;
+  remainingStake: number;
+}
+
 export class OrderOrchestrator {
   private static books = new Map<string, OrderBook>();
 
