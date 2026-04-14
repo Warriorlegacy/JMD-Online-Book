@@ -5,6 +5,25 @@ import { matches } from "../db/schema.js";
 import { eq, asc } from "drizzle-orm";
 
 export default async function adminRoutes(fastify: FastifyInstance) {
+  // Database connection test
+  fastify.get("/db-test", async () => {
+    try {
+      const result = await db.execute({ sql: "SELECT NOW() as time", values: [] });
+      return { 
+        status: "connected", 
+        database: "ok",
+        timestamp: result.rows?.[0]?.time || "unknown"
+      };
+    } catch (error: any) {
+      return { 
+        status: "error", 
+        message: error.message,
+        code: error.code,
+        hint: "Check DATABASE_URL in Render environment variables"
+      };
+    }
+  });
+
   // Get current active match
   fastify.get("/matches/active", async () => {
     const [activeMatch] = await db
