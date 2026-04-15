@@ -35,10 +35,10 @@ export default function RootLayout({
                   </span>
                 </Link>
                 <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
-                  <Link href="/markets" className="hover:text-cyan-400 transition-colors">In-Play</Link>
-                  <Link href="/markets" className="hover:text-cyan-400 transition-colors">Football</Link>
-                  <Link href="/markets" className="hover:text-cyan-400 transition-colors">Tennis</Link>
-                  <Link href="/markets" className="hover:text-cyan-400 transition-colors">Cricket</Link>
+                  <Link href="/?sport=in-play" className="hover:text-cyan-400 transition-colors">In-Play</Link>
+                  <Link href="/?sport=football" className="hover:text-cyan-400 transition-colors">Football</Link>
+                  <Link href="/?sport=tennis" className="hover:text-cyan-400 transition-colors">Tennis</Link>
+                  <Link href="/?sport=cricket" className="hover:text-cyan-400 transition-colors">Cricket</Link>
                 </nav>
               </div>
               <div className="flex items-center gap-4">
