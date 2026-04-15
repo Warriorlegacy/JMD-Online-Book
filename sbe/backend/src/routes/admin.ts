@@ -102,27 +102,31 @@ export default async function adminRoutes(fastify: FastifyInstance) {
   // Get current active match
   fastify.get("/matches/active", async (request, reply) => {
     try {
-      const [activeMatch] = await db
-        .select()
-        .from(matches)
-        .where(eq(matches.status, "in_play"))
-        .limit(1);
+      // Use raw SQL to avoid Drizzle enum casting issues
+      const result = await db.execute(
+        sql`SELECT id, tournament_id, team_a, team_b, start_time, status, metadata, created_at 
+            FROM matches 
+            WHERE status = 'in_play'::match_status 
+            LIMIT 1`
+      );
       
-      if (!activeMatch) {
-        const [upcomingMatch] = await db
-          .select()
-          .from(matches)
-          .where(eq(matches.status, "scheduled"))
-          .orderBy(asc(matches.startTime))
-          .limit(1);
-        
-        if (!upcomingMatch) {
-          return reply.code(404).send({ error: "No matches found" });
-        }
-        return upcomingMatch;
+      if (result.rows.length > 0) {
+        return result.rows[0];
       }
 
-      return activeMatch;
+      // Fall back to next scheduled match
+      const upcoming = await db.execute(
+        sql`SELECT id, tournament_id, team_a, team_b, start_time, status, metadata, created_at 
+            FROM matches 
+            WHERE status = 'scheduled'::match_status 
+            ORDER BY start_time ASC 
+            LIMIT 1`
+      );
+
+      if (upcoming.rows.length === 0) {
+        return reply.code(404).send({ error: "No matches found" });
+      }
+      return upcoming.rows[0];
     } catch (e: any) {
       fastify.log.error(e);
       return reply.code(503).send({ error: "Database unavailable", message: e.message });
@@ -144,7 +148,11 @@ export default async function adminRoutes(fastify: FastifyInstance) {
 
   // List all matches
   fastify.get("/matches", async () => {
-    return db.select().from(matches).orderBy(asc(matches.startTime)).limit(50);
+    const result = await db.execute(
+      sql`SELECT id, tournament_id, team_a, team_b, start_time, status, metadata, created_at 
+          FROM matches ORDER BY start_time ASC LIMIT 50`
+    );
+    return result.rows;
   });
 
   // Get match history (candlestick data)
