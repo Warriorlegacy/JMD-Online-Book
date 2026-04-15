@@ -6,7 +6,7 @@ import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { db } from "./db/index.js";
 import wsManagerPlugin from "./plugins/ws.js";
 import orderRoutes from "./routes/orders.js";
-import adminRoutes from "./routes/admin.js";
+import adminRoutes, { seedDemoData } from "./routes/admin.js";
 import { initPersistenceWorker } from "./worker.js";
 import { CandleService } from "./services/candles.js";
 
@@ -19,6 +19,9 @@ async function start() {
     // Run migrations on startup
     await migrate(db, { migrationsFolder: "./drizzle" });
     console.log("✅ Database migrations applied");
+
+    // Seed demo data if DB is empty
+    await seedDemoData();
 
     // 1. Register Plugins
     await fastify.register(cors, {

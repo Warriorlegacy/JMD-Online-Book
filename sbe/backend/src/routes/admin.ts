@@ -1,8 +1,37 @@
 import { FastifyInstance } from "fastify";
 import { SettlementService } from "../services/settlement.js";
 import { db } from "../db/index.js";
-import { matches, marketHistory } from "../db/schema.js";
+import { matches, marketHistory, tournaments } from "../db/schema.js";
 import { eq, asc, sql } from "drizzle-orm";
+
+export async function seedDemoData() {
+  try {
+    // Check if any matches exist
+    const [existing] = await db.select().from(matches).limit(1);
+    if (existing) return; // already seeded
+
+    // Create tournament
+    const [tournament] = await db.insert(tournaments).values({
+      name: "Premier League 2026",
+      sportType: "football",
+      metadata: JSON.stringify({ country: "England", season: "2025-26" }),
+    }).returning();
+
+    // Create an in_play match
+    await db.insert(matches).values({
+      tournamentId: tournament.id,
+      teamA: "Manchester City",
+      teamB: "Arsenal",
+      startTime: new Date(),
+      status: "in_play",
+      metadata: JSON.stringify({ venue: "Etihad Stadium", round: "Matchday 30" }),
+    });
+
+    console.log("✅ Demo data seeded");
+  } catch (e) {
+    console.error("[Seed] Failed:", e);
+  }
+}
 
 export default async function adminRoutes(fastify: FastifyInstance) {
   // Database connection test
@@ -25,26 +54,33 @@ export default async function adminRoutes(fastify: FastifyInstance) {
   });
 
   // Get current active match
-  fastify.get("/matches/active", async () => {
-    const [activeMatch] = await db
-      .select()
-      .from(matches)
-      .where(eq(matches.status, "in_play"))
-      .limit(1);
-    
-    // If no active, get the next upcoming one
-    if (!activeMatch) {
-      const [upcomingMatch] = await db
+  fastify.get("/matches/active", async (request, reply) => {
+    try {
+      const [activeMatch] = await db
         .select()
         .from(matches)
-        .where(eq(matches.status, "scheduled"))
-        .orderBy(asc(matches.startTime))
+        .where(eq(matches.status, "in_play"))
         .limit(1);
       
-      return upcomingMatch || { error: "No matches found" };
-    }
+      if (!activeMatch) {
+        const [upcomingMatch] = await db
+          .select()
+          .from(matches)
+          .where(eq(matches.status, "scheduled"))
+          .orderBy(asc(matches.startTime))
+          .limit(1);
+        
+        if (!upcomingMatch) {
+          return reply.code(404).send({ error: "No matches found" });
+        }
+        return upcomingMatch;
+      }
 
-    return activeMatch;
+      return activeMatch;
+    } catch (e: any) {
+      fastify.log.error(e);
+      return reply.code(503).send({ error: "Database unavailable", message: e.message });
+    }
   });
 
   // Create a match

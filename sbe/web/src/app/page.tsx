@@ -92,7 +92,19 @@ export default function Home() {
     );
   }
 
-  const matchId = activeMatch?.id || "a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1";
+  if (!activeMatch) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="text-center space-y-3">
+          <div className="text-4xl">⚽</div>
+          <p className="text-slate-400 text-sm">No active matches right now.</p>
+          <p className="text-slate-600 text-xs">Check back soon or create a match via the admin API.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const matchId = activeMatch.id;
 
   return (
     <div className="flex flex-col gap-6 md:gap-8 pb-32 md:pb-20">
