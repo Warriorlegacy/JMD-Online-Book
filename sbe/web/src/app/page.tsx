@@ -69,7 +69,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchActiveMatch() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/matches/active`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://jmd-online-book.onrender.com'}/matches/active`);
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
         if (data && !data.error) {

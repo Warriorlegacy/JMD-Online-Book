@@ -22,7 +22,7 @@ async function start() {
 
     // 1. Register Plugins
     await fastify.register(cors, {
-      origin: true, // In production, replace with specific origins
+      origin: (process.env.ALLOWED_ORIGINS || "https://jmd-online-book.vercel.app").split(","),
     });
     
     await fastify.register(websocket);

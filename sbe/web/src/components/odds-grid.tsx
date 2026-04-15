@@ -28,10 +28,24 @@ export function OddsGrid({ matchId }: { matchId: string }) {
   const { connected, subscribe, on } = useSocket();
   const [matchData, setMatchData] = useState<MatchState>({
     id: matchId,
-    teams: ["Manchester City", "Arsenal"], // Defaults
+    teams: ["Home", "Away"],
     backs: [],
     lays: [],
   });
+
+  useEffect(() => {
+    async function fetchMatch() {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://jmd-online-book.onrender.com"}/matches/active`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.teamA) {
+          setMatchData(prev => ({ ...prev, teams: [data.teamA, data.teamB] }));
+        }
+      } catch {}
+    }
+    fetchMatch();
+  }, [matchId]);
 
   useEffect(() => {
     if (connected) subscribe(matchId);

@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { SettlementService } from "../services/settlement.js";
 import { db } from "../db/index.js";
-import { matches } from "../db/schema.js";
+import { matches, marketHistory } from "../db/schema.js";
 import { eq, asc, sql } from "drizzle-orm";
 
 export default async function adminRoutes(fastify: FastifyInstance) {
@@ -58,6 +58,34 @@ export default async function adminRoutes(fastify: FastifyInstance) {
       status: 'scheduled'
     }).returning();
     return match;
+  });
+
+  // List all matches
+  fastify.get("/matches", async () => {
+    return db.select().from(matches).orderBy(asc(matches.startTime)).limit(50);
+  });
+
+  // Get match history (candlestick data)
+  fastify.get("/matches/:id/history", async (request, reply) => {
+    const { id } = request.params as { id: string };
+    try {
+      const history = await db
+        .select()
+        .from(marketHistory)
+        .where(eq(marketHistory.matchId, id))
+        .orderBy(asc(marketHistory.timestamp))
+        .limit(500);
+      return history.map(h => ({
+        time: new Date(h.timestamp).getTime(),
+        open: parseFloat(h.open),
+        high: parseFloat(h.high),
+        low: parseFloat(h.low),
+        close: parseFloat(h.close),
+        volume: parseFloat(h.volume),
+      }));
+    } catch (e: any) {
+      return reply.code(500).send({ error: e.message });
+    }
   });
 
   // Settle a match

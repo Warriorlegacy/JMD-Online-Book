@@ -57,7 +57,8 @@ export function MarketChart({ matchId }: { matchId: string }) {
     // Load initial data from API
     async function loadHistory() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/matches/${matchId}/history`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://jmd-online-book.onrender.com"}/matches/${matchId}/history`);
+        if (!res.ok) return; // silently skip if no history yet
         const data = await res.json();
         if (Array.isArray(data)) {
            const formattedData: CandlestickData<Time>[] = data.map((d: any) => ({
