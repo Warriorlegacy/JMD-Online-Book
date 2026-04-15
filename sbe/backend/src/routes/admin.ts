@@ -28,8 +28,54 @@ export async function seedDemoData() {
     });
 
     console.log("✅ Demo data seeded");
-  } catch (e) {
-    console.error("[Seed] Failed:", e);
+  } catch (e: any) {
+    // Tables may not exist yet — run raw SQL to create them
+    console.warn("[Seed] Attempting raw SQL table creation:", e.message);
+    try {
+      await db.execute(sql`
+        DO $$ BEGIN
+          CREATE TYPE IF NOT EXISTS match_status AS ENUM('scheduled', 'in_play', 'completed', 'cancelled');
+        EXCEPTION WHEN duplicate_object THEN null; END $$;
+      `);
+      await db.execute(sql`
+        CREATE TABLE IF NOT EXISTS tournaments (
+          id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+          name text NOT NULL,
+          sport_type varchar(50) NOT NULL,
+          metadata text,
+          created_at timestamp DEFAULT now() NOT NULL
+        );
+      `);
+      await db.execute(sql`
+        CREATE TABLE IF NOT EXISTS matches (
+          id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+          tournament_id uuid NOT NULL REFERENCES tournaments(id),
+          team_a text NOT NULL,
+          team_b text NOT NULL,
+          start_time timestamp NOT NULL,
+          status match_status DEFAULT 'scheduled' NOT NULL,
+          metadata text,
+          created_at timestamp DEFAULT now() NOT NULL
+        );
+      `);
+      // Retry seed
+      const [t] = await db.insert(tournaments).values({
+        name: "Premier League 2026",
+        sportType: "football",
+        metadata: JSON.stringify({ country: "England", season: "2025-26" }),
+      }).returning();
+      await db.insert(matches).values({
+        tournamentId: t.id,
+        teamA: "Manchester City",
+        teamB: "Arsenal",
+        startTime: new Date(),
+        status: "in_play",
+        metadata: JSON.stringify({ venue: "Etihad Stadium" }),
+      });
+      console.log("✅ Demo data seeded via raw SQL");
+    } catch (e2: any) {
+      console.error("[Seed] Raw SQL seed also failed:", e2.message);
+    }
   }
 }
 

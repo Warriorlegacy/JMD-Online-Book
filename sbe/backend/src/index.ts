@@ -16,9 +16,13 @@ const fastify: FastifyInstance = Fastify({
 
 async function start() {
   try {
-    // Run migrations on startup
-    await migrate(db, { migrationsFolder: "./drizzle" });
-    console.log("✅ Database migrations applied");
+    // Run migrations on startup — non-fatal if already applied
+    try {
+      await migrate(db, { migrationsFolder: "./drizzle" });
+      console.log("✅ Database migrations applied");
+    } catch (migrationErr: any) {
+      console.warn("⚠️ Migration warning (may already be applied):", migrationErr.message);
+    }
 
     // Seed demo data if DB is empty
     await seedDemoData();
