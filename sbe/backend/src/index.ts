@@ -2,6 +2,8 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import websocket from "@fastify/websocket";
 import { type FastifyInstance } from "fastify";
+import { migrate } from "drizzle-orm/node-postgres/migrator";
+import { db } from "./db/index.js";
 import wsManagerPlugin from "./plugins/ws.js";
 import orderRoutes from "./routes/orders.js";
 import adminRoutes from "./routes/admin.js";
@@ -14,6 +16,10 @@ const fastify: FastifyInstance = Fastify({
 
 async function start() {
   try {
+    // Run migrations on startup
+    await migrate(db, { migrationsFolder: "./drizzle" });
+    console.log("✅ Database migrations applied");
+
     // 1. Register Plugins
     await fastify.register(cors, {
       origin: true, // In production, replace with specific origins
