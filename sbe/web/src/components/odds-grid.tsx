@@ -66,6 +66,17 @@ export function OddsGrid({ matchId }: { matchId: string }) {
     };
   }, [connected, subscribe, on, matchId]);
 
+  const displayBacks = matchData.backs.length > 0 ? matchData.backs : [
+    { price: "2.10", size: 0 },
+    { price: "2.08", size: 0 },
+    { price: "2.06", size: 0 },
+  ];
+  const displayLays = matchData.lays.length > 0 ? matchData.lays : [
+    { price: "2.12", size: 0 },
+    { price: "2.14", size: 0 },
+    { price: "2.16", size: 0 },
+  ];
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -100,9 +111,11 @@ export function OddsGrid({ matchId }: { matchId: string }) {
                <div className="col-span-1 md:col-span-3 grid grid-cols-3 gap-1">
                  <div className="md:hidden text-[9px] font-bold text-blue-400 uppercase mb-1 col-span-3">Back</div>
                  {[0, 1, 2].map((i) => {
-                    const level = matchData.backs[i];
+                    const level = displayBacks[i];
                     return (
-                      <button key={`back-${i}`} className="h-14 w-full flex flex-col items-center justify-center rounded-md bg-blue-500/10 border border-blue-500/20 hover:bg-blue-600 hover:text-white transition-all active:scale-95 shadow-sm">
+                      <button key={`back-${i}`}
+                        onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}
+                        className="h-14 w-full flex flex-col items-center justify-center rounded-md bg-blue-500/10 border border-blue-500/20 hover:bg-blue-600 hover:text-white transition-all active:scale-95 shadow-sm">
                          <span className="text-sm font-black">{level ? level.price : "-"}</span>
                          <span className="text-[9px] font-medium opacity-60">₹{level ? (parseFloat(level.price) * 10).toFixed(0) : "0"}</span>
                       </button>
@@ -114,7 +127,7 @@ export function OddsGrid({ matchId }: { matchId: string }) {
                <div className="col-span-1 md:col-span-3 grid grid-cols-3 gap-1">
                  <div className="md:hidden text-[9px] font-bold text-pink-400 uppercase mb-1 col-span-3">Lay</div>
                  {[0, 1, 2].map((i) => {
-                    const level = matchData.lays[i];
+                    const level = displayLays[i];
                     return (
                       <button key={`lay-${i}`} className="h-14 w-full flex flex-col items-center justify-center rounded-md bg-pink-500/10 border border-pink-500/20 hover:bg-pink-600 hover:text-white transition-all active:scale-95 shadow-sm">
                          <span className="text-sm font-black">{level ? level.price : "-"}</span>

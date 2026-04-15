@@ -161,7 +161,7 @@ export default function Home() {
         <aside className="space-y-6 md:space-y-8">
           <PriceLadder matchId={matchId} />
           <TradesTicker />
-          <div className="hidden lg:block">
+          <div>
             <BetSlip matchId={matchId} />
           </div>
         </aside>
