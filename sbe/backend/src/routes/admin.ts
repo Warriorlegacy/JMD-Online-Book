@@ -2,17 +2,17 @@ import { FastifyInstance } from "fastify";
 import { SettlementService } from "../services/settlement.js";
 import { db } from "../db/index.js";
 import { matches } from "../db/schema.js";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, sql } from "drizzle-orm";
 
 export default async function adminRoutes(fastify: FastifyInstance) {
   // Database connection test
   fastify.get("/db-test", async () => {
     try {
-      const result = await db.execute({ sql: "SELECT NOW() as time", values: [] });
+      const result = await db.execute(sql`SELECT NOW() as time`);
       return { 
         status: "connected", 
         database: "ok",
-        timestamp: result.rows?.[0]?.time || "unknown"
+        timestamp: (result.rows?.[0] as any)?.time || "unknown"
       };
     } catch (error: any) {
       return { 
