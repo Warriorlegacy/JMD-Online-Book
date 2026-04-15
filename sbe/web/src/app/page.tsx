@@ -73,9 +73,8 @@ export default function Home() {
     async function fetchActiveMatch() {
       try {
         const res = await fetch(`/api/matches/active`);
-        if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
-        if (data && !data.error) {
+        if (res.ok && data && !data.error) {
           setActiveMatch(data);
         }
       } catch (err) {
