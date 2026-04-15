@@ -25,7 +25,7 @@ export function BetSlip({ matchId }: { matchId: string }) {
     setSuccess(false);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "https://jmd-online-book.onrender.com"}/orders`,
+        `/api/orders`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

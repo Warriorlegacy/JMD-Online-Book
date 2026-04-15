@@ -36,11 +36,11 @@ export function OddsGrid({ matchId }: { matchId: string }) {
   useEffect(() => {
     async function fetchMatch() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://jmd-online-book.onrender.com"}/matches/active`);
+        const res = await fetch(`/api/matches/active`);
         if (!res.ok) return;
         const data = await res.json();
-        if (data && data.teamA) {
-          setMatchData(prev => ({ ...prev, teams: [data.teamA, data.teamB] }));
+        if (data && (data.teamA || data.team_a)) {
+          setMatchData(prev => ({ ...prev, teams: [data.teamA || data.team_a, data.teamB || data.team_b] }));
         }
       } catch {}
     }

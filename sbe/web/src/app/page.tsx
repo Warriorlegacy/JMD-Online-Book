@@ -55,9 +55,12 @@ function TradesTicker() {
 interface Match {
   id: string;
   title?: string;
-  teamA: string;
-  teamB: string;
-  startTime: string;
+  team_a: string;
+  team_b: string;
+  teamA?: string;
+  teamB?: string;
+  startTime?: string;
+  start_time?: string;
   status: string;
 }
 
@@ -69,7 +72,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchActiveMatch() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://jmd-online-book.onrender.com'}/matches/active`);
+        const res = await fetch(`/api/matches/active`);
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
         if (data && !data.error) {
@@ -112,7 +115,7 @@ export default function Home() {
       <section className="relative overflow-hidden rounded-2xl md:rounded-3xl border border-slate-800 bg-slate-900 px-6 py-10 md:px-12 md:py-20 shadow-2xl">
         <div className="relative z-10 max-w-2xl space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1 text-[10px] md:text-xs font-bold uppercase tracking-widest text-cyan-400">
-            {activeMatch ? activeMatch.title : "Demo Match"}
+            {activeMatch ? `${activeMatch.team_a || activeMatch.teamA} v ${activeMatch.team_b || activeMatch.teamB}` : "Demo Match"}
             <span className={cn("inline-block h-1.5 w-1.5 rounded-full", connected ? "bg-green-500 animate-pulse" : "bg-yellow-500")}></span>
           </div>
           <h1 className="text-3xl md:text-6xl font-extrabold tracking-tight text-white">
