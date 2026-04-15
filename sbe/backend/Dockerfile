@@ -22,6 +22,9 @@ RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/
 # Copy built application
 COPY --from=backend-builder /app /app
 
+# Ensure drizzle migrations are present
+COPY --from=backend-builder /app/drizzle ./drizzle
+
 # Expose API port
 EXPOSE 4000
 
@@ -29,5 +32,5 @@ EXPOSE 4000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:4000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})" || exit 1
 
-# Run migrations and seed on startup, then start the app
-CMD ["sh", "-c", "node dist/migrate.js && node dist/seed.js && node dist/index.js"]
+# Start the app (migrations run automatically inside index.ts)
+CMD ["node", "dist/index.js"]
