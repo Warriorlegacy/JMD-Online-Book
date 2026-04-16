@@ -52,6 +52,9 @@ export class OrderEngineBridge {
       console.log(`[Engine] Process exited with code ${code}`);
       // Restart logic could go here
     });
+    } catch (err: any) {
+      console.error("[Engine] Spawn failed:", err.message);
+    }
   }
 
   async processOrder(order: any): Promise<any> {
