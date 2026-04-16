@@ -13,19 +13,20 @@ describe("Notification Store", () => {
   });
 
   it("should set notifications", () => {
-    const notifications: Notification[] = [
-      {
-        id: "notif-1",
-        user_id: "user-123",
-        title: "Welcome",
-        body: "Welcome to the platform",
-        type: "info",
-        is_read: false,
-        action_url: null,
-        metadata: {},
-        created_at: new Date().toISOString(),
-      },
-    ];
+     const notifications: Notification[] = [
+       {
+         id: "notif-1",
+         tenant_id: null,
+         user_id: "user-123",
+         title: "Welcome",
+         body: "Welcome to the platform",
+         type: "info",
+         is_read: false,
+         action_url: null,
+         metadata: {},
+         created_at: new Date().toISOString(),
+       },
+     ];
 
     useNotificationStore.getState().setNotifications(notifications);
 
@@ -35,31 +36,33 @@ describe("Notification Store", () => {
   });
 
   it("should push a new notification to the front", () => {
-    useNotificationStore.getState().setNotifications([
-      {
-        id: "notif-1",
-        user_id: "user-123",
-        title: "Old",
-        body: "Old notification",
-        type: "info",
-        is_read: true,
-        action_url: null,
-        metadata: {},
-        created_at: new Date().toISOString(),
-      },
-    ]);
+     useNotificationStore.getState().setNotifications([
+       {
+         id: "notif-1",
+         tenant_id: null,
+         user_id: "user-123",
+         title: "Old",
+         body: "Old notification",
+         type: "info",
+         is_read: true,
+         action_url: null,
+         metadata: {},
+         created_at: new Date().toISOString(),
+       },
+     ]);
 
-    const newNotif: Notification = {
-      id: "notif-2",
-      user_id: "user-123",
-      title: "New",
-      body: "New notification",
-      type: "success",
-      is_read: false,
-      action_url: null,
-      metadata: {},
-      created_at: new Date().toISOString(),
-    };
+     const newNotif: Notification = {
+       id: "notif-2",
+       tenant_id: null,
+       user_id: "user-123",
+       title: "New",
+       body: "New notification",
+       type: "success",
+       is_read: false,
+       action_url: null,
+       metadata: {},
+       created_at: new Date().toISOString(),
+     };
 
     useNotificationStore.getState().pushNotification(newNotif);
 
@@ -70,31 +73,33 @@ describe("Notification Store", () => {
   });
 
   it("should replace existing notification with same id", () => {
-    const existing: Notification = {
-      id: "notif-1",
-      user_id: "user-123",
-      title: "Original",
-      body: "Original body",
-      type: "info",
-      is_read: false,
-      action_url: null,
-      metadata: {},
-      created_at: new Date().toISOString(),
-    };
+     const existing: Notification = {
+       id: "notif-1",
+       tenant_id: null,
+       user_id: "user-123",
+       title: "Original",
+       body: "Original body",
+       type: "info",
+       is_read: false,
+       action_url: null,
+       metadata: {},
+       created_at: new Date().toISOString(),
+     };
 
     useNotificationStore.getState().setNotifications([existing]);
 
-    const updated: Notification = {
-      id: "notif-1",
-      user_id: "user-123",
-      title: "Updated",
-      body: "Updated body",
-      type: "warning",
-      is_read: false,
-      action_url: null,
-      metadata: {},
-      created_at: new Date().toISOString(),
-    };
+     const updated: Notification = {
+       id: "notif-1",
+       tenant_id: null,
+       user_id: "user-123",
+       title: "Updated",
+       body: "Updated body",
+       type: "warning",
+       is_read: false,
+       action_url: null,
+       metadata: {},
+       created_at: new Date().toISOString(),
+     };
 
     useNotificationStore.getState().pushNotification(updated);
 
@@ -104,30 +109,32 @@ describe("Notification Store", () => {
   });
 
   it("should mark a notification as read", () => {
-    const notifications: Notification[] = [
-      {
-        id: "notif-1",
-        user_id: "user-123",
-        title: "Unread",
-        body: "Body",
-        type: "info",
-        is_read: false,
-        action_url: null,
-        metadata: {},
-        created_at: new Date().toISOString(),
-      },
-      {
-        id: "notif-2",
-        user_id: "user-123",
-        title: "Also Unread",
-        body: "Body",
-        type: "info",
-        is_read: false,
-        action_url: null,
-        metadata: {},
-        created_at: new Date().toISOString(),
-      },
-    ];
+     const notifications: Notification[] = [
+       {
+         id: "notif-1",
+         tenant_id: null,
+         user_id: "user-123",
+         title: "Unread",
+         body: "Body",
+         type: "info",
+         is_read: false,
+         action_url: null,
+         metadata: {},
+         created_at: new Date().toISOString(),
+       },
+       {
+         id: "notif-2",
+         tenant_id: null,
+         user_id: "user-123",
+         title: "Also Unread",
+         body: "Body",
+         type: "info",
+         is_read: false,
+         action_url: null,
+         metadata: {},
+         created_at: new Date().toISOString(),
+       },
+     ];
 
     useNotificationStore.getState().setNotifications(notifications);
     useNotificationStore.getState().markRead("notif-1");

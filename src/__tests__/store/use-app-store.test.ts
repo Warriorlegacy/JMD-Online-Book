@@ -17,6 +17,7 @@ describe("App Store", () => {
     const settings: SiteSetting[] = [
       {
         key: "site_name",
+        tenant_id: null,
         value: "Test Site",
         type: "string",
         description: "Test",
@@ -26,6 +27,7 @@ describe("App Store", () => {
     const paymentMethods: PaymentMethod[] = [
       {
         id: "pm-1",
+        tenant_id: null,
         name: "UPI",
         type: "upi",
         details: {},
@@ -51,13 +53,13 @@ describe("App Store", () => {
   it("should override previous bootstrap data", () => {
     // Set initial data
     useAppStore.getState().setBootstrap({
-      settings: [{ key: "old", value: "old", type: "string", description: "", updated_at: "" }],
+      settings: [{ key: "old", tenant_id: null, value: "old", type: "string", description: "", updated_at: "" }],
       paymentMethods: [],
     });
 
     // Override with new data
     useAppStore.getState().setBootstrap({
-      settings: [{ key: "new", value: "new", type: "string", description: "", updated_at: "" }],
+      settings: [{ key: "new", tenant_id: null, value: "new", type: "string", description: "", updated_at: "" }],
       paymentMethods: [],
     });
 

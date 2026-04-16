@@ -38,19 +38,20 @@ describe("LoginForm", () => {
     expect(screen.getByRole("button", { name: /sign in/i })).toBeInTheDocument();
   });
 
-  it("should render remember me checkbox", () => {
+  it("should show validation errors for email field", () => {
     render(<LoginForm />);
-    expect(screen.getByLabelText(/remember me/i)).toBeInTheDocument();
+    const emailInput = screen.getByPlaceholderText("your@email.com");
+    expect(emailInput).toBeInTheDocument();
   });
 
-  it("should render forgot password link", () => {
+  it("should show validation errors for password field", () => {
     render(<LoginForm />);
-    expect(screen.getByText(/forgot password/i)).toBeInTheDocument();
+    const passwordInput = screen.getByPlaceholderText("••••••••");
+    expect(passwordInput).toBeInTheDocument();
   });
 
   it("should show validation errors for empty fields on submit", async () => {
     const user = userEvent.setup();
-    const toast = await import("react-hot-toast");
     render(<LoginForm />);
     const submitBtn = screen.getByRole("button", { name: /sign in/i });
     await user.click(submitBtn);

@@ -1,6 +1,4 @@
-import { memo } from "react";
-
-export const SectionHeading = memo(function SectionHeading({
+export function SectionHeading({
   eyebrow,
   title,
   subtitle,
@@ -22,4 +20,4 @@ export const SectionHeading = memo(function SectionHeading({
       {subtitle ? <p className="text-sm text-[var(--color-text-muted)]">{subtitle}</p> : null}
     </div>
   );
-});
+}

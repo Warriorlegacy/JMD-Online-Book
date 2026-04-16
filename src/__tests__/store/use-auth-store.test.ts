@@ -23,6 +23,7 @@ describe("Auth Store", () => {
     };
     const profile: Profile = {
       id: "user-123",
+      tenant_id: null,
       full_name: "Test User",
       email: "test@example.com",
       phone: "9876543210",
@@ -63,8 +64,9 @@ describe("Auth Store", () => {
       fullName: "Test User",
       accessToken: "token-123",
     };
-    const profile: Profile = {
+     const profile: Profile = {
       id: "user-123",
+      tenant_id: null,
       full_name: "Test User",
       email: "test@example.com",
       phone: null,

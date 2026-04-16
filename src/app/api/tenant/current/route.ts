@@ -9,7 +9,7 @@ export async function GET() {
     }
     const tenant = await getTenantById(session.tenantId);
     return Response.json({ tenant });
-  } catch (error) {
+  } catch {
     return Response.json({ tenant: null });
   }
 }

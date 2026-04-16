@@ -1,7 +1,6 @@
-import { memo } from "react";
 import { cn } from "@/lib/utils";
 
-export const Badge = memo(function Badge({
+export function Badge({
   children,
   tone = "neutral",
   className,
@@ -24,4 +23,4 @@ export const Badge = memo(function Badge({
       {children}
     </span>
   );
-});
+}

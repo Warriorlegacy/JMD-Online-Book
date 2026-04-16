@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { memo } from "react";
 import { LogOut, Shield } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { getInitials } from "@/lib/utils";
 import type { AppSession, Profile } from "@/types/database";
 
-export const TopBar = memo(function TopBar({
+export function TopBar({
   session,
   profile,
   announcement,
@@ -59,4 +58,4 @@ export const TopBar = memo(function TopBar({
       </div>
     </header>
   );
-});
+}

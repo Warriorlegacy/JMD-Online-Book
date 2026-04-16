@@ -72,9 +72,9 @@ describe("loginSchema", () => {
     ).toThrow();
   });
 
-  it("should reject password shorter than 8 characters", () => {
+  it("should reject password shorter than 6 characters", () => {
     expect(() =>
-      loginSchema.parse({ email: "user@example.com", password: "Short1!" })
+      loginSchema.parse({ email: "user@example.com", password: "Ab1!" })
     ).toThrow();
   });
 
@@ -143,24 +143,24 @@ describe("registerPayloadSchema", () => {
     ).toThrow();
   });
 
-  it("should reject weak password without uppercase", () => {
+  it("should reject password without uppercase", () => {
     expect(() =>
       registerPayloadSchema.parse({
         email: "user@example.com",
         fullName: "John",
         password: "alllowercase1!",
       })
-    ).toThrow();
+    ).toThrow("Password must include at least one uppercase letter");
   });
 
-  it("should reject weak password without number", () => {
+  it("should reject password without number", () => {
     expect(() =>
       registerPayloadSchema.parse({
         email: "user@example.com",
         fullName: "John",
         password: "NoNumbersHere!",
       })
-    ).toThrow();
+    ).toThrow("Password must include at least one number");
   });
 });
 

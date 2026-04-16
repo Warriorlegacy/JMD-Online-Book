@@ -49,12 +49,12 @@ export default async function HomePage() {
           <strong>Error:</strong> {error}
         </div>
         <div className="flex gap-4">
-          <button
-            onClick={() => window.location.reload()}
-            className="rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 font-bold text-slate-900 hover:from-amber-400 hover:to-amber-500 transition-all"
+          <a
+            href="/home"
+            className="rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 font-bold text-slate-900 hover:from-amber-400 hover:to-amber-500 transition-all inline-block"
           >
             Reload Page
-          </button>
+          </a>
         </div>
       </div>
     );
