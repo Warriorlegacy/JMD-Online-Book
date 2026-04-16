@@ -18,12 +18,19 @@ export class OrderEngineBridge {
   }
 
   private init() {
-    const enginePath = process.env.ENGINE_PATH || "d:/JMD Online Book/sbe/engine/target/release/sbe-engine.exe";
+    // Platform agnostic path
+    const defaultEngine = process.platform === "win32" ? "sbe-engine.exe" : "sbe-engine";
+    const enginePath = process.env.ENGINE_PATH || `../../engine/target/release/${defaultEngine}`;
     console.log(`[Engine] Starting matching engine: ${enginePath}`);
     
-    this.process = spawn(enginePath);
+    try {
+      this.process = spawn(enginePath);
 
-    this.process.stdout?.on("data", (data) => {
+      this.process.on("error", (err) => {
+        console.error(`[Engine] Failed to start engine at ${enginePath}. This is expected if the engine binary is not built yet.`, err.message);
+      });
+
+      this.process.stdout?.on("data", (data) => {
       const lines = data.toString().split("\n");
       for (const line of lines) {
         if (!line.trim()) continue;

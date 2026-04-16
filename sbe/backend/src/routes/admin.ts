@@ -2,7 +2,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { SettlementService } from "../services/settlement.js";
 import { db } from "../db/index.js";
 import { matches, marketHistory, tournaments, depositRequests, withdrawalRequests, wallets, ledgerEntries, users } from "../db/schema.js";
-import { eq, asc, sql, desc } from "drizzle-orm";
+import { eq, asc, sql, desc, and } from "drizzle-orm";
 
 export async function seedDemoData() {
   try {
