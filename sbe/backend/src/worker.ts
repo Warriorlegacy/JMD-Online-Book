@@ -2,8 +2,9 @@ import { pubsub } from "./services/pubsub.js";
 import { db } from "./db/index.js";
 import { trades as tradesTable, orders as ordersTable } from "./db/schema.js";
 import { eq, sql } from "drizzle-orm";
+import { FastifyInstance } from "fastify";
 
-export function initPersistenceWorker() {
+export function initPersistenceWorker(fastify: FastifyInstance) {
   console.log("[Worker] Persistence worker initialized");
 
   pubsub.subscribe("match_events", async (payload: any) => {
@@ -31,5 +32,9 @@ export function initPersistenceWorker() {
         console.error("[Worker] Settlement error", e);
       }
     }
+  });
+
+  pubsub.subscribe("candle_update", (candle: any) => {
+    fastify.ws.publishToRoom(candle.matchId, "candle_update", { candle });
   });
 }

@@ -1,8 +1,9 @@
 import { OrderBook } from "./engine.js";
 import { WalletService } from "./wallet.js";
 import { db } from "../db/index.js";
-import { orders as ordersTable } from "../db/schema.js";
+import { orders as ordersTable, wallets } from "../db/schema.js";
 import { pubsub } from "./pubsub.js";
+import { eq } from "drizzle-orm";
 import crypto from "crypto";
 
 interface Order {
@@ -45,14 +46,28 @@ export class OrderOrchestrator {
     // 2. Lock Funds (ACID Transaction)
     // We create a temp order ID for the ledger reference
     const tempOrderId = crypto.randomUUID();
-    await WalletService.lockFunds(
-      userId, 
-      (lockAmount / 100).toFixed(2), 
-      tempOrderId, 
-      type === "back" ? "back_stake" : "lay_liability"
-    );
+     await WalletService.lockFunds(
+       userId,
+       (lockAmount / 100).toFixed(2),
+       tempOrderId,
+       type === "back" ? "back_stake" : "lay_liability"
+     );
 
-    // 3. Create Order in DB
+     // Fetch updated wallet and send balance_update event
+     const [wallet] = await db.select({ balance: wallets.balance, lockedBalance: wallets.lockedBalance })
+       .from(wallets)
+       .where(eq(wallets.userId, userId))
+       .limit(1);
+     if (wallet) {
+       ws.sendToUser(userId, {
+         topic: "balance_update",
+         userId,
+         available: parseFloat(wallet.balance),
+         locked: parseFloat(wallet.lockedBalance)
+       });
+     }
+
+     // 3. Create Order in DB
     const [dbOrder] = await db.insert(ordersTable).values({
       id: tempOrderId,
       userId,

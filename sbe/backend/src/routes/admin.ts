@@ -1,8 +1,8 @@
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { SettlementService } from "../services/settlement.js";
 import { db } from "../db/index.js";
-import { matches, marketHistory, tournaments } from "../db/schema.js";
-import { eq, asc, sql } from "drizzle-orm";
+import { matches, marketHistory, tournaments, depositRequests, withdrawalRequests, wallets, ledgerEntries, users } from "../db/schema.js";
+import { eq, asc, sql, desc } from "drizzle-orm";
 
 export async function seedDemoData() {
   try {
@@ -80,6 +80,14 @@ export async function seedDemoData() {
 }
 
 export default async function adminRoutes(fastify: FastifyInstance) {
+  // Admin only check
+  const adminOnly = async (request: FastifyRequest, reply: FastifyReply) => {
+    await (fastify as any).authenticate(request, reply);
+    if ((request.user as any).role !== "admin") {
+      return reply.code(403).send({ error: "Admin access required" });
+    }
+  };
+
   // Database connection test
   fastify.get("/db-test", async () => {
     try {
@@ -134,7 +142,7 @@ export default async function adminRoutes(fastify: FastifyInstance) {
   });
 
   // Create a match
-  fastify.post("/admin/matches", async (request, reply) => {
+  fastify.post("/admin/matches", { preHandler: adminOnly }, async (request, reply) => {
     const { teamA, teamB, tournamentId, startTime } = request.body as any;
     const [match] = await db.insert(matches).values({ 
       teamA,
@@ -153,6 +161,26 @@ export default async function adminRoutes(fastify: FastifyInstance) {
           FROM matches ORDER BY start_time ASC LIMIT 50`
     );
     return result.rows;
+  });
+
+  // Get single match by ID (public)
+  fastify.get("/matches/:id", async (request, reply) => {
+    const { id } = request.params as { id: string };
+    try {
+      const result = await db.execute(
+        sql`SELECT m.id, m.tournament_id, t.name as tournament_name, m.team_a, m.team_b, m.start_time, m.status, m.metadata, m.created_at 
+            FROM matches m
+            LEFT JOIN tournaments t ON m.tournament_id = t.id
+            WHERE m.id = ${id}`
+      );
+      if (result.rows.length === 0) {
+        return reply.code(404).send({ error: "Match not found" });
+      }
+      return result.rows[0];
+    } catch (e: any) {
+      fastify.log.error(e);
+      return reply.code(500).send({ error: e.message });
+    }
   });
 
   // Get match history (candlestick data)
@@ -179,7 +207,7 @@ export default async function adminRoutes(fastify: FastifyInstance) {
   });
 
   // Settle a match
-  fastify.post("/admin/matches/:id/settle", async (request, reply) => {
+  fastify.post("/admin/matches/:id/settle", { preHandler: adminOnly }, async (request, reply) => {
     const { id } = request.params as { id: string };
     const { result } = request.body as { result: "team_a" | "team_b" | "draw" };
 
@@ -189,5 +217,193 @@ export default async function adminRoutes(fastify: FastifyInstance) {
     } catch (e: any) {
       reply.status(500).send({ error: e.message });
     }
+  });
+
+  // Update match status (admin)
+  fastify.patch("/admin/matches/:id", { preHandler: adminOnly }, async (request, reply) => {
+    const { id } = request.params as { id: string };
+    const { status } = request.body as { status: "scheduled" | "in_play" | "completed" | "cancelled" };
+    if (!["scheduled", "in_play", "completed", "cancelled"].includes(status)) {
+      return reply.code(400).send({ error: "Invalid status" });
+    }
+    await db.update(matches).set({ status }).where(eq(matches.id, id));
+    return { success: true };
+  });
+
+  // --- NEW ADMIN WALLET ROUTES ---
+
+  // List pending deposits
+  fastify.get("/admin/deposits", { preHandler: adminOnly }, async () => {
+    return await db
+      .select({
+        id: depositRequests.id,
+        userId: depositRequests.userId,
+        username: users.username,
+        amount: depositRequests.amount,
+        upiId: depositRequests.upiId,
+        utrNumber: depositRequests.utrNumber,
+        status: depositRequests.status,
+        createdAt: depositRequests.createdAt,
+      })
+      .from(depositRequests)
+      .leftJoin(users, eq(users.id, depositRequests.userId))
+      .where(eq(depositRequests.status, "pending"))
+      .orderBy(desc(depositRequests.createdAt));
+  });
+
+  // Approve deposit
+  fastify.post("/admin/deposits/:id/approve", { preHandler: adminOnly }, async (request, reply) => {
+    const { id } = request.params as { id: string };
+
+    try {
+      const [deposit] = await db
+        .select()
+        .from(depositRequests)
+        .where(eq(depositRequests.id, id))
+        .limit(1);
+
+      if (!deposit || deposit.status !== "pending") {
+        return reply.code(400).send({ error: "Invalid deposit request" });
+      }
+
+      await db.transaction(async (tx) => {
+        // Update deposit status
+        await tx
+          .update(depositRequests)
+          .set({ status: "approved" })
+          .where(eq(depositRequests.id, id));
+
+        // Get or create wallet
+        const [wallet] = await tx
+          .select()
+          .from(wallets)
+          .where(eq(wallets.userId, deposit.userId))
+          .limit(1);
+
+        const newBalance = (parseFloat(wallet?.balance || "0") + parseFloat(deposit.amount)).toFixed(8);
+
+        if (!wallet) {
+          await tx.insert(wallets).values({
+            userId: deposit.userId,
+            balance: newBalance,
+            currency: "INR"
+          });
+        } else {
+          await tx
+            .update(wallets)
+            .set({ balance: newBalance, updatedAt: new Date() })
+            .where(eq(wallets.id, wallet.id));
+        }
+
+        // Ledger entry
+        const targetWallet = wallet || (await tx.select().from(wallets).where(eq(wallets.userId, deposit.userId)).limit(1))[0];
+        await tx.insert(ledgerEntries).values({
+          walletId: targetWallet.id,
+          amount: deposit.amount,
+          currency: "INR",
+          type: "deposit",
+          referenceId: deposit.id
+        });
+      });
+
+      return { message: "Deposit approved and wallet credited" };
+    } catch (e: any) {
+      fastify.log.error(e);
+      return reply.code(500).send({ error: "Failed to approve deposit" });
+    }
+  });
+
+  // Reject deposit
+  fastify.post("/admin/deposits/:id/reject", { preHandler: adminOnly }, async (request, reply) => {
+    const { id } = request.params as { id: string };
+    await db
+      .update(depositRequests)
+      .set({ status: "rejected" })
+      .where(eq(depositRequests.id, id));
+    return { message: "Deposit rejected" };
+  });
+
+  // List pending withdrawals
+  fastify.get("/admin/withdrawals", { preHandler: adminOnly }, async () => {
+    return await db
+      .select()
+      .from(withdrawalRequests)
+      .where(eq(withdrawalRequests.status, "pending"))
+      .orderBy(desc(withdrawalRequests.createdAt));
+  });
+
+  // Approve withdrawal
+  fastify.post("/admin/withdrawals/:id/approve", { preHandler: adminOnly }, async (request, reply) => {
+    const { id } = request.params as { id: string };
+
+    try {
+      const [withdrawal] = await db
+        .select()
+        .from(withdrawalRequests)
+        .where(eq(withdrawalRequests.id, id))
+        .limit(1);
+
+      if (!withdrawal || withdrawal.status !== "pending") {
+        return reply.code(400).send({ error: "Invalid withdrawal request" });
+      }
+
+      await db.transaction(async (tx) => {
+        const [wallet] = await tx
+          .select()
+          .from(wallets)
+          .where(eq(wallets.userId, withdrawal.userId))
+          .limit(1);
+
+        if (!wallet || parseFloat(wallet.balance) < parseFloat(withdrawal.amount)) {
+          throw new Error("Insufficient balance during approval");
+        }
+
+        const newBalance = (parseFloat(wallet.balance) - parseFloat(withdrawal.amount)).toFixed(8);
+
+        await tx
+          .update(wallets)
+          .set({ balance: newBalance, updatedAt: new Date() })
+          .where(eq(wallets.id, wallet.id));
+
+        await tx
+          .update(withdrawalRequests)
+          .set({ status: "completed" })
+          .where(eq(withdrawalRequests.id, id));
+
+        await tx.insert(ledgerEntries).values({
+          walletId: wallet.id,
+          amount: (-parseFloat(withdrawal.amount)).toString(),
+          currency: "INR",
+          type: "withdrawal",
+          referenceId: withdrawal.id
+        });
+      });
+
+      return { message: "Withdrawal approved and completed" };
+    } catch (e: any) {
+      fastify.log.error(e);
+      return reply.code(500).send({ error: e.message || "Failed to approve withdrawal" });
+    }
+  });
+
+  // List all tournaments (admin)
+  fastify.get("/admin/tournaments", { preHandler: adminOnly }, async () => {
+    return await db.select().from(tournaments).orderBy(desc(tournaments.createdAt));
+  });
+
+  // List all users (admin)
+  fastify.get("/admin/users", { preHandler: adminOnly }, async () => {
+    return await db
+      .select({
+        id: users.id,
+        username: users.username,
+        email: users.email,
+        role: users.role,
+        createdAt: users.createdAt,
+        balance: wallets.balance,
+      })
+      .from(users)
+      .leftJoin(wallets, eq(users.id, wallets.userId))
+      .orderBy(desc(users.createdAt));
   });
 }

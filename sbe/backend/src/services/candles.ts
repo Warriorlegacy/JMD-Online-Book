@@ -15,9 +15,17 @@ export class CandleService {
 
   static init() {
     console.log("[CandleService] Listening for trade events...");
-    
-    pubsub.subscribe("trade_matched", (trade: Trade) => {
-      this.processTrade(trade);
+
+    pubsub.subscribe("match_events", (payload: any) => {
+      const { matchId, events } = payload;
+      for (const event of events) {
+        this.processTrade({
+          match_id: matchId,
+          price: event.price,
+          size: event.size,
+          timestamp: event.timestamp || new Date().toISOString()
+        });
+      }
     });
   }
 

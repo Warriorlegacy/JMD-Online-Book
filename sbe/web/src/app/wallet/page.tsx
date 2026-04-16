@@ -1,6 +1,21 @@
 "use client";
-import { useState } from "react";
-import Link from "next/link";
+
+import React, { useState, useEffect } from "react";
+import Link from "next/navigation";
+import { useAuth } from "@/context/auth-context";
+import { useSocket } from "@/context/socket-context";
+import { 
+  CreditCard, 
+  ArrowUpRight, 
+  ArrowDownLeft, 
+  History, 
+  Copy, 
+  CheckCircle2, 
+  Clock, 
+  AlertCircle,
+  Loader2,
+  ChevronLeft
+} from "lucide-react";
 
 const PLATFORM_UPI = "6202442690@ptyes";
 const PLATFORM_NAME = "SBE Exchange";
@@ -9,235 +24,443 @@ const MIN_WITHDRAW = 200;
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
   return (
     <button
-      onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-      className={`px-3 py-1 rounded text-[10px] font-black uppercase tracking-wider transition-all ${copied ? "bg-green-600 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"}`}
+      onClick={handleCopy}
+      className={`p-2 rounded-lg transition-all ${copied ? "bg-emerald-500/20 text-emerald-400" : "bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"}`}
     >
-      {copied ? "Copied!" : "Copy"}
+      {copied ? <CheckCircle2 className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
     </button>
   );
 }
 
 export default function WalletPage() {
+      const { user, loading: authLoading } = useAuth();
+      const { connected, on } = useSocket();
   const [tab, setTab] = useState<"deposit" | "withdraw" | "history">("deposit");
+  const [balance, setBalance] = useState<{ available: number; locked: number }>({ available: 0, locked: 0 });
+  const [history, setHistory] = useState<{ deposits: any[]; withdrawals: any[] }>({ deposits: [], withdrawals: [] });
+  
   const [amount, setAmount] = useState("");
   const [upiId, setUpiId] = useState("");
   const [utrNumber, setUtrNumber] = useState("");
   const [step, setStep] = useState<1 | 2>(1);
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const amountNum = parseFloat(amount) || 0;
-  const upiDeepLink = `upi://pay?pa=${PLATFORM_UPI}&pn=${encodeURIComponent(PLATFORM_NAME)}&am=${amountNum}&cu=INR&tn=${encodeURIComponent("SBE Deposit")}`;
-
-  const handleDepositStep1 = () => {
-    if (amountNum < MIN_DEPOSIT) return;
-    setStep(2);
+  const fetchData = async () => {
+    try {
+      const [balRes, histRes] = await Promise.all([
+        fetch("/api/wallet/balance"),
+        fetch("/api/wallet/transactions")
+      ]);
+      if (balRes.ok) {
+        const balData = await balRes.json();
+        // backend returns { balance: string, lockedBalance: string }
+        setBalance({
+          available: parseFloat(balData.balance || balData.available || "0"),
+          locked: parseFloat(balData.lockedBalance || balData.locked || "0")
+        });
+      }
+      if (histRes.ok) {
+        setHistory(await histRes.json());
+      }
+    } catch (err) {
+      console.error("Failed to fetch wallet data", err);
+    }
   };
 
-  const handleDepositSubmit = async () => {
-    if (!utrNumber || utrNumber.length < 10 || !upiId) return;
-    setLoading(true);
-    // In production: POST to /api/deposit with { amount, upiId, utrNumber }
-    await new Promise(r => setTimeout(r, 1000));
-    setLoading(false);
-    setSubmitted(true);
+   useEffect(() => {
+     if (user) {
+       fetchData();
+     }
+   }, [user]);
+
+   useEffect(() => {
+     if (!connected || !user) return;
+     const unsubscribe = on<{ userId: string; available: number; locked: number }>("balance_update", (data) => {
+       if (data.userId === user.id) {
+         setBalance({ available: data.available, locked: data.locked });
+       }
+     });
+     return () => unsubscribe();
+   }, [connected, user, on]);
+
+  const handleDepositSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMessage("");
+    try {
+      const res = await fetch("/api/wallet/deposit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount, upiId, utrNumber }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to submit deposit");
+      setSuccessMessage(data.message);
+      setStep(1);
+      setAmount("");
+      setUpiId("");
+      setUtrNumber("");
+      fetchData();
+    } catch (err: any) {
+      setErrorMessage(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleWithdrawSubmit = async () => {
-    if (amountNum < MIN_WITHDRAW || !upiId) return;
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 1000));
-    setLoading(false);
-    setSubmitted(true);
+  const handleWithdrawSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMessage("");
+    try {
+      const res = await fetch("/api/wallet/withdraw", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount, upiId }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to submit withdrawal");
+      setSuccessMessage(data.message);
+      setAmount("");
+      setUpiId("");
+      fetchData();
+    } catch (err: any) {
+      setErrorMessage(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const reset = () => { setStep(1); setAmount(""); setUpiId(""); setUtrNumber(""); setSubmitted(false); };
+  if (authLoading) return <div className="flex justify-center py-20"><Loader2 className="animate-spin text-cyan-500" /></div>;
 
   return (
-    <div className="max-w-lg mx-auto space-y-5 py-4 px-1">
-      {/* Balance Card */}
-      <div className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-900/50 p-6">
-        <p className="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-1">Available Balance</p>
-        <p className="text-4xl font-black text-white">₹ 0.00</p>
-        <p className="text-xs text-slate-500 mt-1">Login to see your real balance</p>
-        <div className="flex gap-2 mt-4">
-          <button onClick={() => { setTab("deposit"); reset(); }} className="flex-1 h-9 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-xs font-black text-white uppercase tracking-wider transition-all">+ Deposit</button>
-          <button onClick={() => { setTab("withdraw"); reset(); }} className="flex-1 h-9 rounded-lg border border-slate-700 hover:border-slate-500 text-xs font-black text-slate-300 uppercase tracking-wider transition-all">Withdraw</button>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex rounded-xl border border-slate-800 bg-slate-900/50 p-1 gap-1">
-        {(["deposit", "withdraw", "history"] as const).map(t => (
-          <button key={t} onClick={() => { setTab(t); reset(); }}
-            className={`flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all ${tab === t ? "bg-cyan-600 text-white shadow-lg" : "text-slate-400 hover:text-white"}`}>
-            {t}
-          </button>
-        ))}
-      </div>
-
-      {/* DEPOSIT */}
-      {tab === "deposit" && !submitted && (
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-4">
-          {step === 1 ? (
-            <>
-              <h2 className="text-sm font-black text-white uppercase tracking-wider">Deposit via UPI</h2>
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-500 uppercase">Amount (₹)</label>
-                <input type="number" value={amount} onChange={e => setAmount(e.target.value)}
-                  placeholder={`Min ₹${MIN_DEPOSIT}`} min={MIN_DEPOSIT}
-                  className="w-full h-12 bg-slate-800 border border-slate-700 rounded-xl px-4 text-base font-black text-white focus:outline-none focus:border-cyan-500 transition-colors" />
-                <div className="flex gap-2 mt-2">
-                  {[500, 1000, 2000, 5000].map(v => (
-                    <button key={v} onClick={() => setAmount(String(v))}
-                      className="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[10px] font-black text-slate-300 transition-all">
-                      ₹{v}
-                    </button>
-                  ))}
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        {/* Left Column: Balance & Stats */}
+        <div className="lg:col-span-5 space-y-6">
+          <div className="relative group overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-indigo-600 to-blue-700 p-8 shadow-2xl shadow-blue-900/40">
+            <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
+            <div className="relative z-10 space-y-8">
+              <div className="flex justify-between items-start">
+                <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+                  <CreditCard className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-white/60">Currency</span>
+                  <p className="text-sm font-bold text-white uppercase">INR (₹)</p>
                 </div>
               </div>
-              <button onClick={handleDepositStep1} disabled={amountNum < MIN_DEPOSIT}
-                className={`w-full h-12 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-[0.98] ${amountNum >= MIN_DEPOSIT ? "bg-cyan-600 hover:bg-cyan-500 text-white" : "bg-slate-800 text-slate-600 cursor-not-allowed"}`}>
-                Proceed to Pay ₹{amountNum > 0 ? amountNum.toLocaleString() : ""}
-              </button>
-              <p className="text-[10px] text-center text-slate-600">Minimum deposit: ₹{MIN_DEPOSIT}</p>
-            </>
-          ) : (
-            <>
-              <div className="flex items-center gap-2 mb-2">
-                <button onClick={() => setStep(1)} className="text-slate-400 hover:text-white">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-                </button>
-                <h2 className="text-sm font-black text-white uppercase tracking-wider">Pay ₹{amountNum.toLocaleString()}</h2>
+              
+              <div className="space-y-1">
+                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-white/70">Dynamic Balance</span>
+                <div className="flex items-baseline gap-2">
+                     <span className="text-5xl font-black tracking-tighter text-white whitespace-nowrap">
+                       ₹ {balance.available.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                     </span>
+                </div>
               </div>
 
-              {/* UPI Payment Box */}
-              <div className="rounded-xl bg-slate-800 border border-slate-700 p-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-[10px] text-slate-400 uppercase font-bold">Send to UPI ID</p>
-                    <p className="text-base font-black text-cyan-400 mt-0.5">{PLATFORM_UPI}</p>
+              <div className="flex gap-4 pt-4 border-t border-white/10 mt-4">
+                <div className="flex-1">
+                  <p className="text-[9px] font-bold uppercase text-white/50 mb-1">In-Play Stake</p>
+                   <p className="text-sm font-bold text-white">₹ {balance.locked.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
+                </div>
+                <div className="flex-1 text-right">
+                  <p className="text-[9px] font-bold uppercase text-white/50 mb-1">Status</p>
+                  <div className="flex items-center justify-end gap-1.5">
+                    <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
+                    <span className="text-xs font-bold text-emerald-300">Verified</span>
                   </div>
-                  <CopyButton text={PLATFORM_UPI} />
                 </div>
-                <div className="flex items-center justify-between border-t border-slate-700 pt-3">
-                  <div>
-                    <p className="text-[10px] text-slate-400 uppercase font-bold">Amount</p>
-                    <p className="text-base font-black text-white">₹{amountNum.toLocaleString()}</p>
-                  </div>
-                  <CopyButton text={String(amountNum)} />
-                </div>
-                <a href={upiDeepLink}
-                  className="flex items-center justify-center gap-2 w-full h-11 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-xs font-black text-white uppercase tracking-wider hover:opacity-90 transition-all">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-                  Open UPI App
-                </a>
-                <p className="text-[9px] text-center text-slate-500">Works with PhonePe, GPay, Paytm, BHIM & all UPI apps</p>
               </div>
-
-              {/* UTR Verification */}
-              <div className="space-y-3">
-                <p className="text-[10px] font-black text-slate-400 uppercase">After payment, enter details below:</p>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-500 uppercase">UTR / Transaction ID</label>
-                  <input type="text" value={utrNumber} onChange={e => setUtrNumber(e.target.value)}
-                    placeholder="12-digit UTR number"
-                    className="w-full h-11 bg-slate-800 border border-slate-700 rounded-xl px-4 text-sm font-bold text-white focus:outline-none focus:border-cyan-500 transition-colors" />
-                  <p className="text-[9px] text-slate-600">Find UTR in your UPI app payment history</p>
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-500 uppercase">Your UPI ID</label>
-                  <input type="text" value={upiId} onChange={e => setUpiId(e.target.value)}
-                    placeholder="yourname@upi"
-                    className="w-full h-11 bg-slate-800 border border-slate-700 rounded-xl px-4 text-sm font-bold text-white focus:outline-none focus:border-cyan-500 transition-colors" />
-                </div>
-                <button onClick={handleDepositSubmit} disabled={loading || utrNumber.length < 10 || !upiId}
-                  className={`w-full h-12 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-[0.98] ${loading || utrNumber.length < 10 || !upiId ? "bg-slate-800 text-slate-600 cursor-not-allowed" : "bg-green-600 hover:bg-green-500 text-white"}`}>
-                  {loading ? "Submitting..." : "Confirm Deposit"}
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-      )}
-
-      {tab === "deposit" && submitted && (
-        <div className="rounded-2xl border border-green-500/20 bg-green-500/5 p-6 text-center space-y-3">
-          <div className="text-4xl">✅</div>
-          <p className="font-black text-white">Deposit Request Submitted!</p>
-          <p className="text-sm text-slate-400">Your deposit of <span className="text-white font-bold">₹{amountNum.toLocaleString()}</span> is under review.</p>
-          <p className="text-xs text-slate-500">UTR: <span className="text-slate-300 font-mono">{utrNumber}</span></p>
-          <p className="text-xs text-slate-500">Balance will be credited within <span className="text-white">30 minutes</span> after verification.</p>
-          <button onClick={reset} className="mt-2 px-6 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-black text-white uppercase tracking-wider transition-all">
-            New Deposit
-          </button>
-        </div>
-      )}
-
-      {/* WITHDRAW */}
-      {tab === "withdraw" && !submitted && (
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-4">
-          <h2 className="text-sm font-black text-white uppercase tracking-wider">Withdraw Funds</h2>
-          <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 p-3">
-            <p className="text-[10px] font-bold text-amber-400">⚠️ Withdrawals are processed within 24 hours. Minimum ₹{MIN_WITHDRAW}.</p>
+            </div>
           </div>
-          <div className="space-y-3">
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-slate-500 uppercase">Amount (₹)</label>
-              <input type="number" value={amount} onChange={e => setAmount(e.target.value)}
-                placeholder={`Min ₹${MIN_WITHDRAW}`} min={MIN_WITHDRAW}
-                className="w-full h-12 bg-slate-800 border border-slate-700 rounded-xl px-4 text-base font-black text-white focus:outline-none focus:border-cyan-500 transition-colors" />
+
+          <div className="rounded-3xl border border-white/5 bg-slate-900/40 p-6 space-y-4 backdrop-blur-3xl">
+            <h3 className="text-xs font-black uppercase tracking-widest text-slate-500">Quick Actions</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <button 
+                onClick={() => setTab("deposit")}
+                className={`flex flex-col items-center gap-3 p-4 rounded-2xl border transition-all ${tab === "deposit" ? "bg-cyan-500/10 border-cyan-500/30 text-cyan-400" : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10"}`}
+              >
+                <ArrowUpRight className="w-5 h-5" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">Deposit</span>
+              </button>
+              <button 
+                onClick={() => setTab("withdraw")}
+                className={`flex flex-col items-center gap-3 p-4 rounded-2xl border transition-all ${tab === "withdraw" ? "bg-pink-500/10 border-pink-500/30 text-pink-400" : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10"}`}
+              >
+                <ArrowDownLeft className="w-5 h-5" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">Withdraw</span>
+              </button>
             </div>
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-slate-500 uppercase">Your UPI ID</label>
-              <input type="text" value={upiId} onChange={e => setUpiId(e.target.value)}
-                placeholder="yourname@upi"
-                className="w-full h-11 bg-slate-800 border border-slate-700 rounded-xl px-4 text-sm font-bold text-white focus:outline-none focus:border-cyan-500 transition-colors" />
-            </div>
-            <button onClick={handleWithdrawSubmit} disabled={loading || amountNum < MIN_WITHDRAW || !upiId}
-              className={`w-full h-12 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-[0.98] ${loading || amountNum < MIN_WITHDRAW || !upiId ? "bg-slate-800 text-slate-600 cursor-not-allowed" : "bg-pink-600 hover:bg-pink-500 text-white"}`}>
-              {loading ? "Submitting..." : `Withdraw ₹${amountNum > 0 ? amountNum.toLocaleString() : ""}`}
+            <button 
+              onClick={() => setTab("history")}
+              className={`w-full flex items-center justify-between p-4 rounded-2xl border transition-all ${tab === "history" ? "bg-indigo-500/10 border-indigo-500/30 text-indigo-400" : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10"}`}
+            >
+              <div className="flex items-center gap-3">
+                <History className="w-5 h-5" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">History</span>
+              </div>
+              <ChevronLeft className="w-4 h-4 rotate-180" />
             </button>
           </div>
         </div>
-      )}
 
-      {tab === "withdraw" && submitted && (
-        <div className="rounded-2xl border border-green-500/20 bg-green-500/5 p-6 text-center space-y-3">
-          <div className="text-4xl">✅</div>
-          <p className="font-black text-white">Withdrawal Request Submitted!</p>
-          <p className="text-sm text-slate-400">₹{amountNum.toLocaleString()} will be sent to <span className="text-white font-bold">{upiId}</span></p>
-          <p className="text-xs text-slate-500">Processing within 24 hours.</p>
-          <button onClick={reset} className="mt-2 px-6 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-black text-white uppercase tracking-wider transition-all">
-            New Request
-          </button>
-        </div>
-      )}
+        {/* Right Column: Dynamic Form */}
+        <div className="lg:col-span-7">
+          <div className="rounded-[2.5rem] border border-white/5 bg-slate-900/40 p-8 shadow-2xl backdrop-blur-3xl h-full min-h-[500px]">
+            
+            {successMessage && (
+              <div className="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
+                <CheckCircle2 className="w-5 h-5 shrink-0" />
+                <p className="text-xs font-semibold">{successMessage}</p>
+                <button onClick={() => setSuccessMessage("")} className="ml-auto text-emerald-300 hover:text-white">✕</button>
+              </div>
+            )}
 
-      {/* HISTORY */}
-      {tab === "history" && (
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-4">
-          <h2 className="text-sm font-black text-white uppercase tracking-wider">Transaction History</h2>
-          <div className="text-center py-10 space-y-2">
-            <p className="text-3xl">📋</p>
-            <p className="text-sm text-slate-400">No transactions yet</p>
-            <p className="text-xs text-slate-600">Your deposits and withdrawals will appear here</p>
+            {errorMessage && (
+              <div className="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
+                <AlertCircle className="w-5 h-5 shrink-0" />
+                <p className="text-xs font-semibold">{errorMessage}</p>
+                <button onClick={() => setErrorMessage("")} className="ml-auto text-red-300 hover:text-white">✕</button>
+              </div>
+            )}
+
+            {tab === "deposit" && (
+              <div className="space-y-8 animate-in fade-in duration-500">
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-black tracking-tight text-white uppercase italic">Deposit Funds</h2>
+                  <p className="text-sm text-slate-500 font-medium">Add balance to start trading with 30-min verification.</p>
+                </div>
+
+                {step === 1 ? (
+                  <form onSubmit={(e) => { e.preventDefault(); if (parseFloat(amount) >= MIN_DEPOSIT) setStep(2); }} className="space-y-6">
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Recharge Amount (₹)</label>
+                      <div className="relative">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl font-bold text-slate-600">₹</span>
+                        <input 
+                          type="number" 
+                          value={amount} 
+                          onChange={(e) => setAmount(e.target.value)} 
+                          placeholder={`${MIN_DEPOSIT}+`}
+                          className="w-full h-16 bg-white/5 border border-white/5 rounded-2xl pl-10 pr-6 text-2xl font-black text-white focus:outline-none focus:border-cyan-500/50 focus:bg-white/10 transition-all placeholder:text-slate-800"
+                          required
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        {[500, 1000, 5000, 10000].map(v => (
+                          <button 
+                            key={v} 
+                            type="button" 
+                            onClick={() => setAmount(String(v))}
+                            className="flex-1 h-10 rounded-xl bg-white/5 border border-white/5 text-[10px] font-bold text-slate-400 hover:bg-white/10 hover:text-white transition-all"
+                          >
+                            ₹{v.toLocaleString()}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <button 
+                      type="submit"
+                      disabled={parseFloat(amount) < MIN_DEPOSIT}
+                      className="w-full h-14 bg-white text-slate-950 font-black rounded-2xl shadow-xl shadow-white/10 hover:bg-slate-200 active:scale-[0.98] transition-all disabled:opacity-20 flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
+                    >
+                      Next Step <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </form>
+                ) : (
+                  <form onSubmit={handleDepositSubmit} className="space-y-6">
+                    <button type="button" onClick={() => setStep(1)} className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-white transition-colors mb-2">
+                      <ChevronLeft className="w-4 h-4" /> Back to amount
+                    </button>
+                    
+                    <div className="p-6 rounded-3xl bg-white/5 border border-white/5 space-y-4">
+                      <div className="flex justify-between items-center pb-4 border-b border-white/5">
+                        <div className="space-y-1">
+                          <p className="text-[10px] font-black text-slate-500 uppercase tracking-wider">Transfer Target</p>
+                          <p className="text-lg font-black text-cyan-400">{PLATFORM_UPI}</p>
+                        </div>
+                        <CopyButton text={PLATFORM_UPI} />
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <div className="space-y-1">
+                          <p className="text-[10px] font-black text-slate-500 uppercase tracking-wider">Required Amount</p>
+                          <p className="text-lg font-black text-white">₹{parseFloat(amount).toLocaleString()}</p>
+                        </div>
+                        <CopyButton text={amount} />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4 pt-2">
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">UTR / Transaction ID (12 Digits)</label>
+                        <input 
+                          type="text" 
+                          value={utrNumber} 
+                          onChange={(e) => setUtrNumber(e.target.value.replace(/\D/g, '').slice(0, 12))}
+                          placeholder="0000 0000 0000"
+                          className="w-full h-14 bg-white/5 border border-white/5 rounded-2xl px-6 text-sm font-bold text-white focus:outline-none focus:border-cyan-500/50 focus:bg-white/10 transition-all font-mono tracking-[0.2em]"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Your Sender UPI ID</label>
+                        <input 
+                          type="text" 
+                          value={upiId} 
+                          onChange={(e) => setUpiId(e.target.value)}
+                          placeholder="username@bank"
+                          className="w-full h-14 bg-white/5 border border-white/5 rounded-2xl px-6 text-sm font-bold text-white focus:outline-none focus:border-cyan-500/50 focus:bg-white/10 transition-all"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <button 
+                      type="submit"
+                      disabled={isSubmitting || utrNumber.length < 12}
+                      className="w-full h-14 bg-cyan-500 text-white font-black rounded-2xl shadow-xl shadow-cyan-900/40 hover:bg-cyan-400 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
+                    >
+                      {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : "Verify Payment"}
+                    </button>
+                  </form>
+                )}
+              </div>
+            )}
+
+            {tab === "withdraw" && (
+              <div className="space-y-8 animate-in fade-in duration-500">
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-black tracking-tight text-white uppercase italic">Withdraw Funds</h2>
+                  <p className="text-sm text-slate-500 font-medium">Funds will reach your UPI ID in 24 hours.</p>
+                </div>
+
+                <form onSubmit={handleWithdrawSubmit} className="space-y-6">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Withdrawal Amount (₹)</label>
+                    <div className="relative">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl font-bold text-slate-600">₹</span>
+                      <input 
+                        type="number" 
+                        value={amount} 
+                        onChange={(e) => setAmount(e.target.value)} 
+                        placeholder={`${MIN_WITHDRAW}+`}
+                        className="w-full h-16 bg-white/5 border border-white/5 rounded-2xl pl-10 pr-6 text-2xl font-black text-white focus:outline-none focus:border-pink-500/50 focus:bg-white/10 transition-all placeholder:text-slate-800"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Your Receiver UPI ID</label>
+                    <input 
+                      type="text" 
+                      value={upiId} 
+                      onChange={(e) => setUpiId(e.target.value)}
+                      placeholder="username@bank"
+                      className="w-full h-14 bg-white/5 border border-white/5 rounded-2xl px-6 text-sm font-bold text-white focus:outline-none focus:border-pink-500/50 focus:bg-white/10 transition-all"
+                      required
+                    />
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/10 flex gap-3 text-amber-500/80">
+                    <AlertCircle className="w-5 h-5 shrink-0" />
+                    <p className="text-[10px] font-semibold leading-relaxed uppercase">
+                      Ensure UPI ID is correct. SBE is not responsible for funds sent to incorrect accounts. 24h cooldown applies.
+                    </p>
+                  </div>
+
+                  <button 
+                    type="submit"
+                    disabled={isSubmitting || parseFloat(amount) < MIN_WITHDRAW || !upiId}
+                    className="w-full h-14 bg-pink-600 text-white font-black rounded-2xl shadow-xl shadow-pink-900/40 hover:bg-pink-500 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
+                  >
+                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : `Withdraw ₹${parseFloat(amount || "0").toLocaleString()}`}
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {tab === "history" && (
+              <div className="space-y-8 animate-in fade-in duration-500 h-full flex flex-col">
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-black tracking-tight text-white uppercase italic">Ledger History</h2>
+                  <p className="text-sm text-slate-500 font-medium">Recently updated transactions activity logs.</p>
+                </div>
+
+                <div className="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+                  {[...history.deposits, ...history.withdrawals]
+                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .map((item, idx) => {
+                    const isDeposit = 'utrNumber' in item;
+                    return (
+                      <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-between group hover:bg-white/10 transition-all">
+                        <div className="flex items-center gap-4">
+                          <div className={`p-3 rounded-xl ${isDeposit ? "bg-emerald-500/10 text-emerald-400" : "bg-pink-500/10 text-pink-400"}`}>
+                            {isDeposit ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownLeft className="w-4 h-4" />}
+                          </div>
+                          <div>
+                            <p className="text-xs font-black text-white uppercase tracking-wider">{isDeposit ? "Deposit" : "Withdrawal"}</p>
+                            <p className="text-[10px] text-slate-500 font-bold">{new Date(item.createdAt).toLocaleString()}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className={`text-sm font-black ${isDeposit ? "text-emerald-400" : "text-pink-400"}`}>
+                            {isDeposit ? "+" : "-"} ₹ {parseFloat(item.amount).toLocaleString()}
+                          </p>
+                          <div className="flex justify-end pt-1">
+                            <TransactionStatus status={item.status} />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {(history.deposits.length + history.withdrawals.length) === 0 && (
+                    <div className="flex flex-col items-center justify-center h-full text-slate-700 opacity-20">
+                      <History className="w-16 h-16 mb-4" />
+                      <p className="font-black uppercase tracking-[0.2em]">No Activity Records</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            
           </div>
         </div>
-      )}
 
-      {/* Info */}
-      <div className="rounded-xl border border-slate-800/50 bg-slate-900/30 p-4 space-y-2">
-        <p className="text-[10px] font-black text-slate-500 uppercase tracking-wider">Payment Info</p>
-        <div className="space-y-1 text-[10px] text-slate-500">
-          <p>• Deposits credited within 30 minutes after UTR verification</p>
-          <p>• Withdrawals processed within 24 hours</p>
-          <p>• Minimum deposit: ₹{MIN_DEPOSIT} | Minimum withdrawal: ₹{MIN_WITHDRAW}</p>
-          <p>• For support: <Link href="/" className="text-cyan-400 hover:underline">Contact Admin</Link></p>
-        </div>
       </div>
     </div>
   );
 }
+
+function TransactionStatus({ status }: { status: string }) {
+  const styles = {
+    pending: "text-amber-500 bg-amber-500/10",
+    approved: "text-emerald-500 bg-emerald-500/10",
+    completed: "text-emerald-500 bg-emerald-500/10",
+    rejected: "text-red-500 bg-red-500/10",
+  }[status] || "text-slate-500 bg-white/5";
+
+  return (
+    <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${styles}`}>
+      {status}
+    </span>
+  );
+}
+
+const ArrowRight = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+);

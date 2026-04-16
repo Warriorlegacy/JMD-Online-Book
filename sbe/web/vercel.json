@@ -3,10 +3,10 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "regions": ["cle1"],
+  "regions": ["mum1"],
   "env": {
-    "NEXT_PUBLIC_API_URL": "https://jmd-online-book.onrender.com",
-    "BACKEND_URL": "https://jmd-online-book.onrender.com"
+    "NEXT_PUBLIC_API_URL": "${BACKEND_URL}",
+    "BACKEND_URL": "${BACKEND_URL}"
   },
   "headers": [
     {
