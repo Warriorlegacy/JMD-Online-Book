@@ -17,7 +17,7 @@ export function useSocket() {
 
   const connect = useCallback(() => {
     if (!mountedRef.current) return;
-    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:4000/ws";
+    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "wss://jmd-online-book.onrender.com/ws";
 
     try {
       const socket = new WebSocket(wsUrl);

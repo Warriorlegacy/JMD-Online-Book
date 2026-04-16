@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:4000";
+const BACKEND_URL = process.env.BACKEND_URL || "https://jmd-online-book.onrender.com";
 
 async function proxyRequest(request: NextRequest) {
   const url = new URL(request.url);
