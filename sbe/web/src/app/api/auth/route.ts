@@ -29,7 +29,7 @@ async function proxyRequest(request: NextRequest, endpoint: string) {
     });
   } catch (err: any) {
     console.error(`[Proxy Error] ${targetUrl}:`, err);
-    return NextResponse.json({ error: "Backend unavailable" }, { status: 503 });
+    return NextResponse.json({ error: "Backend unavailable", details: err.message, url: targetUrl }, { status: 503 });
   }
 }
 
