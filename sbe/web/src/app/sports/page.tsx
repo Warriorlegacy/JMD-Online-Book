@@ -351,7 +351,7 @@ export default function SportsPage() {
                                disabled={!lvl.price || lvl.price === "—"}
                                className={`h-10 w-full flex flex-col items-center justify-center rounded-lg border transition-all ${
                                  lvl.price && lvl.price !== "—"
-                                   ? "bg-cyan-500/10 border-cyan-500/20 text-cyan-300 hover:bg-cyan-500/20"
+                                   ? "bg-blue-500/10 border-blue-500/20 text-blue-300 hover:bg-blue-500/20"
                                    : "bg-white/5 border-white/5 text-slate-600 cursor-not-allowed"
                                }`}
                              >

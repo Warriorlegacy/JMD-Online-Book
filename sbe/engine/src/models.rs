@@ -20,6 +20,7 @@ pub struct Order {
     pub id: Uuid,
     pub user_id: Uuid,
     pub match_id: Uuid,
+    pub selection_id: String,
     pub side: Side,
     pub order_type: OrderType,
     pub price: Decimal,
@@ -31,6 +32,7 @@ pub struct Order {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Trade {
     pub match_id: Uuid,
+    pub selection_id: String,
     pub backer_id: Uuid,
     pub layer_id: Uuid,
     pub price: Decimal,
@@ -44,6 +46,7 @@ impl Order {
     pub fn new(
         user_id: Uuid,
         match_id: Uuid,
+        selection_id: String,
         side: Side,
         order_type: OrderType,
         price: Decimal,
@@ -53,6 +56,7 @@ impl Order {
             id: Uuid::new_v4(),
             user_id,
             match_id,
+            selection_id,
             side,
             order_type,
             price,
@@ -61,6 +65,7 @@ impl Order {
             timestamp: Utc::now(),
         }
     }
+
 
     pub fn is_filled(&self) -> bool {
         self.remaining_stake.is_zero()

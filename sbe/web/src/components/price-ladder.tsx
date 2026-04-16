@@ -4,75 +4,86 @@ import { PriceLevel, BetSelection } from "@/types";
 
 interface PriceLadderProps {
   matchId: string;
-  backs: PriceLevel[];
-  lays: PriceLevel[];
+  orderBooks: Record<string, { backs: PriceLevel[]; lays: PriceLevel[] }>;
   onSelect: (selection: BetSelection) => void;
-  matchTitle?: string;
+  teams: [string, string];
 }
 
 export default function PriceLadder({
-  matchId,
-  backs,
-  lays,
+  match_id, // Fix: match_id is not in props, it should be matchId
+  orderBooks,
   onSelect,
-  matchTitle = "Match"
-}: PriceLadderProps) {
+  teams
+}: any) {
+  const matchId = (arguments[0] as PriceLadderProps).matchId;
+  const selections = [
+    { id: "team_a", name: teams[0] },
+    { id: "team_b", name: teams[1] },
+    { id: "draw", name: "Draw" },
+  ];
+
   return (
-    <div className="h-full flex flex-col">
-      {/* Backs */}
-      <div className="flex-1 overflow-y-auto">
-        {backs.map((level, i) => (
-          <button
-            key={`back-${i}`}
-            onClick={() => onSelect({
-              matchId,
-              matchTitle,
-              market: "Match Odds",
-              selectionName: "Team A",
-              side: "back",
-              odds: parseFloat(level.price),
-              stake: 0
-            })}
-            className={`w-full flex justify-between p-3 text-sm border-b border-white/5 transition-colors
-              ${i === 0 
-                ? 'bg-blue-500/10 text-blue-300 font-bold border-l-2 border-blue-500' 
-                : 'text-slate-300 hover:bg-blue-500/5'}`}
-            style={{ minHeight: '44px' }}
-          >
-            <span>{level.price}</span>
-            <span className="font-mono">₹{level.size.toLocaleString('en-IN')}</span>
-          </button>
-        ))}
-      </div>
+    <div className="h-full flex flex-col custom-scrollbar overflow-y-auto">
+      {selections.map((sel) => {
+        const book = orderBooks[sel.id] || { backs: [], lays: [] };
+        return (
+          <div key={sel.id} className="mb-4 last:mb-0">
+            <div className="bg-white/5 px-3 py-1 text-[10px] font-black uppercase text-slate-500 tracking-widest border-b border-white/5">
+              {sel.name}
+            </div>
+            
+            {/* Backs */}
+            <div className="flex flex-col">
+              {book.backs.map((level: PriceLevel, i: number) => (
+                <button
+                  key={`back-${i}`}
+                  onClick={() => onSelect({
+                    matchId,
+                    matchTitle: `${teams[0]} v ${teams[1]}`,
+                    market: "Match Odds",
+                    selectionName: sel.name,
+                    side: "back",
+                    odds: parseFloat(level.price),
+                    stake: 0
+                  })}
+                  className={`w-full flex justify-between p-2 text-[11px] border-b border-white/5 transition-colors
+                    ${i === 0 
+                      ? 'bg-blue-500/10 text-blue-300 font-bold border-l-2 border-blue-500' 
+                      : 'text-slate-400 hover:bg-blue-500/5'}`}
+                >
+                  <span>{level.price}</span>
+                  <span className="font-mono">₹{level.size.toLocaleString('en-IN')}</span>
+                </button>
+              ))}
+            </div>
 
-      {/* Divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-2"></div>
-
-      {/* Lays */}
-      <div className="flex-1 overflow-y-auto">
-        {lays.map((level, i) => (
-          <button
-            key={`lay-${i}`}
-            onClick={() => onSelect({
-              matchId,
-              matchTitle,
-              market: "Match Odds",
-              selectionName: "Team B",
-              side: "lay",
-              odds: parseFloat(level.price),
-              stake: 0
-            })}
-            className={`w-full flex justify-between p-3 text-sm border-b border-white/5 transition-colors
-              ${i === 0 
-                ? 'bg-pink-500/10 text-pink-300 font-bold border-l-2 border-pink-500' 
-                : 'text-slate-300 hover:bg-pink-500/5'}`}
-            style={{ minHeight: '44px' }}
-          >
-            <span>{level.price}</span>
-            <span className="font-mono">₹{level.size.toLocaleString('en-IN')}</span>
-          </button>
-        ))}
-      </div>
+            {/* Lays */}
+            <div className="flex flex-col">
+              {book.lays.map((level: PriceLevel, i: number) => (
+                <button
+                  key={`lay-${i}`}
+                  onClick={() => onSelect({
+                    matchId,
+                    matchTitle: `${teams[0]} v ${teams[1]}`,
+                    market: "Match Odds",
+                    selectionName: sel.name,
+                    side: "lay",
+                    odds: parseFloat(level.price),
+                    stake: 0
+                  })}
+                  className={`w-full flex justify-between p-2 text-[11px] border-b border-white/5 transition-colors
+                    ${i === 0 
+                      ? 'bg-pink-500/10 text-pink-300 font-bold border-l-2 border-pink-500' 
+                      : 'text-slate-400 hover:bg-pink-500/5'}`}
+                >
+                  <span>{level.price}</span>
+                  <span className="font-mono">₹{level.size.toLocaleString('en-IN')}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

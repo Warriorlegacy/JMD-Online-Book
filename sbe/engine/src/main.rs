@@ -17,22 +17,24 @@ fn main() -> std::io::Result<()> {
         let input = line?;
         if input.trim().is_empty() { continue; }
 
-        // Protocol: match_id|user_id|side|price|stake
+        // Protocol: match_id|selection_id|user_id|side|price|stake
         let parts: Vec<&str> = input.split('|').collect();
-        if parts.len() < 5 {
+        if parts.len() < 6 {
             eprintln!("Invalid command: {}", input);
             continue;
         }
 
         let match_id = Uuid::from_str(parts[0]).unwrap_or_default();
-        let user_id = Uuid::from_str(parts[1]).unwrap_or_default();
-        let side = if parts[2] == "back" { Side::Back } else { Side::Lay };
-        let price = Decimal::from_str(parts[3]).unwrap_or_default();
-        let stake = Decimal::from_str(parts[4]).unwrap_or_default();
+        let selection_id = parts[1].to_string();
+        let user_id = Uuid::from_str(parts[2]).unwrap_or_default();
+        let side = if parts[3] == "back" { Side::Back } else { Side::Lay };
+        let price = Decimal::from_str(parts[4]).unwrap_or_default();
+        let stake = Decimal::from_str(parts[5]).unwrap_or_default();
 
         let order = Order::new(
             user_id,
             match_id,
+            selection_id.clone(),
             side,
             OrderType::Limit,
             price,
@@ -41,8 +43,8 @@ fn main() -> std::io::Result<()> {
 
         let trades = engine.process_order(order);
         
-        // Also get snapshot for the matched match
-        let snapshot = if let Some(book) = engine.books.get(&match_id) {
+        // Also get snapshot for the matched selection
+        let snapshot = if let Some(book) = engine.books.get(&(match_id, selection_id)) {
             book.snapshot()
         } else {
             serde_json::json!({})

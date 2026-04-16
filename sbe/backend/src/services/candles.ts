@@ -5,6 +5,7 @@ import { eq, and, sql } from "drizzle-orm";
 
 interface Trade {
   match_id: string;
+  selection_id: string;
   price: number;
   size: number;
   timestamp: string;
@@ -21,6 +22,7 @@ export class CandleService {
       for (const event of events) {
         this.processTrade({
           match_id: matchId,
+          selection_id: event.selection_id,
           price: event.price,
           size: event.size,
           timestamp: event.timestamp || new Date().toISOString()
@@ -31,6 +33,7 @@ export class CandleService {
 
   private static async processTrade(trade: Trade) {
     const matchId = trade.match_id;
+    const selectionId = trade.selection_id || "team_a";
     const price = trade.price;
     const size = trade.size;
     
@@ -39,12 +42,13 @@ export class CandleService {
     candleTime.setSeconds(0, 0);
     const timestamp = candleTime.toISOString();
 
-    const candleKey = `${matchId}_${timestamp}`;
+    const candleKey = `${matchId}_${selectionId}_${timestamp}`;
     let candle = this.currentCandles.get(candleKey);
 
     if (!candle) {
       candle = {
         matchId,
+        selectionId,
         interval: "1m",
         open: price,
         high: price,
@@ -61,8 +65,7 @@ export class CandleService {
       candle.volume += size;
     }
 
-    // Upsert to DB periodically or on new trades? 
-    // For high frequency, we should throttle. For now, we do it simplified.
+    // Upsert to DB periodically or on new trades
     await this.persistCandle(candle);
     
     // Broadcast the updated candle to the frontend
@@ -78,6 +81,7 @@ export class CandleService {
         .where(
           and(
             eq(marketHistory.matchId, candle.matchId),
+            eq(marketHistory.selectionId, candle.selectionId),
             eq(marketHistory.timestamp, candle.timestamp)
           )
         )

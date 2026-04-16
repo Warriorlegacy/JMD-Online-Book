@@ -6,14 +6,16 @@ use chrono::Utc;
 
 pub struct OrderBook {
     pub match_id: Uuid,
+    pub selection_id: String,
     pub backs: BTreeMap<Decimal, VecDeque<Order>>, // Price -> Orders (Sorted Desc)
     pub lays: BTreeMap<Decimal, VecDeque<Order>>,  // Price -> Orders (Sorted Asc)
 }
 
 impl OrderBook {
-    pub fn new(match_id: Uuid) -> Self {
+    pub fn new(match_id: Uuid, selection_id: String) -> Self {
         Self {
             match_id,
+            selection_id,
             backs: BTreeMap::new(),
             lays: BTreeMap::new(),
         }
@@ -50,6 +52,7 @@ impl OrderBook {
                                 
                                 trades.push(Trade {
                                     match_id: self.match_id,
+                                    selection_id: self.selection_id.clone(),
                                     backer_id: order.user_id,
                                     layer_id: lay_order.user_id,
                                     price,
@@ -101,6 +104,7 @@ impl OrderBook {
                                 
                                 trades.push(Trade {
                                     match_id: self.match_id,
+                                    selection_id: self.selection_id.clone(),
                                     backer_id: back_order.user_id,
                                     layer_id: order.user_id,
                                     price,

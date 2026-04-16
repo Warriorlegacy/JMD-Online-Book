@@ -186,11 +186,18 @@ export default async function adminRoutes(fastify: FastifyInstance) {
   // Get match history (candlestick data)
   fastify.get("/matches/:id/history", async (request, reply) => {
     const { id } = request.params as { id: string };
+    const { selectionId } = request.query as { selectionId?: string };
+    
     try {
       const history = await db
         .select()
         .from(marketHistory)
-        .where(eq(marketHistory.matchId, id))
+        .where(
+          and(
+            eq(marketHistory.matchId, id),
+            eq(marketHistory.selectionId, selectionId || "team_a")
+          )
+        )
         .orderBy(asc(marketHistory.timestamp))
         .limit(500);
       return history.map(h => ({

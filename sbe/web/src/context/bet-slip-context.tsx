@@ -79,6 +79,7 @@ export const BetSlipProvider: React.FC<{ children: React.ReactNode }> = ({ child
             body: JSON.stringify({
                 userId: user?.id,
                 matchId: selection.matchId,
+                selectionId: selection.selectionId,
                 type: selection.side,
                 price: odds.toString(),
                 stake: stake,

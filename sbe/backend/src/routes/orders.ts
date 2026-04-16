@@ -8,6 +8,7 @@ import { z } from "zod";
 const placeOrderSchema = z.object({
   userId: z.string().uuid(),
   matchId: z.string().uuid(),
+  selectionId: z.string(), // e.g. "team_a", "team_b", "draw"
   type: z.enum(["back", "lay"]),
   price: z.number().positive(), // odds (e.g. 2.50)
   stake: z.number().positive(), // in currency (e.g. 10.00)
@@ -25,6 +26,7 @@ export default async function orderRoutes(fastify: FastifyInstance) {
       const result = await OrderOrchestrator.placeOrder(
         data.userId,
         data.matchId,
+        data.selectionId,
         data.type,
         priceCents,
         stakeCents,

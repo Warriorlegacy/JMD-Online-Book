@@ -1,15 +1,16 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { createChart, IChartApi, ISeriesApi, ColorType, CandlestickSeries, CandlestickData } from 'lightweight-charts';
+import { createChart, IChartApi, ISeriesApi, ColorType, CandlestickSeries } from 'lightweight-charts';
 import { useSocket } from "@/context/socket-context";
 import { Candle } from "@/types";
 
 interface MarketChartProps {
   matchId: string;
+  selectionId?: string; // e.g. "team_a"
 }
 
-export function MarketChart({ matchId }: MarketChartProps) {
+export function MarketChart({ matchId, selectionId = "team_a" }: MarketChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const candlestickSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
@@ -43,33 +44,32 @@ export function MarketChart({ matchId }: MarketChartProps) {
     window.addEventListener('resize', handleResize);
 
     // Fetch initial history
-    fetch(`/api/matches/${matchId}/history`)
+    fetch(`/api/matches/${matchId}/history?selectionId=${selectionId}`)
       .then(res => res.json())
-      .then((candles: Candle[]) => {
+      .then((candles: any[]) => {
+        if (!Array.isArray(candles)) return;
         const formatted = candles.map(c => ({
-          time: Math.floor(c.time / 1000) as import('lightweight-charts').Time,
-          open: c.open,
-          high: c.high,
-          low: c.low,
-          close: c.close,
+          time: Math.floor(new Date(c.time || c.timestamp).getTime() / 1000) as import('lightweight-charts').Time,
+          open: parseFloat(c.open),
+          high: parseFloat(c.high),
+          low: parseFloat(c.low),
+          close: parseFloat(c.close),
         }));
         candlestickSeriesRef.current?.setData(formatted);
       });
 
     // WebSocket subscription
     subscribe(matchId);
-    interface CandleUpdate {
-      room: string;
-      candle: Candle;
-    }
-    const unsubscribe = on<CandleUpdate>("candle_update", (data) => {
-      if (data.room === matchId) {
+    
+    const unsubscribe = on<any>("candle_update", (data) => {
+      const candle = data.candle || data;
+      if (candle.matchId === matchId && (candle.selectionId === selectionId || !candle.selectionId)) {
         candlestickSeriesRef.current?.update({
-          time: Math.floor(data.candle.time / 1000) as import('lightweight-charts').Time,
-          open: data.candle.open,
-          high: data.candle.high,
-          low: data.candle.low,
-          close: data.candle.close,
+          time: Math.floor(new Date(candle.timestamp || candle.time).getTime() / 1000) as import('lightweight-charts').Time,
+          open: parseFloat(candle.open),
+          high: parseFloat(candle.high),
+          low: parseFloat(candle.low),
+          close: parseFloat(candle.close),
         });
       }
     });
@@ -79,7 +79,7 @@ export function MarketChart({ matchId }: MarketChartProps) {
       unsubscribe();
       chart.remove();
     };
-  }, [matchId, subscribe, on]);
+  }, [matchId, selectionId, subscribe, on]);
 
   return (
     <div className="rounded-2xl border border-white/5 bg-slate-900/40 overflow-hidden">

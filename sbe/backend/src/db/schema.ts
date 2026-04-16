@@ -50,6 +50,7 @@ export const orders = pgTable("orders", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id").references(() => users.id).notNull(),
   matchID: uuid("match_id").references(() => matches.id).notNull(),
+  selectionId: text("selection_id"), // e.g. "team_a", "team_b", "draw"
   type: orderTypeEnum("type").notNull(),
   price: decimal("price", { precision: 10, scale: 4 }).notNull(),
   stake: decimal("stake", { precision: 20, scale: 8 }).notNull(),
@@ -71,6 +72,7 @@ export const ledgerEntries = pgTable("ledger_entries", {
 export const trades = pgTable("trades", {
   id: uuid("id").primaryKey().defaultRandom(),
   matchID: uuid("match_id").references(() => matches.id).notNull(),
+  selectionId: text("selection_id"), // e.g. "team_a", "team_b", "draw"
   backerId: uuid("backer_id").references(() => users.id).notNull(),
   layerId: uuid("layer_id").references(() => users.id).notNull(),
   price: decimal("price", { precision: 10, scale: 4 }).notNull(),
@@ -82,6 +84,7 @@ export const trades = pgTable("trades", {
 export const marketHistory = pgTable("market_history", {
   id: uuid("id").primaryKey().defaultRandom(),
   matchId: uuid("match_id").references(() => matches.id).notNull(),
+  selectionId: text("selection_id"), // e.g. "team_a", "team_b", "draw"
   interval: varchar("interval", { length: 10 }).notNull(),
   open: decimal("open", { precision: 10, scale: 4 }).notNull(),
   high: decimal("high", { precision: 10, scale: 4 }).notNull(),

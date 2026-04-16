@@ -115,7 +115,7 @@ export default function BetSlip() {
       {/* Background flare */}
       <div className={cn(
         "absolute -top-24 -right-24 w-48 h-48 rounded-full blur-[80px] opacity-20 transition-colors duration-1000",
-        side === "back" ? "bg-cyan-500" : "bg-pink-500"
+        side === "back" ? "bg-blue-600" : "bg-pink-500"
       )} />
 
       <div className="flex flex-col p-4 md:p-6 pb-safe md:pb-6 gap-4 md:gap-6 relative z-10 flex-1">
@@ -124,7 +124,7 @@ export default function BetSlip() {
           <div className="flex items-center gap-2 md:gap-3">
             <div className={cn(
               "p-1.5 md:p-2 rounded-xl",
-              side === "back" ? "bg-cyan-500/10 text-cyan-400" : "bg-pink-500/10 text-pink-400"
+              side === "back" ? "bg-blue-600/10 text-blue-400" : "bg-pink-500/10 text-pink-400"
             )}>
               <Zap className="w-4 h-4 md:w-5 md:h-5" />
             </div>
@@ -142,7 +142,7 @@ export default function BetSlip() {
         {/* Selection card */}
         <div className={cn(
           "p-3 md:p-4 rounded-2xl md:rounded-3xl border transition-all duration-500",
-          side === "back" ? "bg-cyan-500/5 border-cyan-500/20" : "bg-pink-500/5 border-pink-500/20"
+          side === "back" ? "bg-blue-600/5 border-blue-500/20" : "bg-pink-500/5 border-pink-500/20"
         )}>
           <div className="flex justify-between items-center mb-1">
             <span className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">
@@ -150,7 +150,7 @@ export default function BetSlip() {
             </span>
             <span className={cn(
               "text-[8px] md:text-[10px] font-black uppercase px-1.5 py-0.5 md:px-2 md:py-0.5 rounded-full",
-              side === "back" ? "bg-cyan-500 text-white" : "bg-pink-500 text-white"
+              side === "back" ? "bg-blue-600 text-white" : "bg-pink-500 text-white"
             )}>
               {side.toUpperCase()}
             </span>
@@ -173,7 +173,7 @@ export default function BetSlip() {
             onChange={(e) => updateOdds(parseFloat(e.target.value) || 0)}
             className={cn(
               "w-full bg-white/5 border rounded-2xl px-4 text-sm font-black text-white focus:outline-none transition-all",
-              side === "back" ? "focus:border-cyan-500/50" : "focus:border-pink-500/50",
+              side === "back" ? "focus:border-blue-500/50" : "focus:border-pink-500/50",
               "border-white/5",
               "h-12",
               "min-h-[44px]"
@@ -194,7 +194,7 @@ export default function BetSlip() {
               className={cn(
                 "w-full bg-white/5 border rounded-xl md:rounded-2xl px-3 md:px-4 text-sm md:text-sm font-black text-white focus:outline-none transition-all",
                 side === "back"
-                  ? "focus:border-cyan-500/50"
+                  ? "focus:border-blue-500/50"
                   : "focus:border-pink-500/50",
                 "border-white/5",
                 "h-11 md:h-12",
@@ -255,7 +255,7 @@ export default function BetSlip() {
               : success
               ? "bg-emerald-500 text-white"
               : side === "back"
-              ? "bg-cyan-500 text-white shadow-lg md:shadow-xl shadow-cyan-900/40"
+              ? "bg-blue-600 text-white shadow-lg md:shadow-xl shadow-blue-900/40"
               : "bg-pink-600 text-white shadow-lg md:shadow-xl shadow-pink-900/40"
           )}
         >

@@ -17,6 +17,7 @@ export function initPersistenceWorker(fastify: FastifyInstance) {
           await tx.insert(tradesTable).values({
             id: crypto.randomUUID(),
             matchID: matchId,
+            selectionId: event.selection_id,
             backerId: event.backer_id,
             layerId: event.layer_id,
             price: event.price.toString(),

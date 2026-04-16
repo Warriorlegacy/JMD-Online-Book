@@ -50,8 +50,8 @@ export class OrderEngineBridge {
   async processOrder(order: any): Promise<any> {
     return new Promise((resolve) => {
       this.responseQueue.push(resolve);
-      // Protocol: match_id|user_id|side|price|stake
-      const cmd = `${order.matchId}|${order.userId}|${order.side}|${order.price}|${order.stake}\n`;
+      // Protocol: match_id|selection_id|user_id|side|price|stake
+      const cmd = `${order.matchId}|${order.selectionId}|${order.userId}|${order.side}|${order.price}|${order.stake}\n`;
       this.process?.stdin?.write(cmd);
     });
   }
@@ -63,10 +63,6 @@ export class OrderBook {
   private lastSnapshot: any = { backs: [], lays: [] };
 
   async processOrder(order: any) {
-    // Convert cents/decimal if necessary, but here we assume the orchestrator sends clean units
-    // Orchestrator sends cents, Rust expects Decimal (so we should probably divide by 100 or handle in orchestrator)
-    // Actually, in Phase 2 I used Decimal directly. Let's assume Orchestrator sends formatted strings or we format here.
-    
     const result = await this.engine.processOrder({
       ...order,
       price: (order.price / 100).toFixed(2),

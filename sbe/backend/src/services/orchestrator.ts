@@ -9,6 +9,7 @@ import crypto from "crypto";
 interface Order {
   id: string;
   userId: string;
+  selectionId: string;
   type: "back" | "lay";
   price: number;
   stake: number;
@@ -18,16 +19,18 @@ interface Order {
 export class OrderOrchestrator {
   private static books = new Map<string, OrderBook>();
 
-  static getBook(matchId: string): OrderBook {
-    if (!this.books.has(matchId)) {
-      this.books.set(matchId, new OrderBook());
+  static getBook(matchId: string, selectionId: string): OrderBook {
+    const key = `${matchId}:${selectionId}`;
+    if (!this.books.has(key)) {
+      this.books.set(key, new OrderBook());
     }
-    return this.books.get(matchId)!;
+    return this.books.get(key)!;
   }
 
   static async placeOrder(
     userId: string,
     matchId: string,
+    selectionId: string,
     type: "back" | "lay",
     price: number, // In cents (e.g. 210 for 2.1)
     stake: number, // In cents
@@ -72,6 +75,7 @@ export class OrderOrchestrator {
       id: tempOrderId,
       userId,
       matchID: matchId,
+      selectionId,
       type,
       price: (price / 100).toFixed(2),
       stake: (stake / 100).toFixed(2),
@@ -79,10 +83,11 @@ export class OrderOrchestrator {
     }).returning();
 
     // 4. Process in Engine
-    const book = this.getBook(matchId);
+    const book = this.getBook(matchId, selectionId);
     const engineOrder: Order = {
       id: dbOrder.id,
       userId: dbOrder.userId,
+      selectionId: dbOrder.selectionId!,
       type: dbOrder.type as "back" | "lay",
       price: price,
       stake: stake,
@@ -94,6 +99,7 @@ export class OrderOrchestrator {
     // 5. Broadcast Updates via Matching Room
     ws.publishToRoom(matchId, "orderbook_update", {
       timestamp: Date.now(),
+      selectionId,
       snapshot: book.getSnapshot(),
     });
 

@@ -19,6 +19,7 @@ interface MatchState {
 
 interface OrderbookUpdate {
   room: string;
+  selectionId: string;
   snapshot: {
     backs: [string, number][];
     lays: [string, number][];
@@ -38,7 +39,7 @@ export function OddsGrid({ matchId }: { matchId: string }) {
   useEffect(() => {
     async function fetchMatch() {
       try {
-        const res = await fetch(`/api/matches/active`);
+        const res = await fetch(`/api/matches/${matchId}`);
         if (!res.ok) return;
         const data = await res.json();
         if (data && (data.teamA || data.team_a)) {
@@ -53,7 +54,8 @@ export function OddsGrid({ matchId }: { matchId: string }) {
     if (connected) subscribe(matchId);
     
     return on<OrderbookUpdate>("orderbook_update", (update) => {
-      if (update.room === matchId) {
+      // For the homepage grid, we show team_a's odds by default
+      if (update.room === matchId && (update.selectionId === "team_a" || !update.selectionId)) {
         setMatchData(prev => ({
           ...prev,
           backs: (update.snapshot.backs || []).map(([p, s]) => ({ price: p, size: s })),
@@ -75,12 +77,12 @@ export function OddsGrid({ matchId }: { matchId: string }) {
   const displayLays = validLays.slice(0, 3);
   while (displayLays.length < 3) displayLays.push({ price: "—", size: 0 });
 
-  const handleBetClick = (price: string, side: "back" | "lay", selectionName: string) => {
+  const handleBetClick = (price: string, side: "back" | "lay", selectionName: string, selectionId: string) => {
     setSelection({
       matchId,
       matchName: `${matchData.teams[0]} v ${matchData.teams[1]}`,
       marketName: "Match Odds",
-      selectionId: selectionName,
+      selectionId: selectionId,
       selectionName,
       odds: parseFloat(price),
       side
@@ -99,7 +101,7 @@ export function OddsGrid({ matchId }: { matchId: string }) {
       <div className="grid gap-4 border border-white/5 rounded-[2rem] bg-slate-900/40 p-2 overflow-hidden backdrop-blur-3xl shadow-2xl">
         <div className="hidden md:grid grid-cols-[1fr_repeat(6,80px)] gap-2 px-6 py-3 border-b border-white/5 text-[10px] font-black uppercase tracking-widest text-slate-500">
           <div>Match Selection</div>
-          <div className="text-center col-span-3 text-cyan-400 bg-cyan-400/5 py-1 rounded-lg">Back</div>
+          <div className="text-center col-span-3 text-blue-400 bg-blue-400/5 py-1 rounded-lg">Back</div>
           <div className="text-center col-span-3 text-pink-400 bg-pink-400/5 py-1 rounded-lg">Lay</div>
         </div>
 
@@ -107,7 +109,7 @@ export function OddsGrid({ matchId }: { matchId: string }) {
           <div className="flex flex-col gap-1 px-2">
             <div className="text-base md:text-sm font-black text-white">{matchData.teams[0]} v {matchData.teams[1]}</div>
             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
               Full Time Result
             </div>
           </div>
@@ -119,10 +121,10 @@ export function OddsGrid({ matchId }: { matchId: string }) {
                     return (
                        <button 
                          key={`back-${i}`}
-                         onClick={() => handleBetClick(level?.price || "1.01", "back", matchData.teams[0])}
-                         className="h-14 w-full flex flex-col items-center justify-center rounded-xl bg-cyan-500/10 border border-cyan-500/20 hover:bg-cyan-500 transition-all active:scale-95 group/btn overflow-hidden relative">
-                          <span className="text-xs font-black text-cyan-400 group-hover/btn:text-white transition-colors">{level.price}</span>
-                          <span className="text-[8px] font-bold text-cyan-600 group-hover/btn:text-cyan-100 transition-colors uppercase tracking-widest">
+                         onClick={() => handleBetClick(level?.price || "1.01", "back", matchData.teams[0], "team_a")}
+                         className="h-14 w-full flex flex-col items-center justify-center rounded-xl bg-blue-500/10 border border-blue-500/20 hover:bg-blue-600 transition-all active:scale-95 group/btn overflow-hidden relative">
+                          <span className="text-xs font-black text-blue-400 group-hover/btn:text-white transition-colors">{level.price}</span>
+                          <span className="text-[8px] font-bold text-blue-600 group-hover/btn:text-blue-100 transition-colors uppercase tracking-widest">
                             {level.price !== "—" ? `₹${(parseFloat(level.price) * 10).toFixed(0)}` : "₹0"}
                           </span>
                        </button>
@@ -136,7 +138,7 @@ export function OddsGrid({ matchId }: { matchId: string }) {
                     return (
                        <button 
                          key={`lay-${i}`} 
-                         onClick={() => handleBetClick(level?.price || "1.01", "lay", matchData.teams[0])}
+                         onClick={() => handleBetClick(level?.price || "1.01", "lay", matchData.teams[0], "team_a")}
                          className="h-14 w-full flex flex-col items-center justify-center rounded-xl bg-pink-500/10 border border-pink-500/20 hover:bg-pink-500 transition-all active:scale-95 group/btn overflow-hidden relative">
                           <span className="text-xs font-black text-pink-400 group-hover/btn:text-white transition-colors">{level.price}</span>
                           <span className="text-[8px] font-bold text-pink-600 group-hover/btn:text-pink-100 transition-colors uppercase tracking-widest">
@@ -152,4 +154,3 @@ export function OddsGrid({ matchId }: { matchId: string }) {
     </div>
   );
 }
-

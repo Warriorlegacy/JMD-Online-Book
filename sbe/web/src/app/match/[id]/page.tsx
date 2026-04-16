@@ -12,6 +12,7 @@ import { LiveScoreWidget } from "@/components/live-score-widget";
 
 interface OrderbookUpdate {
   room: string;
+  selectionId: string;
   snapshot: {
     backs: [string, number][];
     lays: [string, number][];
@@ -64,16 +65,13 @@ export default function MatchPage({ params }: { params: { id: string } }) {
 
   const [match, setMatch] = useState<Match | null>(null);
   const [loading, setLoading] = useState(true);
-  const [orderBook, setOrderBook] = useState<{ backs: PriceLevel[]; lays: PriceLevel[] }>({
-    backs: [],
-    lays: [],
-  });
+  const [orderBooks, setOrderBooks] = useState<Record<string, { backs: PriceLevel[]; lays: PriceLevel[] }>>({});
 
   // Fetch match data with polling
   useEffect(() => {
     let cancelled = false;
-    // Reset order book when match changes
-    setOrderBook({ backs: [], lays: [] });
+    // Reset order books when match changes
+    setOrderBooks({});
     setLoading(true);
     async function fetchMatch() {
       try {
@@ -103,10 +101,13 @@ export default function MatchPage({ params }: { params: { id: string } }) {
     subscribe(matchId);
     const unsubOrderbook = on<OrderbookUpdate>("orderbook_update", (data) => {
       if (data.room === matchId) {
-        setOrderBook({
-          backs: data.snapshot.backs.map(([p, s]) => ({ price: p, size: s })),
-          lays: data.snapshot.lays.map(([p, s]) => ({ price: p, size: s })),
-        });
+        setOrderBooks(prev => ({
+          ...prev,
+          [data.selectionId || "team_a"]: {
+            backs: data.snapshot.backs.map(([p, s]) => ({ price: p, size: s })),
+            lays: data.snapshot.lays.map(([p, s]) => ({ price: p, size: s })),
+          }
+        }));
       }
     });
     return () => {
@@ -129,7 +130,8 @@ export default function MatchPage({ params }: { params: { id: string } }) {
       matchId: sel.matchId,
       matchName: match ? `${match.teamA} v ${match.teamB}` : sel.matchTitle,
       marketName: "Match Odds",
-      selectionId: sel.selectionName,
+      selectionId: sel.selectionName === (match?.teamA || "Team A") ? "team_a" : 
+                   sel.selectionName === (match?.teamB || "Team B") ? "team_b" : "draw",
       selectionName: sel.selectionName,
       odds: sel.odds,
       side: sel.side,
@@ -174,9 +176,9 @@ export default function MatchPage({ params }: { params: { id: string } }) {
         {/* Order Book */}
         <OrderBook
           matchId={match.id}
-          backs={orderBook.backs}
-          lays={orderBook.lays}
+          orderBooks={orderBooks}
           matchTitle={`${match.teamA} v ${match.teamB}`}
+          teams={[match.teamA, match.teamB]}
           onSelect={handleSelect}
         />
 
@@ -186,12 +188,11 @@ export default function MatchPage({ params }: { params: { id: string } }) {
 
       {/* Sidebar: PriceLadder (4 cols on desktop) */}
       <div className="col-span-1 md:col-span-4 space-y-6 md:sticky md:top-24 h-fit">
-        <div className="h-64 rounded-2xl border border-white/5 bg-slate-900/40 overflow-hidden">
+        <div className="h-96 rounded-2xl border border-white/5 bg-slate-900/40 overflow-hidden">
           <PriceLadder
             matchId={match.id}
-            backs={orderBook.backs}
-            lays={orderBook.lays}
-            matchTitle={`${match.teamA} v ${match.teamB}`}
+            orderBooks={orderBooks}
+            teams={[match.teamA, match.teamB]}
             onSelect={handleSelect}
           />
         </div>
