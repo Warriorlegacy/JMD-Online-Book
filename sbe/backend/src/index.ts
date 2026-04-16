@@ -71,6 +71,7 @@ async function start() {
     await fastify.register(orderRoutes);
     await fastify.register(adminRoutes);
     await fastify.register(walletRoutes);
+    await fastify.register(announcementRoutes);
 
     // 3. Health Check
     fastify.get("/health", async () => {

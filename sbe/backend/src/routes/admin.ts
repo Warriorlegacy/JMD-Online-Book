@@ -95,13 +95,15 @@ export default async function adminRoutes(fastify: FastifyInstance) {
       return { 
         status: "connected", 
         database: "ok",
-        timestamp: (result.rows?.[0] as any)?.time || "unknown"
+        timestamp: (result.rows?.[0] as any)?.time || "unknown",
+        dbUrlPreview: process.env.DATABASE_URL ? `${process.env.DATABASE_URL.substring(0, 15)}...` : "missing"
       };
     } catch (error: any) {
       return { 
         status: "error", 
         message: error.message,
         code: error.code,
+        stack: error.stack,
         hint: "Check DATABASE_URL in Render environment variables"
       };
     }

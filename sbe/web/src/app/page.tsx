@@ -74,7 +74,7 @@ function MatchCard({ match, onClick }: { match: Match; onClick: () => void }) {
   return (
     <div
       onClick={onClick}
-      className="min-w-[200px] p-4 rounded-2xl border border-white/5 bg-slate-900/40 flex-shrink-0 cursor-pointer hover:border-cyan-500/50 hover:bg-slate-900/60 transition-colors"
+      className="min-w-[200px] p-4 rounded-2xl border border-white/5 bg-slate-900/40 shrink-0 cursor-pointer hover:border-cyan-500/50 hover:bg-slate-900/60 transition-colors"
     >
       <div className="flex items-center gap-2 mb-2">
         <span className="text-lg">{sportIcon}</span>
@@ -99,17 +99,17 @@ function MatchCard({ match, onClick }: { match: Match; onClick: () => void }) {
 
 function BannerCarousel() {
   return (
-    <section className="relative w-full h-48 md:h-64 rounded-[2rem] bg-gradient-to-br from-indigo-900 via-blue-900 to-indigo-950 overflow-x-auto flex flex-nowrap scrollbar-hide">
+    <section className="relative w-full h-48 md:h-64 rounded-[2rem] bg-linear-to-br from-indigo-900 via-blue-900 to-indigo-950 overflow-x-auto flex flex-nowrap scrollbar-hide">
       {BANNERS.map((banner) => (
         <div
           key={banner.id}
-          className="min-w-full flex-shrink-0 relative p-6 md:p-10 flex flex-col justify-end"
+          className="min-w-full shrink-0 relative p-6 md:p-10 flex flex-col justify-end"
         >
           <div
             className="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-30"
             style={{ backgroundImage: `url('${banner.image}')` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-transparent to-transparent" />
           <div className="relative z-10">
             <h2 className="text-2xl md:text-4xl font-black text-white tracking-tighter uppercase italic">
               {banner.title}

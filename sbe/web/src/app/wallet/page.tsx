@@ -148,7 +148,7 @@ export default function WalletPage() {
         
         {/* Left Column: Balance & Stats */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="relative group overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-indigo-600 to-blue-700 p-8 shadow-2xl shadow-blue-900/40">
+          <div className="relative group overflow-hidden rounded-[2.5rem] bg-linear-to-br from-indigo-600 to-blue-700 p-8 shadow-2xl shadow-blue-900/40">
             <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
             <div className="relative z-10 space-y-8">
               <div className="flex justify-between items-start">

@@ -55,7 +55,7 @@ export function Sidebar() {
                   className={cn(
                     "flex items-center justify-between p-3 rounded-2xl transition-all duration-300 group",
                     isActive 
-                      ? "bg-gradient-to-r from-cyan-500/20 to-blue-600/10 border border-cyan-500/30 text-cyan-400" 
+                      ? "bg-linear-to-r from-cyan-500/20 to-blue-600/10 border border-cyan-500/30 text-cyan-400" 
                       : "text-slate-500 hover:text-slate-300 hover:bg-white/5 border border-transparent"
                   )}
                 >
@@ -106,7 +106,7 @@ export function Sidebar() {
         </div>
       </div>
 
-      <div className="mt-auto px-4 py-6 rounded-[2rem] bg-gradient-to-br from-slate-900 to-indigo-950/50 border border-white/5 relative overflow-hidden">
+      <div className="mt-auto px-4 py-6 rounded-[2rem] bg-linear-to-br from-slate-900 to-indigo-950/50 border border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-600/20 blur-3xl"></div>
         <p className="text-[10px] font-black text-cyan-400 uppercase tracking-widest mb-2 italic">Pro Version</p>
         <p className="text-xs font-bold text-white leading-relaxed mb-4">Unlock advanced charts and depth analysis.</p>

@@ -218,7 +218,7 @@ export default function BetSlip() {
         </div>
 
         {/* Summary panel */}
-        <div className="flex justify-between items-center p-3 md:p-4 bg-white/5 rounded-xl md:rounded-2xl border border-white/5 flex-shrink-0">
+        <div className="flex justify-between items-center p-3 md:p-4 bg-white/5 rounded-xl md:rounded-2xl border border-white/5 shrink-0">
           <div className="space-y-1">
             <p className="text-[8px] md:text-[9px] font-black text-slate-500 uppercase tracking-widest">
               Potential Return
@@ -248,7 +248,7 @@ export default function BetSlip() {
             onClick={handlePlaceOrder}
             disabled={loading || stakeNum <= 0 || odds <= 1}
           className={cn(
-            "w-full rounded-xl md:rounded-2xl text-[10px] md:text-[11px] font-black uppercase tracking-[0.15em] md:tracking-[0.2em] transition-all relative overflow-hidden group/btn h-11 md:h-14 flex items-center justify-center flex-shrink-0",
+            "w-full rounded-xl md:rounded-2xl text-[10px] md:text-[11px] font-black uppercase tracking-[0.15em] md:tracking-[0.2em] transition-all relative overflow-hidden group/btn h-11 md:h-14 flex items-center justify-center shrink-0",
             "min-h-[44px]",
             loading
               ? "bg-slate-800 text-slate-600"

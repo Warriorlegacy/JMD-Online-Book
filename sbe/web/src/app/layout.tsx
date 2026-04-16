@@ -37,11 +37,11 @@ export default function RootLayout({
               <div className="relative flex min-h-screen flex-col">
                 
                 {/* Global Header */}
-                <header className="sticky top-0 z-[100] w-full border-b border-white/5 bg-slate-950/80 backdrop-blur-2xl px-4">
+                <header className="sticky top-0 z-100 w-full border-b border-white/5 bg-slate-950/80 backdrop-blur-2xl px-4">
                   <div className="container mx-auto flex h-16 items-center justify-between">
                     <div className="flex items-center gap-10">
                       <Link href="/" className="flex items-center space-x-2 group">
-                        <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-3xl font-black tracking-tighter text-transparent italic transition-transform group-hover:scale-105">
+                        <span className="bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-3xl font-black tracking-tighter text-transparent italic transition-transform group-hover:scale-105">
                           SBE
                         </span>
                       </Link>

@@ -33,11 +33,11 @@ export default function RegisterPage() {
   return (
     <div className="min-h-[calc(100vh-140px)] flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md bg-slate-900/40 backdrop-blur-3xl border border-white/5 rounded-3xl p-8 shadow-2xl overflow-hidden relative group">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-600"></div>
+        <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-cyan-500 to-blue-600"></div>
         
         <div className="space-y-6">
           <div className="text-center space-y-2">
-            <h1 className="text-3xl font-black tracking-tighter bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-black tracking-tighter bg-linear-to-br from-white to-slate-400 bg-clip-text text-transparent">
               Create Account
             </h1>
             <p className="text-sm text-slate-500 font-medium">

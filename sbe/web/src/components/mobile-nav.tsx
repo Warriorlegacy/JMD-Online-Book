@@ -24,7 +24,7 @@ export function MobileNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-[60] flex md:hidden border-t border-white/5 bg-slate-950/90 backdrop-blur-2xl pb-safe shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+    <nav className="fixed bottom-0 left-0 right-0 z-60 flex md:hidden border-t border-white/5 bg-slate-950/90 backdrop-blur-2xl pb-safe shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
       {NAV_ITEMS.map((item) => {
         const Icon = item.icon;
         const isActive = pathname === item.href;

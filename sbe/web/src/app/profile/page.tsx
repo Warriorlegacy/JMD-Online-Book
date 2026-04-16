@@ -49,7 +49,7 @@ export default function ProfilePage() {
         <div className="lg:col-span-4 space-y-6">
           <div className="rounded-[3rem] border border-white/5 bg-slate-900/40 p-10 text-center relative overflow-hidden backdrop-blur-3xl shadow-2xl">
             {/* Background design */}
-            <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-indigo-600 to-blue-700"></div>
+            <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-br from-indigo-600 to-blue-700"></div>
             
             <div className="relative pt-8 space-y-6">
               <div className="relative inline-block group">

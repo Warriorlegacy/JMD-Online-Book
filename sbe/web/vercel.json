@@ -13,7 +13,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://images.unsplash.com; font-src 'self'; connect-src 'self' https://jmd-online-book.onrender.com wss://jmd-online-book.onrender.com https://zkvrlwqcfeecsecrzlnu.supabase.co wss://zkvrlwqcfeecsecrzlnu.supabase.co https://api.resend.com; frame-src 'none'; object-src 'none';"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://images.unsplash.com; font-src 'self'; connect-src 'self' https://jmd-online-book.onrender.com wss://jmd-online-book.onrender.com https://zkvrlwqcfeecsecrzlnu.supabase.co wss://zkvrlwqcfeecsecrzlnu.supabase.co https://api.resend.com https://images.unsplash.com; frame-src 'none'; object-src 'none';"
         }
       ]
     }
