@@ -12,7 +12,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx seed.ts"
+    "db:seed": "tsx --env-file=.env seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,11 +23,11 @@
     "@fastify/cors": "^11.2.0",
     "@fastify/jwt": "^10.0.0",
     "@fastify/websocket": "^11.2.0",
-    "@supabase/supabase-js": "^2.103.0",
+    "@supabase/supabase-js": "^2.103.3",
     "bcrypt": "^6.0.0",
     "cookie": "^1.1.1",
     "drizzle-orm": "^0.45.2",
-    "fastify": "^5.8.4",
+    "fastify": "^5.8.5",
     "fastify-plugin": "^5.1.0",
     "ioredis": "^5.10.1",
     "ioredis-mock": "^8.13.1",
@@ -42,6 +42,9 @@
     "@types/pg": "^8.20.0",
     "drizzle-kit": "^0.31.10",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "esbuild": "0.25.12"
   }
 }

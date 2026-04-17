@@ -11,13 +11,12 @@ interface Announcement {
 export const AnnouncementTicker: React.FC = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
-  const fetchAnnouncements = async () => {
-    const res = await fetch("/api/announcements");
-    if (res.ok) setAnnouncements(await res.json());
-  };
-
   useEffect(() => {
-    // eslint-disable-next-line
+    const fetchAnnouncements = async () => {
+      const res = await fetch("/api/announcements");
+      if (res.ok) setAnnouncements(await res.json());
+    };
+
     fetchAnnouncements();
     const interval = setInterval(fetchAnnouncements, 60000);
     return () => clearInterval(interval);
@@ -33,13 +32,13 @@ export const AnnouncementTicker: React.FC = () => {
       </div>
       <div className="flex-1 overflow-hidden relative">
         <div className="animate-marquee whitespace-nowrap flex items-center h-full">
-          {announcements.map((a, i) => (
+          {announcements.map((a) => (
             <span key={a.id} className="mx-8 text-xs font-medium text-slate-300">
               {a.message}
             </span>
           ))}
           {/* Duplicate for seamless loop */}
-          {announcements.map((a, i) => (
+          {announcements.map((a) => (
             <span key={`${a.id}-dup`} className="mx-8 text-xs font-medium text-slate-300">
               {a.message}
             </span>

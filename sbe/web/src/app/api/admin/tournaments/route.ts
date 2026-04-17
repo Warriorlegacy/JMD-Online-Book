@@ -16,7 +16,7 @@ export async function GET() {
       return NextResponse.json(data, { status: res.status });
     }
     return NextResponse.json(data);
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch tournaments" }, { status: 500 });
   }
 }

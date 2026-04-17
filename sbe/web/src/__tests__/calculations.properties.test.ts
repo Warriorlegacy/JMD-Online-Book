@@ -5,7 +5,6 @@ import {
   calculateProfit,
   validateUTR,
   sortOrderBook,
-  type PriceLevel,
 } from "@/lib/bet-calculations";
 
 test("Property 1 & 2: Lay/Back liability and profit calculations", () => {

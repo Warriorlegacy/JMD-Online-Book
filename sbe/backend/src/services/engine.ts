@@ -33,13 +33,17 @@ export class OrderEngineBridge {
       this.process.stdout?.on("data", (data) => {
       const lines = data.toString().split("\n");
       for (const line of lines) {
-        if (!line.trim()) continue;
         try {
-          const result = JSON.parse(line);
+          const trimmed = line.trim();
+          if (!trimmed || !trimmed.startsWith('{')) {
+            if (trimmed) console.log(`[Engine Log] ${trimmed}`);
+            continue;
+          }
+          const result = JSON.parse(trimmed);
           const resolve = this.responseQueue.shift();
           if (resolve) resolve(result);
         } catch (e) {
-          console.error("[Engine] Parse error", e);
+          console.error("[Engine] Parse error", e, "Line:", line);
         }
       }
     });

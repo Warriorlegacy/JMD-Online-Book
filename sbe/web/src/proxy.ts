@@ -6,7 +6,7 @@ const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || "dev_sbe_secret_key_123"
 );
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const token = request.cookies.get("sbe_token")?.value;
   const { pathname } = request.nextUrl;
 
@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
     }
 
     return NextResponse.next();
-  } catch (err) {
+  } catch {
     // Token invalid
     if (isProtectedRoute) {
       const response = NextResponse.redirect(new URL("/login", request.url));

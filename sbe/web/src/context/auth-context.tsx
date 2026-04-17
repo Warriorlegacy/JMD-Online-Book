@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(null);
         setToken(null);
       }
-    } catch (err) {
+    } catch {
       setUser(null);
       setToken(null);
     } finally {

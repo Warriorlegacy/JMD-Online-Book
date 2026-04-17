@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(data, { status: res.status });
     }
     return NextResponse.json(data);
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: "Failed to create match" }, { status: 500 });
   }
 }

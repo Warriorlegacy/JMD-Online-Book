@@ -8,13 +8,10 @@ import { OddsGrid } from "@/components/odds-grid";
 import { Sidebar } from "@/components/sidebar";
 import { useSocket } from "@/context/socket-context";
 import {
-  Trophy,
   Zap,
   MonitorPlay,
-  Play,
   Loader2
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface Match {
   id: string;

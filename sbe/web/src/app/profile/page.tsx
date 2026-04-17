@@ -1,17 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useAuth } from "@/context/auth-context";
 import { 
   User, 
-  Settings, 
   ShieldCheck, 
   Bell, 
   CreditCard, 
   LogOut, 
   ChevronRight, 
   Camera,
-  Trash2,
   Lock,
   Smartphone,
   CheckCircle2,
@@ -41,6 +40,8 @@ export default function ProfilePage() {
     );
   }
 
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random&size=200`;
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -54,7 +55,13 @@ export default function ProfilePage() {
             <div className="relative pt-8 space-y-6">
               <div className="relative inline-block group">
                 <div className="w-32 h-32 rounded-full border-4 border-slate-950 bg-slate-800 overflow-hidden relative">
-                   <img src={`https://ui-avatars.com/api/?name=${user.username}&background=random&size=200`} alt={user.username} className="w-full h-full object-cover" />
+                   <Image
+                     src={avatarUrl}
+                     alt={user.username}
+                     width={200}
+                     height={200}
+                     className="w-full h-full object-cover"
+                   />
                 </div>
                 <button className="absolute bottom-1 right-1 p-2.5 bg-white text-slate-950 rounded-full shadow-lg border-2 border-slate-950 hover:bg-slate-200 transition-all scale-0 group-hover:scale-100 origin-bottom-left">
                   <Camera className="w-4 h-4" />

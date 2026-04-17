@@ -7,7 +7,6 @@ import { useBetSlip } from "@/context/bet-slip-context";
 import { useAuth } from "@/context/auth-context";
 import { Zap, X, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { BetSelection } from "@/types";
 
 export default function BetSlip() {
   const { connected } = useSocket();

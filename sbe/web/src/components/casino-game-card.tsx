@@ -1,5 +1,8 @@
 "use client";
 
+import Image from "next/image";
+import { useState } from "react";
+
 import type { CasinoGame } from "@/types";
 
 interface CasinoGameCardProps {
@@ -8,15 +11,17 @@ interface CasinoGameCardProps {
 }
 
 export default function CasinoGameCard({ game, onPlay }: CasinoGameCardProps) {
+  const [imageSrc, setImageSrc] = useState(game.thumbnailUrl || "/file.svg");
+
   return (
     <div className="relative group overflow-hidden rounded-3xl aspect-video border border-white/5">
-      <img
-        src={game.thumbnailUrl}
+      <Image
+        src={imageSrc}
         alt={game.name}
-        className="w-full h-full object-cover transition-transform group-hover:scale-110"
-        onError={(e) => {
-          e.currentTarget.src = "/placeholder-game.jpg";
-        }}
+        fill
+        sizes="(max-width: 768px) 100vw, 33vw"
+        className="object-cover transition-transform group-hover:scale-110"
+        onError={() => setImageSrc("/file.svg")}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
       

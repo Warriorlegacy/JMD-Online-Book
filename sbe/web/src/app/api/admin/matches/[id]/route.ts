@@ -29,7 +29,7 @@ export async function PATCH(
       return NextResponse.json(data, { status: res.status });
     }
     return NextResponse.json(data);
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: "Failed to update match" }, { status: 500 });
   }
 }

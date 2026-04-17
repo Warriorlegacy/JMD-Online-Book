@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { AdminMatchRow } from "@/components/admin-match-row";
@@ -90,7 +90,7 @@ function MatchesTab() {
     };
   }
 
-  const fetchMatches = () => {
+  const fetchMatches = useCallback(() => {
     fetch('/api/matches')
       .then(res => res.json())
       .then((data: any[]) => {
@@ -98,7 +98,7 @@ function MatchesTab() {
         setMatches(normalized);
       })
       .catch(() => setMatches([]));
-  };
+  }, []);
 
   useEffect(() => {
     fetchMatches();
@@ -106,7 +106,7 @@ function MatchesTab() {
       .then(res => res.json())
       .then(setTournaments)
       .catch(() => setTournaments([]));
-  }, []);
+  }, [fetchMatches]);
 
   const handleSetInPlay = async (id: string) => {
     setProcessing(id);
@@ -167,7 +167,7 @@ function MatchesTab() {
       } else {
         setError('Failed to create match');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to create match');
     }
     setCreating(false);

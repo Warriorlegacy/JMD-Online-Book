@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type MessageHandler = (data: unknown) => void;
 
 const RECONNECT_DELAYS = [1000, 2000, 4000, 8000, 16000, 30000];
@@ -78,7 +77,6 @@ export function useSocket() {
     }
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const on = useCallback(<T = any>(topic: string, handler: (data: T) => void) => {
     const messageHandler = handler as unknown as MessageHandler;
     if (!handlersRef.current.has(topic)) {

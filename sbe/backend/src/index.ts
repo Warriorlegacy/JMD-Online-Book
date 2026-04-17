@@ -14,6 +14,7 @@ import walletRoutes from "./routes/wallet.js";
 import announcementRoutes from "./routes/announcements.js";
 import { initPersistenceWorker } from "./worker.js";
 import { CandleService } from "./services/candles.js";
+import { OrderEngineBridge } from "./services/engine.js";
 
 // Extend FastifyInstance with authenticate decorator
 declare module "fastify" {
@@ -81,6 +82,7 @@ async function start() {
     // 3. Start Workers
     initPersistenceWorker(fastify);
     CandleService.init();
+    OrderEngineBridge.getInstance(); // Initialize matching engine
 
     // 4. Start Listening
     const port = Number(process.env.PORT) || 4000;

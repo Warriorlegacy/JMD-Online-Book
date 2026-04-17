@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function GET(
-  request: Request,
+  _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -12,7 +12,7 @@ export async function GET(
     }
     const data = await res.json();
     return NextResponse.json(data);
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch match" }, { status: 500 });
   }
 }

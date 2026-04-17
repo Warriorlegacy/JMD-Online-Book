@@ -1,7 +1,6 @@
 use engine::MatchingEngine;
 use engine::models::{Order, Side, OrderType};
-use std::io::{BufRead, BufReader, Write};
-use std::os::windows::io::AsRawHandle;
+use std::io::{BufRead, Write};
 use uuid::Uuid;
 use rust_decimal::Decimal;
 use std::str::FromStr;

@@ -3,7 +3,6 @@
 import React, { useEffect, useRef } from "react";
 import { createChart, IChartApi, ISeriesApi, ColorType, CandlestickSeries } from 'lightweight-charts';
 import { useSocket } from "@/context/socket-context";
-import { Candle } from "@/types";
 
 interface MarketChartProps {
   matchId: string;

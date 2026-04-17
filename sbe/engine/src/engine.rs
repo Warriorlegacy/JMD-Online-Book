@@ -12,8 +12,8 @@ pub enum EngineCommand {
 
 pub struct MatchingEngine {
     pub books: Arc<DashMap<(Uuid, String), OrderBook>>,
-    command_rx: Receiver<EngineCommand>,
-    trade_tx: Sender<Vec<Trade>>,
+    _command_rx: Receiver<EngineCommand>,
+    _trade_tx: Sender<Vec<Trade>>,
 }
 
 impl MatchingEngine {
@@ -22,8 +22,8 @@ impl MatchingEngine {
         let (tx2, _rx2) = unbounded();
         Self {
             books: Arc::new(DashMap::new()),
-            command_rx: rx,
-            trade_tx: tx2,
+            _command_rx: rx,
+            _trade_tx: tx2,
         }
     }
 

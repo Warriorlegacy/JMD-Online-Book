@@ -3,13 +3,11 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { useAuth } from "@/context/auth-context";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type MessageHandler = (data: unknown) => void;
 
 interface SocketContextType {
   connected: boolean;
   subscribe: (room: string) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   on: <T = any>(topic: string, handler: (data: T) => void) => () => void;
 }
 
@@ -97,7 +95,6 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const on = useCallback(<T = any>(topic: string, handler: (data: T) => void) => {
     const messageHandler = handler as unknown as MessageHandler;
     if (!handlersRef.current.has(topic)) {

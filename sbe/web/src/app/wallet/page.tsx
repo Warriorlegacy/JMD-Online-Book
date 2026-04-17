@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { useSocket } from "@/context/socket-context";
 import { 
@@ -11,14 +10,12 @@ import {
   History, 
   Copy, 
   CheckCircle2, 
-  Clock, 
   AlertCircle,
   Loader2,
   ChevronLeft
 } from "lucide-react";
 
 const PLATFORM_UPI = "6202442690@ptyes";
-const PLATFORM_NAME = "SBE Exchange";
 const MIN_DEPOSIT = 100;
 const MIN_WITHDRAW = 200;
 
