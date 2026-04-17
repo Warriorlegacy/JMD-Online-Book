@@ -17,6 +17,7 @@ export const AnnouncementTicker: React.FC = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line
     fetchAnnouncements();
     const interval = setInterval(fetchAnnouncements, 60000);
     return () => clearInterval(interval);

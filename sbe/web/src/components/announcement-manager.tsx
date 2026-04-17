@@ -8,7 +8,6 @@ import type { Announcement } from "@/types";
 
 export function AnnouncementManager() {
   const { user } = useAuth();
-  if (user?.role !== "admin") return null;
 
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [newMessage, setNewMessage] = useState("");
@@ -24,6 +23,8 @@ export function AnnouncementManager() {
   useEffect(() => {
     fetchAnnouncements();
   }, []);
+
+  if (user?.role !== "admin") return null;
 
   const handleCreate = async () => {
     if (!newMessage.trim() || loading) return;

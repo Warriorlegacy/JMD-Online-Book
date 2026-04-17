@@ -10,12 +10,11 @@ interface PriceLadderProps {
 }
 
 export default function PriceLadder({
-  match_id, // Fix: match_id is not in props, it should be matchId
+  matchId,
   orderBooks,
   onSelect,
   teams
-}: any) {
-  const matchId = (arguments[0] as PriceLadderProps).matchId;
+}: PriceLadderProps) {
   const selections = [
     { id: "team_a", name: teams[0] },
     { id: "team_b", name: teams[1] },

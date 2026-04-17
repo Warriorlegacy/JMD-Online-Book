@@ -3,11 +3,13 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { useAuth } from "@/context/auth-context";
 
-type MessageHandler = (data: any) => void;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type MessageHandler = (data: unknown) => void;
 
 interface SocketContextType {
   connected: boolean;
   subscribe: (room: string) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   on: <T = any>(topic: string, handler: (data: T) => void) => () => void;
 }
 
@@ -25,7 +27,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const mountedRef = useRef(true);
   const subscribedRoomsRef = useRef<Set<string>>(new Set());
 
-  const connect = useCallback(() => {
+  const connect = useCallback(function doConnect() {
     if (!mountedRef.current) return;
     const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "wss://jmd-online-book.onrender.com/ws";
 
@@ -61,7 +63,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setConnected(false);
         const delay = RECONNECT_DELAYS[Math.min(reconnectAttemptRef.current, RECONNECT_DELAYS.length - 1)];
         reconnectAttemptRef.current++;
-        reconnectTimerRef.current = setTimeout(connect, delay);
+        reconnectTimerRef.current = setTimeout(doConnect, delay);
       };
 
       socket.onerror = () => {
@@ -95,6 +97,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const on = useCallback(<T = any>(topic: string, handler: (data: T) => void) => {
     const messageHandler = handler as unknown as MessageHandler;
     if (!handlersRef.current.has(topic)) {

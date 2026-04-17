@@ -1,12 +1,8 @@
 import type { NextConfig } from "next";
 
-import path from "path";
-
 const nextConfig: NextConfig = {
+  // Prevent Webpack/Turbopack from bundling native Node.js modules
   serverExternalPackages: ["pg", "pg-native", "bcryptjs"],
-  turbopack: {
-    root: path.resolve(__dirname),
-  },
   images: {
     remotePatterns: [
       {

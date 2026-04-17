@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 
-type MessageHandler = (data: any) => void;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type MessageHandler = (data: unknown) => void;
 
 const RECONNECT_DELAYS = [1000, 2000, 4000, 8000, 16000, 30000];
 
@@ -15,7 +16,7 @@ export function useSocket() {
   const mountedRef = useRef(true);
   const subscribedRoomsRef = useRef<Set<string>>(new Set());
 
-  const connect = useCallback(() => {
+  const connect = useCallback(function doConnect() {
     if (!mountedRef.current) return;
     const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "wss://jmd-online-book.onrender.com/ws";
 
@@ -49,7 +50,7 @@ export function useSocket() {
         setConnected(false);
         const delay = RECONNECT_DELAYS[Math.min(reconnectAttemptRef.current, RECONNECT_DELAYS.length - 1)];
         reconnectAttemptRef.current++;
-        reconnectTimerRef.current = setTimeout(connect, delay);
+        reconnectTimerRef.current = setTimeout(doConnect, delay);
       };
 
       socket.onerror = () => {
@@ -77,6 +78,7 @@ export function useSocket() {
     }
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const on = useCallback(<T = any>(topic: string, handler: (data: T) => void) => {
     const messageHandler = handler as unknown as MessageHandler;
     if (!handlersRef.current.has(topic)) {
