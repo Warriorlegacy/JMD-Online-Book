@@ -18,13 +18,13 @@ export async function POST(request: NextRequest) {
 
     const client = await pool.connect();
     try {
-      // Find user by email or username
+      // Explicitly use public schema to avoid auth.users ambiguity
       const result = await client.query(
         `SELECT id, username, email, password_hash, role
-         FROM users
-         WHERE email = $1 OR username = $1
+         FROM public.users
+         WHERE lower(email) = lower($1) OR lower(username) = lower($1)
          LIMIT 1`,
-        [identifier.toLowerCase()]
+        [identifier]
       );
 
       if (result.rows.length === 0) {
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       const user = result.rows[0];
 
       if (!user.password_hash) {
-        return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+        return NextResponse.json({ error: "Invalid credentials — account may use a different login method" }, { status: 401 });
       }
 
       const isMatch = await bcrypt.compare(password, user.password_hash);
@@ -42,15 +42,32 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
       }
 
-      // Sign JWT
-      const token = await new SignJWT({ id: user.id, role: user.role, username: user.username })
+      // Get wallet balance
+      const walletResult = await client.query(
+        "SELECT balance FROM public.wallets WHERE user_id = $1 LIMIT 1",
+        [user.id]
+      );
+      const balance = walletResult.rows[0]?.balance ?? "0.00";
+
+      // Sign JWT — matches same secret as Fastify backend
+      const token = await new SignJWT({
+        id: user.id,
+        role: user.role,
+        username: user.username,
+      })
         .setProtectedHeader({ alg: "HS256" })
         .setExpirationTime("7d")
         .sign(JWT_SECRET);
 
       const response = NextResponse.json({
         message: "Login successful",
-        user: { id: user.id, username: user.username, email: user.email, role: user.role },
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          role: user.role,
+          balance: String(balance),
+        },
         token,
       });
 
@@ -67,7 +84,7 @@ export async function POST(request: NextRequest) {
       client.release();
     }
   } catch (err: any) {
-    console.error("[POST /api/auth/login]", err);
+    console.error("[POST /api/auth/login] ERROR:", err.message);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

@@ -31,9 +31,9 @@ export async function POST(request: NextRequest) {
 
     const client = await pool.connect();
     try {
-      // Check existing user
+      // Check for existing user — explicitly target public schema to avoid auth.users
       const existing = await client.query(
-        "SELECT id FROM users WHERE email = $1 OR username = $2 LIMIT 1",
+        "SELECT id FROM public.users WHERE lower(email) = $1 OR lower(username) = $2 LIMIT 1",
         [email.toLowerCase(), username.toLowerCase()]
       );
       if (existing.rows.length > 0) {
@@ -45,29 +45,39 @@ export async function POST(request: NextRequest) {
       // Create user + wallet in transaction
       await client.query("BEGIN");
       const userResult = await client.query(
-        `INSERT INTO users (username, email, password_hash, role)
+        `INSERT INTO public.users (username, email, password_hash, role)
          VALUES ($1, $2, $3, 'user')
          RETURNING id, username, email, role`,
         [username, email.toLowerCase(), passwordHash]
       );
       const newUser = userResult.rows[0];
 
+      // Create wallet for new user (use numeric 0 for the balance columns)
       await client.query(
-        `INSERT INTO wallets (user_id, currency, balance, locked_balance)
-         VALUES ($1, 'INR', '0.00000000', '0.00000000')`,
+        `INSERT INTO public.wallets (user_id, currency, balance, locked_balance)
+         VALUES ($1, 'INR', 0, 0)`,
         [newUser.id]
       );
       await client.query("COMMIT");
 
-      // Sign JWT
-      const token = await new SignJWT({ id: newUser.id, role: newUser.role, username: newUser.username })
+      // Sign JWT — matches the same secret as the Fastify backend
+      const token = await new SignJWT({
+        id: newUser.id,
+        role: newUser.role,
+        username: newUser.username,
+      })
         .setProtectedHeader({ alg: "HS256" })
         .setExpirationTime("7d")
         .sign(JWT_SECRET);
 
       const response = NextResponse.json({
         message: "Registration successful",
-        user: { id: newUser.id, username: newUser.username, email: newUser.email, role: newUser.role },
+        user: {
+          id: newUser.id,
+          username: newUser.username,
+          email: newUser.email,
+          role: newUser.role,
+        },
       }, { status: 201 });
 
       response.cookies.set("sbe_token", token, {
@@ -86,7 +96,7 @@ export async function POST(request: NextRequest) {
       client.release();
     }
   } catch (err: any) {
-    console.error("[POST /api/auth/register]", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error("[POST /api/auth/register] ERROR:", err.message, "| code:", err.code, "| detail:", err.detail);
+    return NextResponse.json({ error: "Internal server error", detail: err.message }, { status: 500 });
   }
 }

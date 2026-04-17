@@ -25,13 +25,13 @@ export async function GET(request: NextRequest) {
       return response;
     }
 
-    // Fetch fresh user data from DB
+    // Fetch fresh user data from DB — explicit public schema to avoid auth.users
     const client = await pool.connect();
     try {
       const result = await client.query(
         `SELECT u.id, u.username, u.email, u.role, w.balance
-         FROM users u
-         LEFT JOIN wallets w ON w.user_id = u.id
+         FROM public.users u
+         LEFT JOIN public.wallets w ON w.user_id = u.id
          WHERE u.id = $1
          LIMIT 1`,
         [payload.id]
