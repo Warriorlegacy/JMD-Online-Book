@@ -36,7 +36,7 @@ interface Banner {
 }
 
 const BANNERS: Banner[] = [
-  { id: 1, title: "Special Event 1", subtitle: "Get extra bonuses this week!", image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=2070&auto=format&fit=c" },
+  { id: 1, title: "Special Event 1", subtitle: "Get extra bonuses this week!", image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=2070&auto=format&fit=crop" },
   { id: 2, title: "Special Event 2", subtitle: "Exclusive odds on finals!", image: "https://images.unsplash.com/photo-1579952363873-27f3bde9be0f?q=80&w=2070&auto=format&fit=crop" },
   { id: 3, title: "Special Event 3", subtitle: "Win big with every bet!", image: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=2070&auto=format&fit=crop" },
 ];
