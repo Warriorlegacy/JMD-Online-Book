@@ -52,7 +52,7 @@ export async function GET(request: Request) {
 
   // Top 10 users by net loss
   const userLoss: Record<string, number> = {}
-  for (const bet of betsRows) {
+  for (const _bet of betsRows) {
     // We need user_id — re-query with user_id
   }
 

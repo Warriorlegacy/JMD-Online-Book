@@ -86,7 +86,7 @@ export async function suspendTenant(tenantId: string, suspend: boolean) {
   return updateTenant(tenantId, { is_suspended: suspend });
 }
 
-export async function getTenantStats(tenantId: string) {
+export async function getTenantStats(_tenantId: string) {
   return {
     total_users: 0,
     pending_transactions: 0,
@@ -290,7 +290,7 @@ async function seedStaticTable<T extends { id: string }>(
   table: "payment_methods" | "games",
   defaults: T[],
   legacyPath: string,
-  tenantId?: string,
+  _tenantId?: string,
 ) {
   const db = getDb();
   const { count, error: countError } = await db
@@ -321,7 +321,7 @@ async function seedStaticTable<T extends { id: string }>(
   }
 }
 
-async function seedSettings(tenantId?: string) {
+async function seedSettings(_tenantId?: string) {
   const db = getDb();
   
   const settingsWithTenant = defaultSettings.map((s) => {

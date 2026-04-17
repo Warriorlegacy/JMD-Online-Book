@@ -177,7 +177,7 @@ export default async function IndexPage() {
       
       {/* Footer Text */}
       <footer className="text-center py-6 pb-8 text-[11px] md:text-xs text-gray-500 max-w-4xl mx-auto px-4 mt-auto">
-        This is a betting exchange platform mock for demonstration purposes. Gambling involves significant risk and is not suitable for all individuals. Ensure you are 18+ and adhere to the jurisdiction's rules.
+        This is a betting exchange platform mock for demonstration purposes. Gambling involves significant risk and is not suitable for all individuals. Ensure you are 18+ and adhere to the jurisdiction&apos;s rules.
       </footer>
     </div>
   );

@@ -8,7 +8,7 @@ export async function POST() {
     console.log("Checking database connection...");
 
     // Test basic connection
-    const { data: testData, error: testError } = await supabase
+    const { error: testError } = await supabase
       .from("profiles")
       .select("count", { count: "exact", head: true });
 

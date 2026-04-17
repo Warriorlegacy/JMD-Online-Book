@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/admin/odds/refresh",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}

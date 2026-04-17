@@ -8,7 +8,7 @@ const cspDirectives = [
   "img-src 'self' data: blob: https://zkvrlwqcfeecsecrzlnu.supabase.co https:",
   "style-src 'self' 'unsafe-inline'",
   `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
-  "connect-src 'self' https://zkvrlwqcfeecsecrzlnu.supabase.co wss://zkvrlwqcfeecsecrzlnu.supabase.co https://api.resend.com",
+  "connect-src 'self' https://zkvrlwqcfeecsecrzlnu.supabase.co wss://zkvrlwqcfeecsecrzlnu.supabase.co https://api.resend.com https://images.unsplash.com",
   "font-src 'self' data:",
   "form-action 'self'",
 ].join("; ");
@@ -21,6 +21,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "zkvrlwqcfeecsecrzlnu.supabase.co",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
       },
     ],
   },

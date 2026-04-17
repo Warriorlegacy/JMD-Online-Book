@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Badge } from "@/components/ui/badge";
@@ -33,8 +33,9 @@ export function PnLPageClient() {
   const [end, setEnd] = useState(today);
   const [data, setData] = useState<PnLData | null>(null);
   const [loading, setLoading] = useState(false);
+  const mounted = useRef(false);
 
-  async function fetchPnL() {
+  const fetchPnL = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`/api/pnl?start=${start}T00:00:00Z&end=${end}T23:59:59Z`);
@@ -45,9 +46,14 @@ export function PnLPageClient() {
     } catch { /* silent */ } finally {
       setLoading(false);
     }
-  }
+  }, [start, end]);
 
-  useEffect(() => { fetchPnL(); }, []);
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+      fetchPnL();
+    }
+  }, [fetchPnL]);
 
   return (
     <div className="space-y-6">

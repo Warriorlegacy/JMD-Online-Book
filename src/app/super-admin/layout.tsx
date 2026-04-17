@@ -1,9 +1,7 @@
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { LayoutDashboard, Users, Building2, Settings, CreditCard } from "lucide-react";
 
 import { requireSuperAdmin } from "@/lib/auth";
-import { Card } from "@/components/ui/card";
 
 export default async function SuperAdminLayout({
   children,

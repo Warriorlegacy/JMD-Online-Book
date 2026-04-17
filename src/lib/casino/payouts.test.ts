@@ -53,7 +53,7 @@ describe('getCasinoPayout — Property 5: Casino Payout Correctness', () => {
     fc.assert(
       fc.property(
         fc.double({ min: 1, max: 100000, noNaN: true }),
-        (stake) => {
+        (_stake) => {
           const multiplier = getCasinoPayout('dragon_tiger', 'Tie', 'Tie')
           expect(multiplier).toBe(8.0)
         }

@@ -38,7 +38,12 @@ export function SportsPageClient({ initialEvents, initialSport }: SportsPageClie
     return () => clearInterval(interval);
   }, [fetchEvents]);
 
-  useEffect(() => { fetchEvents(); }, [fetchEvents]);
+  useEffect(() => {
+    const init = async () => {
+      await fetchEvents();
+    };
+    init();
+  }, [fetchEvents]);
 
   const liveEvents = events.filter((e) => e.status === "live");
   const upcomingEvents = events.filter((e) => e.status !== "live");

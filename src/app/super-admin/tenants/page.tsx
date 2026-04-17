@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Plus, Search, Pause, Play, Eye } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -64,9 +65,11 @@ export default async function SuperAdminTenantsPage() {
                     <td className="py-4 pl-4">
                       <div className="flex items-center gap-3">
                         {tenant.logo_url ? (
-                          <img
+                          <Image
                             src={tenant.logo_url}
                             alt={tenant.name}
+                            width={32}
+                            height={32}
                             className="h-8 w-8 rounded-lg object-cover"
                           />
                         ) : (

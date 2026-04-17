@@ -6,7 +6,7 @@ import { getCurrentProfile, getMainDashboardData } from "@/lib/data";
 import { getSession } from "@/lib/auth";
 
 export default async function TransactionsPage() {
-  const [session, profile] = await Promise.all([getSession(), getCurrentProfile()]);
+  const [session, _profile] = await Promise.all([getSession(), getCurrentProfile()]);
   if (!session) redirect("/login");
 
   const data = await getMainDashboardData();

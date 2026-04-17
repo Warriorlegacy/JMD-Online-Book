@@ -4,9 +4,6 @@ export const dynamic = 'force-dynamic'
 
 async function getSportsEvents(sport?: string) {
   try {
-    const url = sport
-      ? `/api/sports/events?sport=${encodeURIComponent(sport)}`
-      : '/api/sports/events'
     // Server-side fetch using absolute URL
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
     const res = await fetch(`${baseUrl}/api/sports/events${sport ? `?sport=${encodeURIComponent(sport)}` : ''}`, {

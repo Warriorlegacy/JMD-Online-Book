@@ -2,10 +2,13 @@
 -- Run this in Supabase SQL Editor
 
 -- Transactions indexes (CRITICAL for wallet queries)
-create index if not exists idx_transactions_user_id_created 
+create index if not exists idx_user_id on public.transactions(user_id);
+create index if not exists idx_status on public.transactions(status);
+
+create index if not exists idx_transactions_user_id_created
 on public.transactions(user_id, created_at desc);
 
-create index if not exists idx_transactions_tenant_user 
+create index if not exists idx_transactions_tenant_user
 on public.transactions(tenant_id, user_id) where tenant_id is not null;
 
 -- Notifications indexes

@@ -1,10 +1,9 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import toast from 'react-hot-toast'
 import { Card } from '@/components/ui/card'
 import { SectionHeading } from '@/components/ui/section-heading'
-import { Badge } from '@/components/ui/badge'
 import { formatCurrency, formatDate } from '@/lib/utils'
 
 interface Summary {
@@ -33,8 +32,9 @@ export function AdminReportsClient() {
   const [summary, setSummary] = useState<Summary | null>(null)
   const [pending, setPending] = useState<PendingTx[]>([])
   const [loading, setLoading] = useState(false)
+  const mounted = useRef(false)
 
-  async function fetchSummary() {
+  const fetchSummary = useCallback(async () => {
     setLoading(true)
     try {
       const res = await fetch(`/api/admin/reports/summary?start=${start}T00:00:00Z&end=${end}T23:59:59Z`)
@@ -45,9 +45,9 @@ export function AdminReportsClient() {
     } catch { /* silent */ } finally {
       setLoading(false)
     }
-  }
+  }, [start, end])
 
-  async function fetchPending() {
+  const fetchPending = useCallback(async () => {
     try {
       const res = await fetch('/api/admin/transactions')
       if (res.ok) {
@@ -55,12 +55,15 @@ export function AdminReportsClient() {
         setPending(json.data ?? [])
       }
     } catch { /* silent */ }
-  }
+  }, [])
 
   useEffect(() => {
-    fetchSummary()
-    fetchPending()
-  }, [])
+    if (!mounted.current) {
+      mounted.current = true
+      fetchSummary()
+      fetchPending()
+    }
+  }, [fetchSummary, fetchPending])
 
   async function approve(txId: string) {
     const res = await fetch('/api/admin/transactions/approve', {

@@ -13,19 +13,6 @@ interface StreakIndicatorProps {
 }
 
 export function StreakIndicator({ streak, type = "daily", className }: StreakIndicatorProps) {
-  const getIcon = () => {
-    switch (type) {
-      case "daily":
-        return Flame;
-      case "login":
-        return Zap;
-      case "win":
-        return Trophy;
-      default:
-        return Flame;
-    }
-  };
-
   const getColor = () => {
     if (streak >= 30) return "text-orange-400";
     if (streak >= 7) return "text-yellow-400";
@@ -33,7 +20,19 @@ export function StreakIndicator({ streak, type = "daily", className }: StreakInd
     return "text-gray-400";
   };
 
-  const Icon = getIcon();
+  const renderIcon = () => {
+    const className = cn("h-4 w-4", getColor());
+    switch (type) {
+      case "daily":
+        return <Flame className={className} />;
+      case "login":
+        return <Zap className={className} />;
+      case "win":
+        return <Trophy className={className} />;
+      default:
+        return <Flame className={className} />;
+    }
+  };
 
   return (
     <motion.div
@@ -53,7 +52,7 @@ export function StreakIndicator({ streak, type = "daily", className }: StreakInd
         }}
         transition={{ duration: 0.5, repeat: streak > 0 ? Infinity : 0, repeatDelay: 2 }}
       >
-        <Icon className={cn("h-4 w-4", getColor())} />
+        {renderIcon()}
       </motion.div>
       <span className="text-sm font-medium text-white">{streak}</span>
       <span className="text-xs text-gray-400">day streak</span>

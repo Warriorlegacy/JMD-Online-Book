@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getSession } from "@/lib/auth";
 
 export async function GET() {
-  const results: Record<string, any> = {};
+  const results: Record<string, unknown> = {};
 
   try {
     console.log("=== DIAGNOSTIC CHECK START ===");
@@ -11,7 +11,7 @@ export async function GET() {
     // 1. Check Supabase connection
     results.connection = { status: "checking" };
     try {
-      const supabase = createAdminClient();
+      createAdminClient();
       results.connection = { status: "success", message: "Admin client created" };
     } catch (error) {
       results.connection = { status: "error", error: error instanceof Error ? error.message : "Unknown error" };
@@ -45,7 +45,7 @@ export async function GET() {
       'otp_tokens'
     ];
 
-    results.tables = {};
+    results.tables = {} as Record<string, unknown>;
     const supabase = createAdminClient();
 
     for (const table of tables) {
@@ -56,12 +56,12 @@ export async function GET() {
           .select('*', { count: 'exact', head: true });
 
         if (error) {
-          results.tables[table] = { status: "error", error: error.message };
+          (results.tables as Record<string, unknown>)[table] = { status: "error", error: error.message };
         } else {
-          results.tables[table] = { status: "success", count: count || 0 };
+          (results.tables as Record<string, unknown>)[table] = { status: "success", count: count || 0 };
         }
       } catch (error) {
-        results.tables[table] = {
+        (results.tables as Record<string, unknown>)[table] = {
           status: "error",
           error: error instanceof Error ? error.message : "Unknown error"
         };
@@ -71,7 +71,7 @@ export async function GET() {
     // 4. Check RLS policies
     results.rls = { status: "checking" };
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('profiles')
         .select('id')
         .limit(1);

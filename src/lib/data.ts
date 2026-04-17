@@ -27,7 +27,6 @@ import type {
   Profile,
   ReferralTreeNode,
   SiteSetting,
-  Tenant,
   Transaction,
 } from "@/types/database";
 
