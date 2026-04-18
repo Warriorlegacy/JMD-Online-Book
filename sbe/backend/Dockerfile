@@ -2,12 +2,25 @@
 FROM node:22-slim as backend-builder
 WORKDIR /app
 
+# Install Rust for building the matching engine
+RUN apt-get update && apt-get install -y \
+    curl \
+    build-essential \
+    pkg-config \
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
 # Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
 
 # Copy source code
 COPY . .
+
+# Build Rust matching engine
+RUN cd engine && cargo build --release
 
 # Build TypeScript
 RUN npm run build
@@ -16,7 +29,7 @@ RUN npm run build
 FROM node:22-slim
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies (including those needed for the engine binary)
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Copy built application
