@@ -20,7 +20,9 @@ export class OrderEngineBridge {
   private init() {
     // Platform agnostic path
     const defaultEngine = process.platform === "win32" ? "sbe-engine.exe" : "sbe-engine";
-    const enginePath = process.env.ENGINE_PATH || `../../engine/target/release/${defaultEngine}`;
+    // Production container path should just be /app/engine/target/release/sbe-engine
+    // Or we should allow it to fail silently if the binary isn't built yet, without crashing the whole app.
+    const enginePath = process.env.ENGINE_PATH || `/app/engine/target/release/${defaultEngine}`;
     if (process.env.NODE_ENV !== 'production') console.log(`[Engine] Starting matching engine: ${enginePath}`);
     
     try {
