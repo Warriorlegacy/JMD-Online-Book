@@ -86,7 +86,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
         },
         token
       };
-    } catch (err: any) {
+    } catch (err) {
       if (err instanceof z.ZodError) {
         return reply.code(400).send({ error: err.issues[0].message });
       }
@@ -141,7 +141,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
         },
         token
       };
-    } catch (err: any) {
+    } catch (err) {
       if (err instanceof z.ZodError) {
         return reply.code(400).send({ error: err.issues[0].message });
       }

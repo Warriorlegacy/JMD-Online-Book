@@ -65,7 +65,7 @@ export default async function walletRoutes(fastify: FastifyInstance) {
       });
 
       return { message: "Deposit request submitted. Waiting for admin approval." };
-    } catch (err: any) {
+    } catch (err) {
       if (err instanceof z.ZodError) {
         return reply.code(400).send({ error: err.issues[0].message });
       }
@@ -107,7 +107,7 @@ export default async function walletRoutes(fastify: FastifyInstance) {
       });
 
       return { message: "Withdrawal request submitted for approval." };
-    } catch (err: any) {
+    } catch (err) {
       if (err instanceof z.ZodError) {
         return reply.code(400).send({ error: err.issues[0].message });
       }
