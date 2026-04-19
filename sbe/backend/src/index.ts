@@ -15,6 +15,7 @@ import announcementRoutes from "./routes/announcements.js";
 import { initPersistenceWorker } from "./worker.js";
 import { CandleService } from "./services/candles.js";
 import { OrderEngineBridge } from "./services/engine.js";
+import { globalErrorHandler } from "./middleware/error-handler.js";
 
 // Extend FastifyInstance with authenticate decorator
 declare module "fastify" {
@@ -55,7 +56,7 @@ async function start() {
       origin: true, // Allow all origins in dev, or specific URLs in prod
       credentials: true,
     });
-    
+
     await fastify.register(fastifyCookie);
     await fastify.register(fastifyJwt, {
       secret: process.env.JWT_SECRET!,
@@ -67,6 +68,9 @@ async function start() {
 
     await fastify.register(websocket);
     await fastify.register(wsManagerPlugin);
+
+    // Set Global Error Handler
+    fastify.setErrorHandler(globalErrorHandler);
 
     // Authenticate decorator
     fastify.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -97,7 +101,7 @@ async function start() {
     // 4. Start Listening
     const port = Number(process.env.PORT) || 4000;
     await fastify.listen({ port, host: "0.0.0.0" });
-    
+
     fastify.log.info(`🚀 SBE Backend running on http://localhost:${port}`);
   } catch (err) {
     fastify.log.error(err);

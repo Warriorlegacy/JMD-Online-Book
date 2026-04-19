@@ -7,9 +7,20 @@ export const matchStatusEnum = pgEnum("match_status", ["scheduled", "in_play", "
 export const userRoleEnum = pgEnum("user_role", ["user", "admin"]);
 export const transactionStatusEnum = pgEnum("transaction_status", ["pending", "approved", "rejected", "completed"]);
 
+// 0. Tenants (Multi-tenancy root)
+export const tenants = pgTable("tenants", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  slug: varchar("slug", { length: 50 }).notNull().unique(), // For subdomain/url routing
+  plan: varchar("plan", { length: 20 }).default("free").notNull(),
+  isActive: integer("is_active").default(1).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // 1. Scalable Users
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
   username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash"),
@@ -20,6 +31,7 @@ export const users = pgTable("users", {
 // 2. Multi-Currency Wallets (8-decimal precision for crypto/fractional scaling)
 export const wallets = pgTable("wallets", {
   id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
   userId: uuid("user_id").references(() => users.id).notNull(),
   currency: varchar("currency", { length: 3 }).default("INR").notNull(),
   balance: decimal("balance", { precision: 20, scale: 8 }).default("0.00000000").notNull(),
@@ -29,6 +41,7 @@ export const wallets = pgTable("wallets", {
 
 export const tournaments = pgTable("tournaments", {
   id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
   name: text("name").notNull(),
   sportType: varchar("sport_type", { length: 50 }).notNull(),
   metadata: text("metadata"),
@@ -37,6 +50,7 @@ export const tournaments = pgTable("tournaments", {
 
 export const matches = pgTable("matches", {
   id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
   tournamentId: uuid("tournament_id").references(() => tournaments.id).notNull(),
   teamA: text("team_a").notNull(),
   teamB: text("team_b").notNull(),
@@ -48,6 +62,7 @@ export const matches = pgTable("matches", {
 
 export const orders = pgTable("orders", {
   id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
   userId: uuid("user_id").references(() => users.id).notNull(),
   matchID: uuid("match_id").references(() => matches.id).notNull(),
   selectionId: text("selection_id"), // e.g. "team_a", "team_b", "draw"
@@ -61,6 +76,7 @@ export const orders = pgTable("orders", {
 
 export const ledgerEntries = pgTable("ledger_entries", {
   id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
   walletId: uuid("wallet_id").references(() => wallets.id).notNull(),
   amount: decimal("amount", { precision: 20, scale: 8 }).notNull(),
   currency: varchar("currency", { length: 3 }).notNull(),
@@ -71,6 +87,7 @@ export const ledgerEntries = pgTable("ledger_entries", {
 
 export const trades = pgTable("trades", {
   id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
   matchID: uuid("match_id").references(() => matches.id).notNull(),
   selectionId: text("selection_id"), // e.g. "team_a", "team_b", "draw"
   backerId: uuid("backer_id").references(() => users.id).notNull(),
@@ -97,6 +114,7 @@ export const marketHistory = pgTable("market_history", {
 // 9. Deposit Requests
 export const depositRequests = pgTable("deposit_requests", {
   id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
   userId: uuid("user_id").references(() => users.id).notNull(),
   amount: decimal("amount", { precision: 20, scale: 8 }).notNull(),
   upiId: text("upi_id").notNull(),
@@ -108,6 +126,7 @@ export const depositRequests = pgTable("deposit_requests", {
 // 10. Withdrawal Requests
 export const withdrawalRequests = pgTable("withdrawal_requests", {
   id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
   userId: uuid("user_id").references(() => users.id).notNull(),
   amount: decimal("amount", { precision: 20, scale: 8 }).notNull(),
   upiId: text("upi_id").notNull(),
@@ -118,6 +137,7 @@ export const withdrawalRequests = pgTable("withdrawal_requests", {
 // 11. Announcements
 export const announcements = pgTable("announcements", {
   id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
   message: text("message").notNull(),
   active: integer("active").default(1).notNull(), // 1 for active, 0 for inactive
   createdAt: timestamp("created_at").defaultNow().notNull(),
