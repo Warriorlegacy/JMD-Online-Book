@@ -1,12 +1,16 @@
 import pg from "pg";
 
 async function applyRLS() {
-  const connectionString = "postgres://postgres:GJH31Qc0uvlzbdpD@db.zkvrlwqcfeecsecrzlnu.supabase.co:5432/postgres";
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    console.error("❌ DATABASE_URL environment variable is required");
+    process.exit(1);
+  }
   const client = new pg.Client({ connectionString });
 
   try {
     await client.connect();
-    console.log("[RLS] Applying security policies...");
+    if (process.env.NODE_ENV !== 'production') console.log("[RLS] Applying security policies...");
 
     const rlsSql = `
       -- 1. Enable RLS on core tables
@@ -31,7 +35,7 @@ async function applyRLS() {
     `;
 
     await client.query(rlsSql);
-    console.log("[RLS] Security perimeter active!");
+    if (process.env.NODE_ENV !== 'production') console.log("[RLS] Security perimeter active!");
   } catch (err) {
     console.error("[RLS] Failed:", err.message);
   } finally {

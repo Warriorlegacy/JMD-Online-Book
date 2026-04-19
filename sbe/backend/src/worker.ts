@@ -5,7 +5,7 @@ import { eq, sql } from "drizzle-orm";
 import { FastifyInstance } from "fastify";
 
 export function initPersistenceWorker(fastify: FastifyInstance) {
-  console.log("[Worker] Persistence worker initialized");
+  fastify.log.info("[Worker] Persistence worker initialized");
 
   pubsub.subscribe("match_events", async (payload: any) => {
     const { matchId, events } = payload;
@@ -30,7 +30,7 @@ export function initPersistenceWorker(fastify: FastifyInstance) {
           // Note: In a production system, we'd handle partial fills precisely.
         });
       } catch (e) {
-        console.error("[Worker] Settlement error", e);
+        fastify.log.error(e);
       }
     }
   });

@@ -1,0 +1,217 @@
+﻿
+> web@0.1.0 lint
+> eslint
+
+
+D:\JMD Online Book\sbe\web\src\__tests__\calculations.properties.test.ts
+  8:8  warning  'PriceLevel' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\JMD Online Book\sbe\web\src\app\admin\page.tsx
+   78:30  error    Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+   96:20  error    Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+  109:6   warning  React Hook useEffect has a missing dependency: 'fetchMatches'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  170:14  warning  'err' is defined but never used                                                                                  @typescript-eslint/no-unused-vars
+  324:44  error    Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+  371:38  error    Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\app\api\[...path]\route.ts
+  35:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\app\api\admin\matches\[id]\route.ts
+  32:12  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\JMD Online Book\sbe\web\src\app\api\admin\matches\route.ts
+  25:12  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\JMD Online Book\sbe\web\src\app\api\admin\tournaments\route.ts
+  19:12  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\JMD Online Book\sbe\web\src\app\api\auth\login\route.ts
+  86:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\app\api\auth\me\route.ts
+  18:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  57:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\app\api\auth\register\route.ts
+  98:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\app\api\auth\route.ts
+  30:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\app\api\matches\[id]\route.ts
+  15:12  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\JMD Online Book\sbe\web\src\app\api\wallet\route.ts
+  39:12  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+  76:12  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\JMD Online Book\sbe\web\src\app\casino\[game]\page.tsx
+  17:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:31  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\app\login\page.tsx
+  21:19  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  94:18  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\JMD Online Book\sbe\web\src\app\match\[id]\page.tsx
+  22:28  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\app\page.tsx
+  11:3   warning  'Trophy' is defined but never used        @typescript-eslint/no-unused-vars
+  14:3   warning  'Play' is defined but never used          @typescript-eslint/no-unused-vars
+  17:10  warning  'cn' is defined but never used            @typescript-eslint/no-unused-vars
+  44:28  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\app\profile\page.tsx
+   7:3   warning  'Settings' is defined but never used                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+  14:3   warning  'Trash2' is defined but never used                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  57:20  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\JMD Online Book\sbe\web\src\app\register\page.tsx
+  27:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\app\sports\page.tsx
+    3:31  warning  'useMemo' is defined but never used                              @typescript-eslint/no-unused-vars
+  160:30  error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  249:90  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  335:95  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\JMD Online Book\sbe\web\src\app\wallet\page.tsx
+    4:8   warning  'Link' is defined but never used                    @typescript-eslint/no-unused-vars
+   14:3   warning  'Clock' is defined but never used                   @typescript-eslint/no-unused-vars
+   21:7   warning  'PLATFORM_NAME' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   47:54  error    Unexpected any. Specify a different type            @typescript-eslint/no-explicit-any
+   47:74  error    Unexpected any. Specify a different type            @typescript-eslint/no-explicit-any
+  113:19  error    Unexpected any. Specify a different type            @typescript-eslint/no-explicit-any
+  136:19  error    Unexpected any. Specify a different type            @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\components\announcement-manager.tsx
+   5:10  warning  'cn' is defined but never used                                                                                                @typescript-eslint/no-unused-vars
+  13:45  error    React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render   react-hooks/rules-of-hooks
+  14:39  error    React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render   react-hooks/rules-of-hooks
+  15:37  error    React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render   react-hooks/rules-of-hooks
+  16:35  error    React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render   react-hooks/rules-of-hooks
+  17:33  error    React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render   react-hooks/rules-of-hooks
+  24:3   error    React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render  react-hooks/rules-of-hooks
+
+D:\JMD Online Book\sbe\web\src\components\announcement-ticker.tsx
+  20:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\JMD Online Book\sbe\web\src\components\announcement-ticker.tsx:20:5
+  18 |
+  19 |   useEffect(() => {
+> 20 |     fetchAnnouncements();
+     |     ^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  21 |     const interval = setInterval(fetchAnnouncements, 60000);
+  22 |     return () => clearInterval(interval);
+  23 |   }, []);  react-hooks/set-state-in-effect
+  35:34  warning  'i' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+  41:34  warning  'i' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+
+D:\JMD Online Book\sbe\web\src\components\bet-slip.tsx
+  10:10  warning  'BetSelection' is defined but never used  @typescript-eslint/no-unused-vars
+  62:17  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\components\casino-game-card.tsx
+  13:7  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\JMD Online Book\sbe\web\src\components\live-score-widget.tsx
+  36:33  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\JMD Online Book\sbe\web\src\components\market-chart.tsx
+   6:10  warning  'Candle' is defined but never used        @typescript-eslint/no-unused-vars
+  49:23  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  64:28  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\components\price-ladder.tsx
+  13:3   warning  'match_id' is defined but never used            @typescript-eslint/no-unused-vars
+  17:4   error    Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+  18:20  error    Use the rest parameters instead of 'arguments'  prefer-rest-params
+
+D:\JMD Online Book\sbe\web\src\components\sidebar.tsx
+  7:3  warning  'Trophy' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\JMD Online Book\sbe\web\src\context\auth-context.tsx
+  42:14  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\JMD Online Book\sbe\web\src\context\socket-context.tsx
+   6:30  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-explicit-any
+  11:12  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-explicit-any
+  64:48  error  Error: Cannot access variable before it is declared
+
+`connect` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+D:\JMD Online Book\sbe\web\src\context\socket-context.tsx:64:48
+  62 |         const delay = RECONNECT_DELAYS[Math.min(reconnectAttemptRef.current, RECONNECT_DELAYS.length - 1)];
+  63 |         reconnectAttemptRef.current++;
+> 64 |         reconnectTimerRef.current = setTimeout(connect, delay);
+     |                                                ^^^^^^^ `connect` accessed before it is declared
+  65 |       };
+  66 |
+  67 |       socket.onerror = () => {
+
+D:\JMD Online Book\sbe\web\src\context\socket-context.tsx:28:3
+  26 |   const subscribedRoomsRef = useRef<Set<string>>(new Set());
+  27 |
+> 28 |   const connect = useCallback(() => {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 29 |     if (!mountedRef.current) return;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 30 |     const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "wss://jmd-online-book.onrender.com/ws";
+     ÔÇª
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 72 |     }
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 73 |   }, [token]);
+     | ^^^^^^^^^^^^^^^ `connect` is declared here
+  74 |
+  75 |    useEffect(() => {
+  76 |      mountedRef.current = true;  react-hooks/immutability
+  98:31  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\lib\socket.ts
+   5:30  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-explicit-any
+  52:48  error  Error: Cannot access variable before it is declared
+
+`connect` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+D:\JMD Online Book\sbe\web\src\lib\socket.ts:52:48
+  50 |         const delay = RECONNECT_DELAYS[Math.min(reconnectAttemptRef.current, RECONNECT_DELAYS.length - 1)];
+  51 |         reconnectAttemptRef.current++;
+> 52 |         reconnectTimerRef.current = setTimeout(connect, delay);
+     |                                                ^^^^^^^ `connect` accessed before it is declared
+  53 |       };
+  54 |
+  55 |       socket.onerror = () => {
+
+D:\JMD Online Book\sbe\web\src\lib\socket.ts:18:3
+  16 |   const subscribedRoomsRef = useRef<Set<string>>(new Set());
+  17 |
+> 18 |   const connect = useCallback(() => {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 19 |     if (!mountedRef.current) return;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 20 |     const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "wss://jmd-online-book.onrender.com/ws";
+     ÔÇª
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 60 |     }
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 61 |   }, []);
+     | ^^^^^^^^^^ `connect` is declared here
+  62 |
+  63 |   useEffect(() => {
+  64 |     mountedRef.current = true;  react-hooks/immutability
+  80:31  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-explicit-any
+
+D:\JMD Online Book\sbe\web\src\middleware.ts
+  40:12  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+Ô£û 73 problems (44 errors, 29 warnings)
+

@@ -15,7 +15,7 @@ export class CandleService {
   private static currentCandles: Map<string, any> = new Map();
 
   static init() {
-    console.log("[CandleService] Listening for trade events...");
+    if (process.env.NODE_ENV !== 'production') console.log("[CandleService] Listening for trade events...");
 
     pubsub.subscribe("match_events", (payload: any) => {
       const { matchId, events } = payload;

@@ -1,12 +1,16 @@
 import pg from "pg";
 
 async function seed() {
-  const connectionString = "postgres://postgres:GJH31Qc0uvlzbdpD@db.zkvrlwqcfeecsecrzlnu.supabase.co:5432/postgres";
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    console.error("❌ DATABASE_URL environment variable is required");
+    process.exit(1);
+  }
   const client = new pg.Client({ connectionString });
 
   try {
     await client.connect();
-    console.log("[Seed] Populating initial markets...");
+    if (process.env.NODE_ENV !== 'production') console.log("[Seed] Populating initial markets...");
 
     // 1. Insert Tournament
     const tournamentId = "b2b2b2b2-b2b2-b2b2-b2b2-b2b2b2b2b2b2";
@@ -28,10 +32,10 @@ async function seed() {
         NOW(), 
         'in_play'
       )
-      ON CONFLICT (id) DO NOTHING;
-    `);
+       ON CONFLICT (id) DO NOTHING;
+     `);
 
-    console.log("[Seed] Cloud market data populated successfully!");
+    if (process.env.NODE_ENV !== 'production') console.log("[Seed] Cloud market data populated successfully!");
   } catch (err) {
     console.error("[Seed] Failed:", err.message);
   } finally {

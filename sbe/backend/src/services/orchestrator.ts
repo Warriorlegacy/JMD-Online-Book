@@ -110,12 +110,12 @@ export class OrderOrchestrator {
         events: matches,
       });
 
-      ws.publishToRoom(matchId, "match_events", {
-        events: matches,
-      });
-      
-      console.log(`Matched ${matches.length} orders for ${matchId}`);
-    }
+       ws.publishToRoom(matchId, "match_events", {
+         events: matches,
+       });
+       
+       if (process.env.NODE_ENV !== 'production') console.log(`Matched ${matches.length} orders for ${matchId}`);
+     }
 
     return { orderId: dbOrder.id, status: "submitted" };
   }

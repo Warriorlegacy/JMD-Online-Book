@@ -25,12 +25,11 @@ export async function seedDemoData() {
       startTime: new Date(),
       status: "in_play",
       metadata: JSON.stringify({ venue: "Etihad Stadium", round: "Matchday 30" }),
-    });
-
-    console.log("✅ Demo data seeded");
-  } catch (e: any) {
-    // Tables may not exist yet — run raw SQL to create them
-    console.warn("[Seed] Attempting raw SQL table creation:", e.message);
+      });
+      if (process.env.NODE_ENV !== 'production') console.log("✅ Demo data seeded");
+    } catch (e: any) {
+      // Tables may not exist yet — run raw SQL to create them
+      if (process.env.NODE_ENV !== 'production') console.warn("[Seed] Attempting raw SQL table creation:", e.message);
     try {
       await db.execute(sql`
         DO $$ BEGIN
@@ -64,17 +63,17 @@ export async function seedDemoData() {
         sportType: "football",
         metadata: JSON.stringify({ country: "England", season: "2025-26" }),
       }).returning();
-      await db.insert(matches).values({
-        tournamentId: t.id,
-        teamA: "Manchester City",
-        teamB: "Arsenal",
-        startTime: new Date(),
-        status: "in_play",
-        metadata: JSON.stringify({ venue: "Etihad Stadium" }),
-      });
-      console.log("✅ Demo data seeded via raw SQL");
-    } catch (e2: any) {
-      console.error("[Seed] Raw SQL seed also failed:", e2.message);
+       await db.insert(matches).values({
+         tournamentId: t.id,
+         teamA: "Manchester City",
+         teamB: "Arsenal",
+         startTime: new Date(),
+         status: "in_play",
+         metadata: JSON.stringify({ venue: "Etihad Stadium" }),
+       });
+       if (process.env.NODE_ENV !== 'production') console.log("✅ Demo data seeded via raw SQL");
+     } catch (e2: any) {
+       if (process.env.NODE_ENV !== 'production') console.error("[Seed] Raw SQL seed also failed:", e2.message);
     }
   }
 }
@@ -88,8 +87,8 @@ export default async function adminRoutes(fastify: FastifyInstance) {
     }
   };
 
-  // Database connection test
-  fastify.get("/db-test", async () => {
+   // Database connection test
+   fastify.get("/db-test", { preHandler: adminOnly }, async () => {
     try {
       const result = await db.execute(sql`SELECT NOW() as time`);
       return { 

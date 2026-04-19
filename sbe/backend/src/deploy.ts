@@ -6,12 +6,16 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function deploy() {
-  const connectionString = "postgres://postgres.zkvrlwqcfeecsecrzlnu:GJH31Qc0uvlzbdpD@aws-0-us-east-1.pooler.supabase.com:6543/postgres";
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    console.error("❌ DATABASE_URL environment variable is required");
+    process.exit(1);
+  }
   const client = new pg.Client({ connectionString });
 
   try {
     await client.connect();
-    console.log("[Deploy] Connected to Supabase");
+    if (process.env.NODE_ENV !== 'production') console.log("[Deploy] Connected to Supabase");
 
     const sql0 = fs.readFileSync(path.join(__dirname, "../drizzle/0000_tidy_golden_guardian.sql"), "utf-8");
     const sql1 = fs.readFileSync(path.join(__dirname, "../drizzle/0001_ambiguous_the_order.sql"), "utf-8");
@@ -27,12 +31,12 @@ async function deploy() {
       }
     };
 
-    console.log("[Deploy] Running 0000...");
+    if (process.env.NODE_ENV !== 'production') console.log("[Deploy] Running 0000...");
     await runSql(sql0);
-    console.log("\n[Deploy] Running 0001...");
+    if (process.env.NODE_ENV !== 'production') console.log("\n[Deploy] Running 0001...");
     await runSql(sql1);
 
-    console.log("\n[Deploy] Success!");
+    if (process.env.NODE_ENV !== 'production') console.log("\n[Deploy] Success!");
   } catch (err) {
     console.error("\n[Deploy] Failed:", err);
   } finally {

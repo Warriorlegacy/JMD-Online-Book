@@ -21,24 +21,24 @@ export class OrderEngineBridge {
     // Platform agnostic path
     const defaultEngine = process.platform === "win32" ? "sbe-engine.exe" : "sbe-engine";
     const enginePath = process.env.ENGINE_PATH || `../../engine/target/release/${defaultEngine}`;
-    console.log(`[Engine] Starting matching engine: ${enginePath}`);
+    if (process.env.NODE_ENV !== 'production') console.log(`[Engine] Starting matching engine: ${enginePath}`);
     
     try {
       this.process = spawn(enginePath);
 
       this.process.on("error", (err) => {
-        console.error(`[Engine] Failed to start engine at ${enginePath}. This is expected if the engine binary is not built yet.`, err.message);
+        if (process.env.NODE_ENV !== 'production') console.error(`[Engine] Failed to start engine at ${enginePath}. This is expected if the engine binary is not built yet.`, err.message);
       });
 
       this.process.stdout?.on("data", (data) => {
-      const lines = data.toString().split("\n");
-      for (const line of lines) {
-        try {
-          const trimmed = line.trim();
-          if (!trimmed || !trimmed.startsWith('{')) {
-            if (trimmed) console.log(`[Engine Log] ${trimmed}`);
-            continue;
-          }
+       const lines = data.toString().split("\n");
+       for (const line of lines) {
+         try {
+           const trimmed = line.trim();
+           if (!trimmed || !trimmed.startsWith('{')) {
+             if (trimmed && process.env.NODE_ENV !== 'production') console.log(`[Engine Log] ${trimmed}`);
+             continue;
+           }
           const result = JSON.parse(trimmed);
           const resolve = this.responseQueue.shift();
           if (resolve) resolve(result);
@@ -53,7 +53,7 @@ export class OrderEngineBridge {
     });
 
     this.process.on("close", (code) => {
-      console.log(`[Engine] Process exited with code ${code}`);
+      if (process.env.NODE_ENV !== 'production') console.log(`[Engine] Process exited with code ${code}`);
       // Restart logic could go here
     });
     } catch (err: any) {

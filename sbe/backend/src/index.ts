@@ -27,14 +27,24 @@ const fastify: FastifyInstance = Fastify({
   logger: true,
 });
 
+// Fail fast if JWT_SECRET is not set in production
+if (!process.env.JWT_SECRET) {
+  if (process.env.NODE_ENV === 'production') {
+    console.error("❌ JWT_SECRET environment variable is required in production");
+    process.exit(1);
+  }
+  // In development, we'll use the secret but warn
+  console.warn("⚠️  JWT_SECRET not set - using development secret (DO NOT USE IN PRODUCTION)");
+}
+
 async function start() {
   try {
     // Run migrations on startup — non-fatal if already applied
     try {
       await migrate(db, { migrationsFolder: "./drizzle" });
-      console.log("✅ Database migrations applied");
+      fastify.log.info("✅ Database migrations applied");
     } catch (migrationErr: any) {
-      console.warn("⚠️ Migration warning (may already be applied):", migrationErr.message);
+      fastify.log.warn("⚠️ Migration warning (may already be applied):", migrationErr.message);
     }
 
     // Seed demo data if DB is empty
@@ -48,7 +58,7 @@ async function start() {
     
     await fastify.register(fastifyCookie);
     await fastify.register(fastifyJwt, {
-      secret: process.env.JWT_SECRET || "dev_sbe_secret_key_123",
+      secret: process.env.JWT_SECRET!,
       cookie: {
         cookieName: "sbe_token",
         signed: false,
@@ -88,7 +98,7 @@ async function start() {
     const port = Number(process.env.PORT) || 4000;
     await fastify.listen({ port, host: "0.0.0.0" });
     
-    console.log(`🚀 SBE Backend running on http://localhost:${port}`);
+    fastify.log.info(`🚀 SBE Backend running on http://localhost:${port}`);
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

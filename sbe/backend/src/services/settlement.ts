@@ -6,8 +6,8 @@ export class SettlementService {
   /**
    * Settles a match with high precision and currency awareness.
    */
-  static async settleMatch(matchId: string, winningResult: "team_a" | "team_b" | "draw", currency: string = "INR") {
-    console.log(`[Settlement] Starting high-precision settlement for match ${matchId} (${currency})`);
+   static async settleMatch(matchId: string, winningResult: "team_a" | "team_b" | "draw", currency: string = "INR") {
+     if (process.env.NODE_ENV !== 'production') console.log(`[Settlement] Starting high-precision settlement for match ${matchId} (${currency})`);
 
      const unsettledTrades = await db.select().from(trades).where(and(eq(trades.matchID, matchId), eq(trades.settled, 0)));
 

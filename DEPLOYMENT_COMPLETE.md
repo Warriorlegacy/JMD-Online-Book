@@ -23,7 +23,7 @@
 2. Click **"New repository secret"**
 3. Add:
    - **Name**: `RENDER_API_KEY`
-   - **Value**: rnd_4xNpCtPmrTXb8FBr59b3e7UZRMjd
+   - **Value**: <YOUR_RENDER_API_KEY>
 
 ### Done! 🎉
 

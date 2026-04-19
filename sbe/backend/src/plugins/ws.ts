@@ -26,16 +26,16 @@ export default fp(async function wsManagerPlugin(fastify: FastifyInstance) {
         const msg = JSON.parse(raw.toString());
         if (msg.type === "subscribe") {
           const room = msg.room;
-          if (!roomSubscriptions.has(room)) roomSubscriptions.set(room, new Set());
-          roomSubscriptions.get(room)!.add(userId);
-          console.log(`[WS] User ${userId} subscribed to ${room}`);
-        } else if (msg.type === "unsubscribe") {
-          const room = msg.room;
-          roomSubscriptions.get(room)?.delete(userId);
-        }
-      } catch (e) {
-        console.error("[WS] Decode error", e);
-      }
+           if (!roomSubscriptions.has(room)) roomSubscriptions.set(room, new Set());
+           roomSubscriptions.get(room)!.add(userId);
+           fastify.log.info(`[WS] User ${userId} subscribed to ${room}`);
+         } else if (msg.type === "unsubscribe") {
+           const room = msg.room;
+           roomSubscriptions.get(room)?.delete(userId);
+         }
+       } catch (e) {
+         fastify.log.error(e);
+       }
     });
 
     connection.on("close", () => {

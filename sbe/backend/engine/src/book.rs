@@ -1,8 +1,8 @@
-use crate::models::{Order, Trade, Side};
-use std::collections::{BTreeMap, VecDeque};
-use rust_decimal::Decimal;
-use uuid::Uuid;
+use crate::models::{Order, Side, Trade};
 use chrono::Utc;
+use rust_decimal::Decimal;
+use std::collections::{BTreeMap, VecDeque};
+use uuid::Uuid;
 
 pub struct OrderBook {
     pub match_id: Uuid,
@@ -41,15 +41,18 @@ impl OrderBook {
                 while order.remaining_stake > Decimal::ZERO {
                     // Find the best lay (lowest price)
                     let best_lay_price = self.lays.keys().next().cloned();
-                    
+
                     if let Some(price) = best_lay_price {
                         if price <= order.price {
                             let orders_at_price = self.lays.get_mut(&price).unwrap();
-                            
-                            while !orders_at_price.is_empty() && order.remaining_stake > Decimal::ZERO {
+
+                            while !orders_at_price.is_empty()
+                                && order.remaining_stake > Decimal::ZERO
+                            {
                                 let mut lay_order = orders_at_price.pop_front().unwrap();
-                                let match_size = order.remaining_stake.min(lay_order.remaining_stake);
-                                
+                                let match_size =
+                                    order.remaining_stake.min(lay_order.remaining_stake);
+
                                 trades.push(Trade {
                                     match_id: self.match_id,
                                     selection_id: self.selection_id.clone(),
@@ -82,10 +85,7 @@ impl OrderBook {
                 }
 
                 if !order.is_filled() {
-                    self.backs
-                        .entry(order.price)
-                        .or_insert_with(VecDeque::new)
-                        .push_back(order);
+                    self.backs.entry(order.price).or_default().push_back(order);
                 }
             }
             Side::Lay => {
@@ -93,15 +93,18 @@ impl OrderBook {
                 while order.remaining_stake > Decimal::ZERO {
                     // Find the best back (highest price)
                     let best_back_price = self.backs.keys().next_back().cloned();
-                    
+
                     if let Some(price) = best_back_price {
                         if price >= order.price {
                             let orders_at_price = self.backs.get_mut(&price).unwrap();
-                            
-                            while !orders_at_price.is_empty() && order.remaining_stake > Decimal::ZERO {
+
+                            while !orders_at_price.is_empty()
+                                && order.remaining_stake > Decimal::ZERO
+                            {
                                 let mut back_order = orders_at_price.pop_front().unwrap();
-                                let match_size = order.remaining_stake.min(back_order.remaining_stake);
-                                
+                                let match_size =
+                                    order.remaining_stake.min(back_order.remaining_stake);
+
                                 trades.push(Trade {
                                     match_id: self.match_id,
                                     selection_id: self.selection_id.clone(),
@@ -134,10 +137,7 @@ impl OrderBook {
                 }
 
                 if !order.is_filled() {
-                    self.lays
-                        .entry(order.price)
-                        .or_insert_with(VecDeque::new)
-                        .push_back(order);
+                    self.lays.entry(order.price).or_default().push_back(order);
                 }
             }
         }

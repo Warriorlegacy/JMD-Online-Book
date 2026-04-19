@@ -20,7 +20,7 @@ async function seed() {
       metadata: JSON.stringify({ country: "England", season: "2025-26" }),
     }).returning();
 
-    console.log("✅ Tournament created:", tournament.name);
+    if (process.env.NODE_ENV !== 'production') console.log("✅ Tournament created:", tournament.name);
 
     // Create an active match
     const [match] = await db.insert(matches).values({
@@ -32,7 +32,7 @@ async function seed() {
       metadata: JSON.stringify({ venue: "Etihad Stadium", round: "Matchday 30" }),
     }).returning();
 
-    console.log("✅ Match created:", `${match.teamA} v ${match.teamB}`);
+    if (process.env.NODE_ENV !== 'production') console.log("✅ Match created:", `${match.teamA} v ${match.teamB}`);
 
     // Create a scheduled match
     const [match2] = await db.insert(matches).values({
@@ -44,9 +44,9 @@ async function seed() {
       metadata: JSON.stringify({ venue: "Anfield", round: "Matchday 30" }),
     }).returning();
 
-    console.log("✅ Match created:", `${match2.teamA} v ${match2.teamB}`);
+    if (process.env.NODE_ENV !== 'production') console.log("✅ Match created:", `${match2.teamA} v ${match2.teamB}`);
 
-    console.log("🎉 Database seeded successfully!");
+    if (process.env.NODE_ENV !== 'production') console.log("🎉 Database seeded successfully!");
     
     await pool.end();
     process.exit(0);

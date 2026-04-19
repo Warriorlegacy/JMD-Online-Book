@@ -4,12 +4,16 @@ import path from "path";
 
 async function deploy() {
   // Using Direct Connection (5432) instead of Pooler (6543)
-  const connectionString = "postgres://postgres:GJH31Qc0uvlzbdpD@db.zkvrlwqcfeecsecrzlnu.supabase.co:5432/postgres";
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    console.error("❌ DATABASE_URL environment variable is required");
+    process.exit(1);
+  }
   const client = new pg.Client({ connectionString });
 
   try {
     await client.connect();
-    console.log("[Deploy] Connected to Supabase (Direct)");
+    if (process.env.NODE_ENV !== 'production') console.log("[Deploy] Connected to Supabase (Direct)");
 
     const rootPath = process.cwd();
     const sql0 = fs.readFileSync(path.join(rootPath, "drizzle/0000_tidy_golden_guardian.sql"), "utf-8");
@@ -25,12 +29,12 @@ async function deploy() {
       }
     };
 
-    console.log("[Deploy] Running 0000...");
+    if (process.env.NODE_ENV !== 'production') console.log("[Deploy] Running 0000...");
     await runSql(sql0);
-    console.log("\n[Deploy] Running 0001...");
+    if (process.env.NODE_ENV !== 'production') console.log("\n[Deploy] Running 0001...");
     await runSql(sql1);
 
-    console.log("\n[Deploy] Success!");
+    if (process.env.NODE_ENV !== 'production') console.log("\n[Deploy] Success!");
   } catch (err) {
     console.error("\n[Deploy] Failed:", err.message);
   } finally {

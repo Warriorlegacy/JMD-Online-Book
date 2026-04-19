@@ -15,7 +15,7 @@ async function runMigrations() {
     
     await migrate(db, { migrationsFolder: "./drizzle" });
     
-    console.log("✅ Migrations completed successfully!");
+    if (process.env.NODE_ENV !== 'production') console.log("✅ Migrations completed successfully!");
     
     await pool.end();
     process.exit(0);

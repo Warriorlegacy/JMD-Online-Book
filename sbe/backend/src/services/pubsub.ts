@@ -9,17 +9,17 @@ class PubSubService {
   private client: any; // Using any for hybrid Mock/Real Redis compatibility in ESM
   private localEmitter = new EventEmitter();
 
-  constructor() {
-    if (REDIS_URL) {
-      // @ts-ignore - ioredis ESM compatibility
-      this.client = new Redis.default(REDIS_URL);
-      console.log("Redis PubSub Initialized");
-    } else {
-      // @ts-ignore - ioredis-mock compatibility
-      this.client = new RedisMock.default();
-      console.log("In-memory Mock Redis Initialized");
-    }
-  }
+   constructor() {
+     if (REDIS_URL) {
+       // @ts-ignore - ioredis ESM compatibility
+       this.client = new Redis.default(REDIS_URL);
+       if (process.env.NODE_ENV !== 'production') console.log("Redis PubSub Initialized");
+     } else {
+       // @ts-ignore - ioredis-mock compatibility
+       this.client = new RedisMock.default();
+       if (process.env.NODE_ENV !== 'production') console.log("In-memory Mock Redis Initialized");
+     }
+   }
 
   async publish(channel: string, message: any) {
     const data = JSON.stringify(message);

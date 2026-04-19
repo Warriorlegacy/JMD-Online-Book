@@ -1,9 +1,7 @@
 import { DrizzlePool } from "../db";
-import { MatchingEngine } from "../services/engine";
 
 declare module "fastify" {
   interface FastifyInstance {
     db: DrizzlePool;
-    engine: MatchingEngine;
   }
 }

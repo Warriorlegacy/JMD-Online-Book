@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { db } from "../db/index.js";
 import { users, wallets } from "../db/schema.js";
 import { eq, or } from "drizzle-orm";

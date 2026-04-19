@@ -1,12 +1,16 @@
 import pg from "pg";
 
 async function deployMarketHistory() {
-  const connectionString = "postgres://postgres:GJH31Qc0uvlzbdpD@db.zkvrlwqcfeecsecrzlnu.supabase.co:5432/postgres";
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    console.error("❌ DATABASE_URL environment variable is required");
+    process.exit(1);
+  }
   const client = new pg.Client({ connectionString });
 
   try {
     await client.connect();
-    console.log("[Deploy] Creating market_history table...");
+    if (process.env.NODE_ENV !== 'production') console.log("[Deploy] Creating market_history table...");
 
     const sql = `
       CREATE TABLE IF NOT EXISTS market_history (
@@ -24,7 +28,7 @@ async function deployMarketHistory() {
     `;
 
     await client.query(sql);
-    console.log("[Deploy] Table created successfully!");
+    if (process.env.NODE_ENV !== 'production') console.log("[Deploy] Table created successfully!");
   } catch (err) {
     console.error("[Deploy] Failed:", err.message);
   } finally {
