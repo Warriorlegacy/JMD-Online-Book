@@ -24,8 +24,8 @@ export default function RegisterPage() {
     setError("");
     try {
       await register(username, email, password);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
       setLoading(false);
     }
   };

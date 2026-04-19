@@ -18,8 +18,8 @@ export default function LoginPage() {
     setError("");
     try {
       await login(identifier, password);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
       setLoading(false);
     }
   };

@@ -83,8 +83,8 @@ export async function POST(request: NextRequest) {
     } finally {
       client.release();
     }
-  } catch (err: any) {
-    console.error("[POST /api/auth/login] ERROR:", err.message);
+  } catch (err) {
+    console.error("[POST /api/auth/login] ERROR:", err instanceof Error ? err.message : String(err));
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

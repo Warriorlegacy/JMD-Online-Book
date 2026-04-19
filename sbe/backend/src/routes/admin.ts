@@ -27,9 +27,9 @@ export async function seedDemoData() {
       metadata: JSON.stringify({ venue: "Etihad Stadium", round: "Matchday 30" }),
       });
       if (process.env.NODE_ENV !== 'production') console.log("✅ Demo data seeded");
-    } catch (e: any) {
+    } catch (e) {
       // Tables may not exist yet — run raw SQL to create them
-      if (process.env.NODE_ENV !== 'production') console.warn("[Seed] Attempting raw SQL table creation:", e.message);
+      if (process.env.NODE_ENV !== 'production') console.warn("[Seed] Attempting raw SQL table creation:", e instanceof Error ? e.message : e);
     try {
       await db.execute(sql`
         DO $$ BEGIN
@@ -72,8 +72,8 @@ export async function seedDemoData() {
          metadata: JSON.stringify({ venue: "Etihad Stadium" }),
        });
        if (process.env.NODE_ENV !== 'production') console.log("✅ Demo data seeded via raw SQL");
-     } catch (e2: any) {
-       if (process.env.NODE_ENV !== 'production') console.error("[Seed] Raw SQL seed also failed:", e2.message);
+     } catch (e2) {
+       if (process.env.NODE_ENV !== 'production') console.error("[Seed] Raw SQL seed also failed:", e2 instanceof Error ? e2.message : e2);
     }
   }
 }
@@ -97,12 +97,12 @@ export default async function adminRoutes(fastify: FastifyInstance) {
         timestamp: (result.rows?.[0] as any)?.time || "unknown",
         dbUrlPreview: process.env.DATABASE_URL ? `${process.env.DATABASE_URL.substring(0, 15)}...` : "missing"
       };
-    } catch (error: any) {
+    } catch (error) {
       return { 
         status: "error", 
-        message: error.message,
-        code: error.code,
-        stack: error.stack,
+        message: error instanceof Error ? error.message : String(error),
+        code: (error as any)?.code,
+        stack: error instanceof Error ? error.stack : undefined,
         hint: "Check DATABASE_URL in Render environment variables"
       };
     }
@@ -136,9 +136,9 @@ export default async function adminRoutes(fastify: FastifyInstance) {
         return reply.code(404).send({ error: "No matches found" });
       }
       return upcoming.rows[0];
-    } catch (e: any) {
+    } catch (e) {
       fastify.log.error(e);
-      return reply.code(503).send({ error: "Database unavailable", message: e.message });
+      return reply.code(503).send({ error: "Database unavailable", message: e instanceof Error ? e.message : String(e) });
     }
   });
 
@@ -178,9 +178,9 @@ export default async function adminRoutes(fastify: FastifyInstance) {
         return reply.code(404).send({ error: "Match not found" });
       }
       return result.rows[0];
-    } catch (e: any) {
+    } catch (e) {
       fastify.log.error(e);
-      return reply.code(500).send({ error: e.message });
+      return reply.code(500).send({ error: e instanceof Error ? e.message : String(e) });
     }
   });
 
@@ -209,8 +209,8 @@ export default async function adminRoutes(fastify: FastifyInstance) {
         close: parseFloat(h.close),
         volume: parseFloat(h.volume),
       }));
-    } catch (e: any) {
-      return reply.code(500).send({ error: e.message });
+    } catch (e) {
+      return reply.code(500).send({ error: e instanceof Error ? e.message : String(e) });
     }
   });
 
@@ -222,8 +222,8 @@ export default async function adminRoutes(fastify: FastifyInstance) {
     try {
       const status = await SettlementService.settleMatch(id, result);
       return status;
-    } catch (e: any) {
-      reply.status(500).send({ error: e.message });
+    } catch (e) {
+      reply.status(500).send({ error: e instanceof Error ? e.message : String(e) });
     }
   });
 
@@ -315,7 +315,7 @@ export default async function adminRoutes(fastify: FastifyInstance) {
       });
 
       return { message: "Deposit approved and wallet credited" };
-    } catch (e: any) {
+    } catch (e) {
       fastify.log.error(e);
       return reply.code(500).send({ error: "Failed to approve deposit" });
     }
@@ -388,9 +388,9 @@ export default async function adminRoutes(fastify: FastifyInstance) {
       });
 
       return { message: "Withdrawal approved and completed" };
-    } catch (e: any) {
+    } catch (e) {
       fastify.log.error(e);
-      return reply.code(500).send({ error: e.message || "Failed to approve withdrawal" });
+      return reply.code(500).send({ error: (e instanceof Error ? e.message : String(e)) || "Failed to approve withdrawal" });
     }
   });
 

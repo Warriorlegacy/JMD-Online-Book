@@ -107,8 +107,8 @@ export default function WalletPage() {
       setUpiId("");
       setUtrNumber("");
       fetchData();
-    } catch (err: any) {
-      setErrorMessage(err.message);
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : String(err));
     } finally {
       setIsSubmitting(false);
     }
@@ -130,8 +130,8 @@ export default function WalletPage() {
       setAmount("");
       setUpiId("");
       fetchData();
-    } catch (err: any) {
-      setErrorMessage(err.message);
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : String(err));
     } finally {
       setIsSubmitting(false);
     }

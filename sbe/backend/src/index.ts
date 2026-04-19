@@ -44,8 +44,8 @@ async function start() {
     try {
       await migrate(db, { migrationsFolder: "./drizzle" });
       fastify.log.info("✅ Database migrations applied");
-    } catch (migrationErr: any) {
-      fastify.log.warn("⚠️ Migration warning (may already be applied):", migrationErr.message);
+    } catch (migrationErr) {
+      fastify.log.warn("⚠️ Migration warning (may already be applied):", migrationErr instanceof Error ? migrationErr.message : String(migrationErr));
     }
 
     // Seed demo data if DB is empty
@@ -104,7 +104,7 @@ async function start() {
 
     fastify.log.info(`🚀 SBE Backend running on http://localhost:${port}`);
   } catch (err) {
-    fastify.log.error(err);
+    fastify.log.error(err instanceof Error ? err.message : String(err));
     process.exit(1);
   }
 }

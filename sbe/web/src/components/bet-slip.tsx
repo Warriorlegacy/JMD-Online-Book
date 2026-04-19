@@ -58,8 +58,8 @@ export default function BetSlip() {
       setSuccess(true);
       clearSelection();
       setTimeout(() => setSuccess(false), 3000);
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
     } finally {
       setLoading(false);
     }
