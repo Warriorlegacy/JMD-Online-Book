@@ -34,11 +34,11 @@ export default async function orderRoutes(fastify: FastifyInstance) {
       );
 
       return reply.code(201).send(result);
-    } catch (error: any) {
+    } catch (error) {
       fastify.log.error(error);
       return reply.code(400).send({
         error: "Order Placement Failed",
-        message: error.message,
+        message: error instanceof Error ? error.message : String(error),
       });
     }
   });

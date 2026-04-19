@@ -27,9 +27,9 @@ async function proxyRequest(request: NextRequest, endpoint: string) {
       statusText: res.statusText,
       headers: responseHeaders,
     });
-  } catch (err: any) {
+  } catch (err) {
     console.error(`[Proxy Error] ${targetUrl}:`, err);
-    return NextResponse.json({ error: "Backend unavailable", details: err.message, url: targetUrl }, { status: 503 });
+    return NextResponse.json({ error: "Backend unavailable", details: err instanceof Error ? err.message : String(err), url: targetUrl }, { status: 503 });
   }
 }
 

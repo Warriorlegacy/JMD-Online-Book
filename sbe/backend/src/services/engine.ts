@@ -56,8 +56,8 @@ export class OrderEngineBridge {
       if (process.env.NODE_ENV !== 'production') console.log(`[Engine] Process exited with code ${code}`);
       // Restart logic could go here
     });
-    } catch (err: any) {
-      console.error("[Engine] Spawn failed:", err.message);
+    } catch (err) {
+      console.error("[Engine] Spawn failed:", err instanceof Error ? err.message : err);
     }
   }
 

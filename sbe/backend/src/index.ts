@@ -44,8 +44,9 @@ async function start() {
     try {
       await migrate(db, { migrationsFolder: "./drizzle" });
       fastify.log.info("✅ Database migrations applied");
-    } catch (migrationErr: any) {
-      fastify.log.warn("⚠️ Migration warning (may already be applied):", migrationErr.message);
+    } catch (migrationErr) {
+      const msg = migrationErr instanceof Error ? migrationErr.message : String(migrationErr);
+      fastify.log.warn(`⚠️ Migration warning (may already be applied): ${msg}`);
     }
 
     // Seed demo data if DB is empty
