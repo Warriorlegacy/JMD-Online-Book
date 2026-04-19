@@ -20,14 +20,13 @@ async function deploy() {
     const sql0 = fs.readFileSync(path.join(__dirname, "../drizzle/0000_tidy_golden_guardian.sql"), "utf-8");
     const sql1 = fs.readFileSync(path.join(__dirname, "../drizzle/0001_ambiguous_the_order.sql"), "utf-8");
 
-    // Drizzle SQL files often contain statement-breakpoints. Let's split and run.
+    // Drizzle SQL files often contain statement-breakpoints.
+    // We execute the entire file in one go to reduce network round-trips.
     const runSql = async (content: string) => {
-      const parts = content.split("--> statement-breakpoint");
-      for (let part of parts) {
-        if (part.trim()) {
-          process.stdout.write(".");
-          await client.query(part);
-        }
+      const sql = content.replace(/--> statement-breakpoint/g, "");
+      if (sql.trim()) {
+        process.stdout.write(".");
+        await client.query(sql);
       }
     };
 
