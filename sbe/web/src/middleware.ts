@@ -11,6 +11,11 @@ const JWT_SECRET = secretStr ? new TextEncoder().encode(secretStr) : null;
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Redirect /dashboard to default locale dashboard
+  if (pathname === '/dashboard' || pathname === '/dashboard/') {
+    return NextResponse.redirect(new URL(`/${routing.defaultLocale}/dashboard`, request.url), 301);
+  }
+
   // 1. Handle i18n first
   const response = intlMiddleware(request);
 
@@ -30,7 +35,7 @@ export default async function middleware(request: NextRequest) {
   // Adjusted paths for [locale] structure
   const isAuthRoute = pathname.startsWith(`${localePrefix}/login`) || pathname.startsWith(`${localePrefix}/register`);
   const isCasinoGameRoute = pathname.startsWith(`${localePrefix}/casino/`) && pathname.split('/').length > 3;
-  const isProtectedRoute = pathname.startsWith(`${localePrefix}/wallet`) || pathname.startsWith(`${localePrefix}/admin`) || isCasinoGameRoute;
+  const isProtectedRoute = pathname.startsWith(`${localePrefix}/wallet`) || pathname.startsWith(`${localePrefix}/admin`) || pathname.startsWith(`${localePrefix}/dashboard`) || isCasinoGameRoute;
   const isAdminRoute = pathname.startsWith(`${localePrefix}/admin`);
 
   if (!token) {
