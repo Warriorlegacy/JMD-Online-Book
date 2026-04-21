@@ -3,11 +3,13 @@ import bcrypt from "bcryptjs";
 import { SignJWT } from "jose";
 import { pool } from "@/lib/db";
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "dev_sbe_secret_key_123"
-);
-
 export async function POST(request: NextRequest) {
+  const secretStr = process.env.JWT_SECRET;
+  if (!secretStr) {
+    console.error("JWT_SECRET environment variable is not set");
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+  const JWT_SECRET = new TextEncoder().encode(secretStr);
   try {
     const body = await request.json();
     const { identifier, password } = body;

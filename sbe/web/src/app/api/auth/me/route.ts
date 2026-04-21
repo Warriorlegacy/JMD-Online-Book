@@ -2,11 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 import { pool } from "@/lib/db";
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "dev_sbe_secret_key_123"
-);
-
 export async function GET(request: NextRequest) {
+  const secretStr = process.env.JWT_SECRET;
+  if (!secretStr) {
+    console.error("JWT_SECRET environment variable is not set");
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+  const JWT_SECRET = new TextEncoder().encode(secretStr);
   try {
     const token = request.cookies.get("sbe_token")?.value;
 
