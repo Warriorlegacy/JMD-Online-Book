@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import websocket from "@fastify/websocket";
@@ -8,13 +9,16 @@ import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { db } from "./db/index.js";
 import wsManagerPlugin from "./plugins/ws.js";
 import orderRoutes from "./routes/orders.js";
+import betRoutes from "./routes/bets.js";
 import adminRoutes, { seedDemoData } from "./routes/admin.js";
 import authRoutes from "./routes/auth.js";
 import walletRoutes from "./routes/wallet.js";
 import announcementRoutes from "./routes/announcements.js";
+import kycRoutes from "./routes/kyc.js";
 import { initPersistenceWorker } from "./worker.js";
 import { CandleService } from "./services/candles.js";
 import { OrderEngineBridge } from "./services/engine.js";
+import { initScheduler } from "./scheduler.js";
 import { globalErrorHandler } from "./middleware/error-handler.js";
 
 // Extend FastifyInstance with authenticate decorator
@@ -84,9 +88,11 @@ async function start() {
     // 2. Register Routes
     await fastify.register(authRoutes);
     await fastify.register(orderRoutes);
+    await fastify.register(betRoutes);
     await fastify.register(adminRoutes);
     await fastify.register(walletRoutes);
     await fastify.register(announcementRoutes);
+    await fastify.register(kycRoutes);
 
     // 3. Health Check
     fastify.get("/health", async () => {
@@ -97,6 +103,7 @@ async function start() {
     initPersistenceWorker(fastify);
     CandleService.init();
     OrderEngineBridge.getInstance(); // Initialize matching engine
+    initScheduler();
 
     // 4. Start Listening
     const port = Number(process.env.PORT) || 4000;
