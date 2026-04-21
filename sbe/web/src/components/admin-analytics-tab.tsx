@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { TrendingUp, Users, Shield, Activity, AlertTriangle, FileText, BarChart3, Clock, Download } from "lucide-react";
 
+import { TrendingUp, Users, Shield, Activity, AlertTriangle, FileText, Clock, Download } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface StatCard { label: string; value: string; sub: string; icon: React.ReactNode; accent: string; trend?: string; }
