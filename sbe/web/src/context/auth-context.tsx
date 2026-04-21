@@ -9,13 +9,14 @@ interface User {
   email: string;
   role: string;
   balance?: string;
+  twoFactorEnabled?: number;
 }
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
   loading: boolean;
-  login: (identifier: string, password: string) => Promise<void>;
+  login: (identifier: string, password: string) => Promise<{ mfaRequired: boolean; mfaToken?: string }>;
   register: (username: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
@@ -65,9 +66,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     const data = await res.json();
+    if (data.status === "MFA_REQUIRED") {
+      return { mfaRequired: true, mfaToken: data.mfaToken };
+    }
+    
     setToken(data.token);
     setUser(data.user);
     router.push("/");
+    return { mfaRequired: false };
   };
 
   const register = async (username: string, email: string, password: string) => {

@@ -43,3 +43,5 @@ sbe/web/.next
 # System files
 .DS_Store
 Thumbs.db
+
+.vercel

@@ -28,11 +28,12 @@ jobs:
 
       - name: Install Backend Dependencies
         working-directory: ./sbe/backend
-        run: npm ci
+        run: npm install
+
 
       - name: Install Web Dependencies
         working-directory: ./sbe/web
-        run: npm ci
+        run: npm install
 
       - name: Lint Web
         working-directory: ./sbe/web

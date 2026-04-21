@@ -1,8 +1,9 @@
 "use client";
-
+ 
 import React from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { 
   Flag, 
   Gamepad2, 
@@ -13,35 +14,41 @@ import {
   Search
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
+ 
 const CATEGORIES = [
-  { id: "in-play", name: "In-Play", icon: Zap, color: "text-amber-500", count: 12 },
-  { id: "cricket", name: "Cricket", icon: Target, color: "text-emerald-500", count: 8 },
-  { id: "football", name: "Football", icon: Flag, color: "text-sky-500", count: 15 },
-  { id: "tennis", name: "Tennis", icon: Star, color: "text-lime-500", count: 4 },
-  { id: "e-sports", name: "E-Sports", icon: Gamepad2, color: "text-purple-500", count: 20 },
-  { id: "kabaddi", name: "Kabaddi", icon: Sword, color: "text-orange-500", count: 3 },
+  { id: "in-play", name: "in_play", icon: Zap, color: "text-amber-500", count: 12 },
+  { id: "cricket", name: "cricket", icon: Target, color: "text-emerald-500", count: 8 },
+  { id: "football", name: "football", icon: Flag, color: "text-sky-500", count: 15 },
+  { id: "tennis", name: "tennis", icon: Star, color: "text-lime-500", count: 4 },
+  { id: "e-sports", name: "e_sports", icon: Gamepad2, color: "text-purple-500", count: 20 },
+  { id: "kabaddi", name: "kabaddi", icon: Sword, color: "text-orange-500", count: 3 },
 ];
-
+ 
 export function Sidebar() {
+  const t = useTranslations("Common");
   const searchParams = useSearchParams();
   const activeSport = searchParams.get("sport") || "in-play";
 
   return (
-    <aside className="w-full h-full flex flex-col gap-8 pb-10">
+    <aside className="w-full h-full flex flex-col gap-7 pb-8 glass-panel p-4">
       {/* Search Bar */}
       <div className="relative group">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 group-focus-within:text-cyan-500 transition-colors" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
         <input 
           type="text" 
-          placeholder="Find Market..." 
-          className="w-full h-12 bg-white/5 border border-white/5 rounded-2xl pl-12 pr-4 text-[11px] font-bold uppercase tracking-widest text-white focus:outline-none focus:border-cyan-500/50 focus:bg-white/10 transition-all"
+          placeholder={t("common.placeholder_find_market")}
+          className={cn(
+            "w-full h-12 glass-input rounded-xl pl-12 pr-4 text-sm font-sans",
+            "text-foreground placeholder:text-muted-foreground",
+            "focus:outline-none transition-all duration-300",
+            "hover:border-border/80"
+          )}
         />
       </div>
 
-      <div className="space-y-6">
-        <div className="px-2">
-          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600 mb-4">Categories</h3>
+      <div className="space-y-6 flex-1 overflow-y-auto custom-scrollbar">
+        <div>
+          <h3 className="text-xs font-heading uppercase tracking-[0.25em] text-muted-foreground mb-4 px-1">{t("common.categories")}</h3>
           <nav className="space-y-1">
             {CATEGORIES.map((cat) => {
               const Icon = cat.icon;
@@ -52,25 +59,28 @@ export function Sidebar() {
                   key={cat.id} 
                   href={`/?sport=${cat.id}`}
                   className={cn(
-                    "flex items-center justify-between p-3 rounded-2xl transition-all duration-300 group",
+                    "flex items-center justify-between p-3 rounded-xl transition-all duration-300 group",
+                    "will-change-transform hover:scale-[1.01] active:scale-[0.995]",
                     isActive 
-                      ? "bg-linear-to-r from-cyan-500/20 to-blue-600/10 border border-cyan-500/30 text-cyan-400" 
-                      : "text-slate-500 hover:text-slate-300 hover:bg-white/5 border border-transparent"
+                      ? "glass bg-primary/10 border-primary/30 text-primary" 
+                      : "text-foreground/70 hover:text-foreground hover:glass border border-transparent"
                   )}
                 >
                   <div className="flex items-center gap-3">
                     <div className={cn(
-                      "p-2 rounded-xl transition-colors",
-                      isActive ? "bg-cyan-500 text-white shadow-lg shadow-cyan-900/40" : "bg-white/5 group-hover:bg-white/10"
+                      "p-2 rounded-lg transition-all duration-300",
+                      isActive 
+                        ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-105" 
+                        : "bg-accent group-hover:bg-accent/80 group-hover:scale-105"
                     )}>
                       <Icon className="w-4 h-4" />
                     </div>
-                    <span className="text-[11px] font-black uppercase tracking-widest">{cat.name}</span>
+                    <span className="text-sm font-sans font-medium tracking-tight">{t(`sports.${cat.name}`)}</span>
                   </div>
                   {cat.count > 0 && (
                     <span className={cn(
-                      "text-[9px] font-black px-2 py-0.5 rounded-full",
-                      isActive ? "bg-cyan-500/20 text-cyan-400" : "bg-white/5 text-slate-700"
+                      "text-xs font-medium px-2 py-0.5 rounded-full transition-all duration-200",
+                      isActive ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"
                     )}>
                       {cat.count}
                     </span>
@@ -81,36 +91,41 @@ export function Sidebar() {
           </nav>
         </div>
 
-        <div className="px-2">
-          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600 mb-4">Popular</h3>
-          <div className="space-y-4">
-            <div className="p-4 rounded-3xl bg-indigo-600/10 border border-indigo-500/20 group hover:bg-indigo-600/20 transition-all cursor-pointer">
-              <p className="text-[9px] font-black text-indigo-400 uppercase tracking-widest mb-1">Premier League</p>
-              <p className="text-xs font-bold text-white mb-2">Man City v Arsenal</p>
-              <div className="flex justify-between items-center text-[9px] font-black text-slate-500">
-                <span className="flex items-center gap-1"><Zap className="w-3 h-3 text-amber-500" /> In-Play</span>
-                <span className="text-indigo-400">View →</span>
+        <div>
+          <h3 className="text-xs font-heading uppercase tracking-[0.25em] text-muted-foreground mb-4 px-1">{t("common.popular")}</h3>
+          <div className="space-y-3">
+            <div className="p-4 rounded-xl glass-card group hover:scale-[1.01] transition-all duration-300 cursor-pointer">
+              <p className="text-xs font-heading uppercase tracking-widest text-indigo-500 mb-1">Premier League</p>
+              <p className="text-sm font-sans font-medium text-foreground mb-2">Man City v Arsenal</p>
+              <div className="flex justify-between items-center text-xs font-sans text-muted-foreground">
+                <span className="flex items-center gap-1"><Zap className="w-3 h-3 text-amber-500" /> {t("sports.live")}</span>
+                <span className="text-indigo-500 group-hover:translate-x-0.5 transition-transform duration-200">View →</span>
               </div>
             </div>
             
-            <div className="p-4 rounded-3xl bg-emerald-600/10 border border-emerald-500/20 group hover:bg-emerald-600/20 transition-all cursor-pointer">
-              <p className="text-[9px] font-black text-emerald-400 uppercase tracking-widest mb-1">CPL 2026</p>
-              <p className="text-xs font-bold text-white mb-2">TKR v GAW</p>
-              <div className="flex justify-between items-center text-[9px] font-black text-slate-500">
+            <div className="p-4 rounded-xl glass-card group hover:scale-[1.01] transition-all duration-300 cursor-pointer">
+              <p className="text-xs font-heading uppercase tracking-widest text-emerald-500 mb-1">CPL 2026</p>
+              <p className="text-sm font-sans font-medium text-foreground mb-2">TKR v GAW</p>
+              <div className="flex justify-between items-center text-xs font-sans text-muted-foreground">
                 <span>Today 19:30</span>
-                <span className="text-emerald-400">View →</span>
+                <span className="text-emerald-500 group-hover:translate-x-0.5 transition-transform duration-200">View →</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-auto px-4 py-6 rounded-[2rem] bg-linear-to-br from-slate-900 to-indigo-950/50 border border-white/5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-600/20 blur-3xl"></div>
-        <p className="text-[10px] font-black text-cyan-400 uppercase tracking-widest mb-2 italic">Pro Version</p>
-        <p className="text-xs font-bold text-white leading-relaxed mb-4">Unlock advanced charts and depth analysis.</p>
-        <button className="w-full py-3 bg-white text-slate-950 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-200 transition-all">
-          Upgrade Now
+      <div className="mt-2 px-4 py-5 rounded-2xl glass-card relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 blur-3xl group-hover:bg-primary/15 transition-all duration-500"></div>
+        <p className="text-xs font-heading uppercase tracking-[0.2em] text-primary mb-2">{t("common.pro_version")}</p>
+        <p className="text-sm font-sans text-foreground leading-relaxed mb-4">{t("common.pro_desc")}</p>
+        <button className={cn(
+          "w-full py-3 rounded-xl transition-all duration-300",
+          "bg-primary text-primary-foreground text-xs font-heading uppercase tracking-widest",
+          "hover:bg-primary/90 hover:scale-[1.01] active:scale-[0.99]",
+          "shadow-lg shadow-primary/20"
+        )}>
+          {t("common.upgrade_now")}
         </button>
       </div>
     </aside>

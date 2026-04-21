@@ -1,7 +1,7 @@
 #!/bin/bash
-echo "Installing..."
+echo "Installing dependencies..."
 npm install
-echo "Building..."
-npm run build || echo "Build failed"
-echo "Starting dev..."
+echo "Building project..."
+npm run build
+echo "Starting development server..."
 npm run dev

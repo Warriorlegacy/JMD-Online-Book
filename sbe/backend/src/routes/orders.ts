@@ -15,6 +15,10 @@ const placeOrderSchema = z.object({
 });
 
 export default async function orderRoutes(fastify: FastifyInstance) {
+  fastify.addHook("preValidation", async (request, reply) => {
+    await fastify.authenticate(request, reply);
+  });
+
   fastify.post("/orders", async (request, reply) => {
     try {
       const data = placeOrderSchema.parse(request.body);

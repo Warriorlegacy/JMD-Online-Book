@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic Ledger | Virtual Sports</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#d8e4f3",
+                    "on-primary-fixed": "#001b3c",
+                    "error-container": "#93000a",
+                    "on-error-container": "#ffdad6",
+                    "surface-dim": "#09141f",
+                    "primary-fixed-dim": "#a7c8ff",
+                    "primary": "#a7c8ff",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed-variant": "#364e00",
+                    "on-secondary-fixed-variant": "#35485e",
+                    "on-secondary-fixed": "#071d31",
+                    "on-surface-variant": "#c1c6d5",
+                    "on-primary-container": "#002a55",
+                    "inverse-primary": "#005eb2",
+                    "tertiary-fixed-dim": "#abd45e",
+                    "outline-variant": "#414753",
+                    "primary-container": "#3a91fa",
+                    "tertiary-container": "#779d2c",
+                    "secondary-fixed-dim": "#b5c8e3",
+                    "surface-bright": "#2f3a46",
+                    "error": "#ffb4ab",
+                    "on-tertiary-container": "#1f2e00",
+                    "inverse-on-surface": "#26313d",
+                    "secondary-fixed": "#d1e4ff",
+                    "on-secondary": "#1f3247",
+                    "on-primary-fixed-variant": "#004788",
+                    "surface": "#09141f",
+                    "on-tertiary": "#243600",
+                    "tertiary": "#abd45e",
+                    "on-primary": "#003060",
+                    "inverse-surface": "#d8e4f3",
+                    "on-tertiary-fixed": "#131f00",
+                    "on-secondary-container": "#a3b7d1",
+                    "surface-variant": "#2b3641",
+                    "surface-container-lowest": "#040f19",
+                    "surface-container-high": "#202b36",
+                    "surface-tint": "#a7c8ff",
+                    "surface-container": "#16212b",
+                    "surface-container-highest": "#2b3641",
+                    "outline": "#8b919e",
+                    "background": "#09141f",
+                    "secondary-container": "#35485e",
+                    "primary-fixed": "#d5e3ff",
+                    "surface-container-low": "#111d27",
+                    "secondary": "#b5c8e3",
+                    "tertiary-fixed": "#c6f176",
+                    "on-background": "#d8e4f3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .bet-slip-glass {
+            background: rgba(43, 54, 65, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #a7c8ff 0%, #3a91fa 100%);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-x-hidden selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full flex items-center justify-between px-6 py-3 h-16 bg-[#09141f]/80 backdrop-blur-xl z-50 shadow-2xl shadow-[#000000]/40 no-line tonal-transition bg-gradient-to-b from-[#09141f] to-transparent">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black italic tracking-tighter text-[#a7c8ff]">KINETIC LEDGER</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="font-['Inter'] tracking-tight font-bold uppercase text-[0.6875rem] text-[#a7c8ff]/60 hover:text-[#a7c8ff] transition-colors" href="#">Sports</a>
+<a class="font-['Inter'] tracking-tight font-bold uppercase text-[0.6875rem] text-[#a7c8ff] border-b-2 border-[#a7c8ff] pb-1" href="#">Virtuals</a>
+<a class="font-['Inter'] tracking-tight font-bold uppercase text-[0.6875rem] text-[#a7c8ff]/60 hover:text-[#a7c8ff] transition-colors" href="#">Live</a>
+<a class="font-['Inter'] tracking-tight font-bold uppercase text-[0.6875rem] text-[#a7c8ff]/60 hover:text-[#a7c8ff] transition-colors" href="#">Schedules</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center gap-2 mr-4">
+<button class="px-4 py-1.5 text-[0.6875rem] font-bold uppercase tracking-wider text-primary hover:bg-[#a7c8ff]/10 transition-all rounded-lg">Affiliate Portal</button>
+<button class="px-5 py-1.5 text-[0.6875rem] font-bold uppercase tracking-wider bg-primary text-on-primary-container rounded-lg kinetic-gradient shadow-lg shadow-primary/20 hover:scale-105 active:opacity-80 transition-all">Deposit</button>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer">notifications</span>
+<div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/10">
+<span class="material-symbols-outlined text-tertiary">account_balance_wallet</span>
+<span class="text-xs font-bold text-on-surface">$12,450.00</span>
+</div>
+<img alt="User avatar" class="w-8 h-8 rounded-full border-2 border-tertiary/40" data-alt="Professional headshot of a young man with a slight smile in a studio setting with clean lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdL-iIlbSgMUZGYtFc6_Cy6E_4zGtXAQaYiOqeAH500-ySvCdNlHoZx7R2tdg-qk8fEqLQE8NGy6_SEA2ruphWalqWalXLLcpZEwcXHZaF1QVzwGrMkPu04ZLW-6ikyotEaGuhRHjfsHLxMAkB7N6flDi82aBjg4NUphJgBm0WCUnHy_JZOEKIxS0Ka2vAvBWs8BxRtsXsDY8G3yBHdkeux8rUZMTaO8JM52SAFVeMP7j9-jqCKDz5psDHlVKpDd7ly-_pttmxdtk"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full z-40 bg-[#09141f] h-screen w-64 hidden lg:flex flex-col border-r border-[#a7c8ff]/10">
+<div class="pt-20 px-6 pb-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">sports_score</span>
+</div>
+<div>
+<div class="text-lg font-bold text-[#abd45e]">Affiliate Pro</div>
+<div class="font-['Inter'] text-[10px] text-slate-400 uppercase tracking-widest">Gold Tier Member</div>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 font-['Inter'] text-sm font-medium text-slate-400 hover:text-white px-4 py-3 hover:bg-white/5 transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+                </a>
+<a class="flex items-center gap-3 font-['Inter'] text-sm font-medium bg-[#a7c8ff]/10 text-[#a7c8ff] border-r-4 border-[#a7c8ff] shadow-[0_0_15px_rgba(167,200,255,0.2)] px-4 py-3" href="#">
+<span class="material-symbols-outlined">insights</span> Analytics
+                </a>
+<a class="flex items-center gap-3 font-['Inter'] text-sm font-medium text-slate-400 hover:text-white px-4 py-3 hover:bg-white/5 transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">group</span> Referrals
+                </a>
+<a class="flex items-center gap-3 font-['Inter'] text-sm font-medium text-slate-400 hover:text-white px-4 py-3 hover:bg-white/5 transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">campaign</span> Marketing Assets
+                </a>
+<a class="flex items-center gap-3 font-['Inter'] text-sm font-medium text-slate-400 hover:text-white px-4 py-3 hover:bg-white/5 transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">payments</span> Earnings
+                </a>
+<a class="flex items-center gap-3 font-['Inter'] text-sm font-medium text-slate-400 hover:text-white px-4 py-3 hover:bg-white/5 transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+                </a>
+</nav>
+</div>
+<div class="mt-auto p-6 space-y-4">
+<button class="w-full py-3 bg-surface-container-highest text-primary text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-primary hover:text-on-primary transition-all duration-300">
+                Request Payout
+            </button>
+<div class="pt-4 border-t border-outline-variant/10 space-y-1">
+<a class="flex items-center gap-3 font-['Inter'] text-sm font-medium text-slate-400 hover:text-white px-4 py-2" href="#">
+<span class="material-symbols-outlined">help</span> Support
+                </a>
+<a class="flex items-center gap-3 font-['Inter'] text-sm font-medium text-slate-400 hover:text-white px-4 py-2" href="#">
+<span class="material-symbols-outlined">logout</span> Logout
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 pt-20 pb-24 lg:pb-12 px-4 lg:px-8 max-w-[1600px]">
+<!-- Hero Section: Virtual Race Stream -->
+<section class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-8">
+<div class="xl:col-span-8 group relative overflow-hidden rounded-2xl bg-surface-container-low shadow-2xl shadow-black/50">
+<!-- Virtual Stream Container -->
+<div class="aspect-video bg-surface-container-lowest relative overflow-hidden">
+<img alt="Virtual Race" class="w-full h-full object-cover opacity-60 mix-blend-luminosity" data-alt="Cinematic wide shot of a high-speed horse race at a modern stadium with neon floodlights and dynamic motion blur" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9lzUT6nxwtZRTf9zK4jwN6Bd-BAMVfdCEVKhlGd02AE2WDeTE5_FKiYHCsvv7YBC7YGXpvlU6qtWSDI9-yy8HrleqnPsaPFuuhz7x_FrXw-2aEYNIcJZmScXussgm2r73xgcnVdITEZYVIhGagqN4dOP22U8w0Lwgk0wL26I7hgBJ-5mqKxemMUAvzKpFJyEzD4P331KtJ4j6xjP5tkNIPWIoLp0YB9wE7KVxjh0gZO2JO30Z01s8ZqTWL1lD1aeJHeUGaFm-5pk"/>
+<!-- UI Overlays for Stream -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-80"></div>
+<!-- Live Status -->
+<div class="absolute top-6 left-6 flex items-center gap-3">
+<div class="bg-surface/60 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-2 border border-outline-variant/20">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span>
+</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface">Live Simulation</span>
+</div>
+<div class="bg-surface/60 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-on-surface-variant border border-outline-variant/20">
+                            RACE ID: #VX-4429
+                        </div>
+</div>
+<!-- Current Leaderboard (Minimalist Overlap) -->
+<div class="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+<div class="space-y-2">
+<h1 class="text-3xl lg:text-4xl font-black tracking-tighter text-white uppercase italic">Ascot Virtual Derby</h1>
+<p class="text-primary font-medium tracking-wide">6/8 Furlongs • Good to Firm</p>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col items-center bg-surface/40 backdrop-blur-sm p-3 rounded-xl border border-white/5">
+<span class="text-[10px] text-slate-400 font-bold uppercase">Lap</span>
+<span class="text-xl font-black text-white">02/03</span>
+</div>
+<div class="flex flex-col items-center bg-surface/40 backdrop-blur-sm p-3 rounded-xl border border-white/5">
+<span class="text-[10px] text-slate-400 font-bold uppercase">Time</span>
+<span class="text-xl font-black text-white">0:44.2</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Panel: Schedule -->
+<div class="xl:col-span-4 flex flex-col gap-4">
+<div class="bg-surface-container-low rounded-2xl p-6 flex-1 flex flex-col">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-sm font-extrabold uppercase tracking-widest text-on-surface-variant">Upcoming Races</h3>
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+</div>
+<div class="space-y-3 overflow-y-auto no-scrollbar max-h-[400px]">
+<!-- Schedule Item: Active/Soon -->
+<div class="p-4 bg-surface-container-high rounded-xl border-l-4 border-tertiary flex items-center justify-between group cursor-pointer hover:bg-surface-container-highest transition-all">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">sports_motorsports</span>
+</div>
+<div>
+<div class="text-xs font-bold text-white">Silverstone GP</div>
+<div class="text-[10px] text-slate-400">Motor Racing • Starts in 2m</div>
+</div>
+</div>
+<span class="text-[10px] font-black text-tertiary bg-tertiary/10 px-2 py-1 rounded">UP NEXT</span>
+</div>
+<!-- Schedule Item -->
+<div class="p-4 bg-surface-container rounded-xl flex items-center justify-between group cursor-pointer hover:bg-surface-container-high transition-all">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">sports_soccer</span>
+</div>
+<div>
+<div class="text-xs font-bold text-on-surface">London Blue vs Madrid</div>
+<div class="text-[10px] text-slate-400">Football • Starts in 5m</div>
+</div>
+</div>
+<span class="text-[10px] font-bold text-slate-500">14:15</span>
+</div>
+<!-- Schedule Item -->
+<div class="p-4 bg-surface-container rounded-xl flex items-center justify-between group cursor-pointer hover:bg-surface-container-high transition-all">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">pets</span>
+</div>
+<div>
+<div class="text-xs font-bold text-on-surface">Dover Sprint</div>
+<div class="text-[10px] text-slate-400">Greyhounds • Starts in 8m</div>
+</div>
+</div>
+<span class="text-[10px] font-bold text-slate-500">14:20</span>
+</div>
+<!-- Schedule Item -->
+<div class="p-4 bg-surface-container rounded-xl flex items-center justify-between group cursor-pointer hover:bg-surface-container-high transition-all">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">sports_basketball</span>
+</div>
+<div>
+<div class="text-xs font-bold text-on-surface">LA Stars vs NY Hawks</div>
+<div class="text-[10px] text-slate-400">Basketball • Starts in 12m</div>
+</div>
+</div>
+<span class="text-[10px] font-bold text-slate-500">14:25</span>
+</div>
+</div>
+<button class="mt-auto w-full py-4 text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:text-white transition-colors">View Full Schedule</button>
+</div>
+</div>
+</section>
+<!-- Markets Grid -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Main Market Canvas -->
+<div class="lg:col-span-8">
+<div class="flex items-center justify-between mb-6">
+<div class="flex gap-4">
+<button class="px-6 py-2 rounded-full bg-primary text-on-primary-container text-xs font-bold uppercase tracking-wider shadow-lg shadow-primary/20">Win / Each Way</button>
+<button class="px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold uppercase tracking-wider hover:bg-surface-container-highest transition-colors">Forecast</button>
+<button class="px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold uppercase tracking-wider hover:bg-surface-container-highest transition-colors">Tricast</button>
+</div>
+</div>
+<!-- Runners Table (Editorial Style) -->
+<div class="bg-surface-container-low rounded-2xl overflow-hidden shadow-xl">
+<div class="grid grid-cols-12 px-6 py-4 bg-surface-container-highest/50 text-[10px] font-black uppercase tracking-widest text-slate-400">
+<div class="col-span-1">#</div>
+<div class="col-span-6">Runner &amp; Form</div>
+<div class="col-span-2 text-center">EW</div>
+<div class="col-span-3 text-right">Odds</div>
+</div>
+<div class="divide-y divide-outline-variant/10">
+<!-- Runner 1 -->
+<div class="grid grid-cols-12 px-6 py-5 items-center hover:bg-white/5 transition-colors group">
+<div class="col-span-1 text-lg font-black text-white italic">1</div>
+<div class="col-span-6 flex items-center gap-4">
+<div class="w-8 h-8 rounded-md bg-[#abd45e] flex items-center justify-center font-bold text-on-tertiary-container shadow-[0_0_10px_rgba(171,212,94,0.3)]">S</div>
+<div>
+<div class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors">Neon Velocity</div>
+<div class="flex gap-1 mt-1">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="w-2 h-2 rounded-full bg-slate-700"></span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+</div>
+</div>
+<div class="col-span-2 text-center text-xs font-medium text-slate-400">1/4 1-2-3</div>
+<div class="col-span-3 flex justify-end">
+<button class="w-24 py-3 rounded-lg bg-surface-container-high text-primary font-black text-base hover:scale-105 active:scale-95 transition-all shadow-inner border border-white/5 hover:bg-primary hover:text-on-primary-container">
+                                    3.50
+                                </button>
+</div>
+</div>
+<!-- Runner 2 -->
+<div class="grid grid-cols-12 px-6 py-5 items-center hover:bg-white/5 transition-colors group">
+<div class="col-span-1 text-lg font-black text-white italic">2</div>
+<div class="col-span-6 flex items-center gap-4">
+<div class="w-8 h-8 rounded-md bg-[#3a91fa] flex items-center justify-center font-bold text-on-primary-container">M</div>
+<div>
+<div class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors">Digital Sultan</div>
+<div class="flex gap-1 mt-1">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="w-2 h-2 rounded-full bg-slate-700"></span>
+<span class="w-2 h-2 rounded-full bg-slate-700"></span>
+<span class="w-2 h-2 rounded-full bg-slate-700"></span>
+</div>
+</div>
+</div>
+<div class="col-span-2 text-center text-xs font-medium text-slate-400">1/4 1-2-3</div>
+<div class="col-span-3 flex justify-end">
+<button class="w-24 py-3 rounded-lg bg-tertiary text-on-tertiary-container font-black text-base hover:scale-105 active:scale-95 transition-all shadow-[0_0_15px_rgba(171,212,94,0.3)]">
+                                    5.20
+                                </button>
+</div>
+</div>
+<!-- Runner 3 -->
+<div class="grid grid-cols-12 px-6 py-5 items-center hover:bg-white/5 transition-colors group">
+<div class="col-span-1 text-lg font-black text-white italic">3</div>
+<div class="col-span-6 flex items-center gap-4">
+<div class="w-8 h-8 rounded-md bg-[#ffb4ab] flex items-center justify-center font-bold text-on-error-container">K</div>
+<div>
+<div class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors">Kinetic Pulse</div>
+<div class="flex gap-1 mt-1">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="w-2 h-2 rounded-full bg-slate-700"></span>
+</div>
+</div>
+</div>
+<div class="col-span-2 text-center text-xs font-medium text-slate-400">1/4 1-2-3</div>
+<div class="col-span-3 flex justify-end">
+<button class="w-24 py-3 rounded-lg bg-surface-container-high text-primary font-black text-base hover:scale-105 active:scale-95 transition-all shadow-inner border border-white/5 hover:bg-primary hover:text-on-primary-container">
+                                    12.0
+                                </button>
+</div>
+</div>
+<!-- Runner 4 -->
+<div class="grid grid-cols-12 px-6 py-5 items-center hover:bg-white/5 transition-colors group">
+<div class="col-span-1 text-lg font-black text-white italic opacity-50">4</div>
+<div class="col-span-6 flex items-center gap-4 opacity-50">
+<div class="w-8 h-8 rounded-md bg-[#2b3641] flex items-center justify-center font-bold text-on-surface-variant">L</div>
+<div>
+<div class="text-sm font-bold text-on-surface">Lunar Eclipse</div>
+<div class="text-[10px] text-error font-bold uppercase tracking-wider mt-1">Market Suspended</div>
+</div>
+</div>
+<div class="col-span-2 text-center text-xs font-medium text-slate-400">--</div>
+<div class="col-span-3 flex justify-end">
+<div class="w-24 py-3 rounded-lg bg-surface-container-lowest flex items-center justify-center text-slate-600">
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Bet Slip (Glassmorphic) -->
+<div class="lg:col-span-4 lg:sticky lg:top-24">
+<div class="bet-slip-glass rounded-2xl p-6 shadow-2xl border border-white/10 flex flex-col min-h-[400px]">
+<div class="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">confirmation_number</span>
+<h3 class="text-xs font-black uppercase tracking-[0.2em] text-white">Bet Slip</h3>
+</div>
+<span class="bg-primary/20 text-primary px-2 py-1 rounded text-[10px] font-black">2</span>
+</div>
+<!-- Bet Slip Item -->
+<div class="space-y-4 mb-8">
+<div class="p-4 bg-white/5 rounded-xl relative group">
+<button class="absolute top-2 right-2 text-slate-500 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+<div class="text-[10px] font-black text-tertiary uppercase tracking-widest mb-1">To Win</div>
+<div class="text-sm font-bold text-white mb-0.5">Digital Sultan</div>
+<div class="text-[10px] text-slate-400 mb-4">Ascot Virtual Derby • Race #VX-4429</div>
+<div class="flex items-center justify-between">
+<div class="bg-surface-container-lowest px-3 py-1.5 rounded flex items-center gap-2">
+<span class="text-[10px] text-slate-500">$</span>
+<input class="bg-transparent border-none p-0 text-xs font-bold text-white w-16 focus:ring-0" type="text" value="100.00"/>
+</div>
+<div class="text-right">
+<div class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Payout</div>
+<div class="text-sm font-black text-primary">$520.00</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Summary & Action -->
+<div class="mt-auto space-y-4">
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-slate-400">
+<span>Total Stake</span>
+<span>$100.00</span>
+</div>
+<div class="flex justify-between text-xs font-black text-white">
+<span class="uppercase tracking-widest">Potential Return</span>
+<span class="text-tertiary">$520.00</span>
+</div>
+</div>
+<button class="w-full py-4 rounded-xl kinetic-gradient text-on-primary-container text-xs font-black uppercase tracking-[0.2em] shadow-xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all">
+                            Place Bet Now
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full lg:hidden flex justify-around items-center h-20 bg-[#09141f]/90 backdrop-blur-md rounded-t-xl z-50 shadow-[0_-8px_32px_rgba(0,0,0,0.5)] no-line tonal-shift-bg">
+<a class="flex flex-col items-center justify-center text-slate-500 opacity-70 scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-bold mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 opacity-70 scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">sensors</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-bold mt-1">Live</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 opacity-70 scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-bold mt-1">Bet Slip</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#abd45e] bg-[#abd45e]/10 rounded-xl px-3 py-1 scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handshake</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-bold mt-1">Affiliate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 opacity-70 scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-bold mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

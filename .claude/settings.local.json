@@ -1,22 +1,11 @@
 {
   "env": {
     "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
-    "ANTHROPIC_AUTH_TOKEN": "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",
+    "ANTHROPIC_AUTH_TOKEN": "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",
     "ANTHROPIC_API_KEY": "",
-    "ANTHROPIC_MODEL": "google/gemma-4-31b-it:free",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "google/gemma-4-31b-it:free",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "google/gemma-4-31b-it:free",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "google/gemma-4-31b-it:free",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "google/gemma-4-31b-it:free"
-  },
-  "permissions": {
-    "allow": [
-      "Bash(npm run *)",
-      "Bash(mv jmd-online-book/jmd-online-book/src/app/api/billing/* jmd-online-book/src/app/api/billing/)",
-      "Bash(npx next *)",
-      "Bash(git add *)",
-      "Bash(git commit *)",
-      "Bash(git push *)"
-    ]
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "arcee-ai/trinity-large-preview:free",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "arcee-ai/trinity-large-preview:free",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "arcee-ai/trinity-large-preview:free",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "arcee-ai/trinity-large-preview:free"
   }
 }

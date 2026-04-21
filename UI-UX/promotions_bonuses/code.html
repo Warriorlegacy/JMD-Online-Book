@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KINETIC | Promotions &amp; Bonuses</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#d8e4f3",
+                        "on-tertiary-container": "#1f2e00",
+                        "secondary-fixed-dim": "#b5c8e3",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "outline": "#8b919e",
+                        "tertiary-fixed-dim": "#abd45e",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary": "#1f3247",
+                        "background": "#09141f",
+                        "on-primary-fixed-variant": "#004788",
+                        "surface-bright": "#2f3a46",
+                        "on-secondary-container": "#a3b7d1",
+                        "tertiary": "#abd45e",
+                        "on-tertiary-fixed": "#131f00",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#779d2c",
+                        "surface-dim": "#09141f",
+                        "tertiary-fixed": "#c6f176",
+                        "primary-container": "#3a91fa",
+                        "surface-container-lowest": "#040f19",
+                        "primary": "#a7c8ff",
+                        "inverse-on-surface": "#26313d",
+                        "on-tertiary-fixed-variant": "#364e00",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-variant": "#2b3641",
+                        "surface-tint": "#a7c8ff",
+                        "outline-variant": "#414753",
+                        "surface-container-highest": "#2b3641",
+                        "surface-container": "#16212b",
+                        "secondary-container": "#35485e",
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#071d31",
+                        "inverse-surface": "#d8e4f3",
+                        "secondary-fixed": "#d1e4ff",
+                        "on-primary": "#003060",
+                        "inverse-primary": "#005eb2",
+                        "surface-container-high": "#202b36",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#111d27",
+                        "on-surface-variant": "#c1c6d5",
+                        "secondary": "#b5c8e3",
+                        "on-tertiary": "#243600",
+                        "surface": "#09141f",
+                        "primary-fixed": "#d5e3ff",
+                        "on-secondary-fixed-variant": "#35485e",
+                        "on-surface": "#d8e4f3",
+                        "on-primary-container": "#002a55"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #09141f; color: #d8e4f3; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { backdrop-filter: blur(12px); }
+        .kinetic-gradient { background: linear-gradient(135deg, #a7c8ff 0%, #3a91fa 100%); }
+        .success-pulse { box-shadow: 0 0 0 0 rgba(171, 212, 94, 0.4); animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(171, 212, 94, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(171, 212, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(171, 212, 94, 0); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full flex justify-between items-center px-6 py-4 bg-[#09141f]/90 backdrop-blur-xl z-50 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-[#a7c8ff] italic">KINETIC</span>
+<div class="hidden md:flex gap-6 items-center">
+<a class="text-slate-400 hover:text-[#abd45e] transition-colors duration-300 font-medium tracking-tight" href="#">Sportsbook</a>
+<a class="text-slate-400 hover:text-[#abd45e] transition-colors duration-300 font-medium tracking-tight" href="#">Live Dealer</a>
+<a class="text-[#a7c8ff] font-bold tracking-tight" href="#">Promotions</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-2 px-3 py-1 bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-tertiary text-sm">account_balance_wallet</span>
+<span class="font-bold text-sm">$4,280.50</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-[#abd45e]">search</span>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-[#abd45e]">notifications</span>
+<button class="kinetic-gradient text-on-primary-container px-5 py-1.5 rounded-xl font-bold text-sm scale-95 active:transition-transform">Deposit</button>
+</div>
+</nav>
+<div class="fixed top-[68px] left-0 w-full bg-gradient-to-b from-[#0f2030] to-transparent h-px z-50"></div>
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 pt-24 bg-[#09141f] h-full w-64 border-r border-[#1b2a3a] z-40">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img alt="Pro Better Avatar" class="w-full h-full object-cover" data-alt="Stylized 3D avatar of a professional sports bettor wearing sleek modern apparel with a tech-focused aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApgwizmkmMtNwlUGKTsqirnhsZm9xXkCaTnHhcL--bMjfwH9C_xBf8oiS4LW6PF8oE1iDuq5GnK6LH-BDLBYy059FydTERGu9VYF8T35PG1O-QaSuWDpTmbamt0PlbCk-Va4kQKzY_NByLZrzOag9eJh01OS1trTmLKdITD1Me4ScZpNsFoEricHQwHE95W0MrT3F7vKKxQqJOf0yfrxNtY5jOC4VqiBmcXahVFJ2SkUFDD9bHgh5VT1DTeHbfucVZOE3id0B_hyk"/>
+</div>
+<div>
+<p class="font-inter uppercase tracking-widest text-[10px] text-slate-500">Gold Tier</p>
+<p class="text-sm font-bold text-[#a7c8ff]">VIP Member</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-white hover:bg-[#a7c8ff0a] transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">sports_score</span>
+<span class="font-inter uppercase tracking-widest text-[10px]">Sportsbook</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-white hover:bg-[#a7c8ff0a] transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">videocam</span>
+<span class="font-inter uppercase tracking-widest text-[10px]">Live Dealer</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#a7c8ff1a] to-transparent border-l-4 border-[#a7c8ff] text-[#a7c8ff] transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">card_giftcard</span>
+<span class="font-inter uppercase tracking-widest text-[10px]">Promotions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-white hover:bg-[#a7c8ff0a] transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+<span class="font-inter uppercase tracking-widest text-[10px]">Wallet</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-white hover:bg-[#a7c8ff0a] transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+<span class="font-inter uppercase tracking-widest text-[10px]">Verification</span>
+</a>
+</nav>
+<div class="bg-[#1b2a3a] w-full h-[1px] my-4"></div>
+<div class="px-4 pb-8 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-white" href="#">
+<span class="material-symbols-outlined text-[20px]">headset_mic</span>
+<span class="font-inter uppercase tracking-widest text-[10px]">Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-white" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-inter uppercase tracking-widest text-[10px]">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 pt-24 pb-24 px-6 md:px-10 lg:px-16 min-h-screen">
+<!-- Hero: Bonus Summary -->
+<header class="relative mb-12 rounded-3xl overflow-hidden min-h-[220px] flex items-center p-8 md:p-12">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-r from-[#09141f] via-[#09141f]/40 to-transparent z-10"></div>
+<img alt="Kinetic Ledger Background" class="w-full h-full object-cover opacity-60" data-alt="Cinematic background of a futuristic high-tech stadium at night with neon blue light trails and dynamic energy particles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe1pVj6FdrMXV1ZPzNhq8LilY8oExQ4e9PEIQOo5qPOfOijrNIe7cdn9kfMM9rhNZocGUJbRWscONHdWS_dYYLuGk7fw-HFZupWjkcJXoxw2KW7ivaykaALCXrRh5mSw3WlvzIuAge7ueTgxDVDPzXsdltK7RsT1npBCHs8YV1N1wHdDnE9u6aEn5Y70i_irKD4r3MljhsPcTiSk8BFoy-2CnPcv24L0-G413TzmaljTSQn2JOhS5yRpwBAGBQBLnEpvZfdaikrRk"/>
+</div>
+<div class="relative z-20 max-w-2xl">
+<div class="flex items-center gap-2 mb-4">
+<span class="inline-flex h-2 w-2 rounded-full bg-tertiary success-pulse"></span>
+<span class="text-label uppercase tracking-widest text-xs text-tertiary font-bold">Active Incentives</span>
+</div>
+<h1 class="text-4xl md:text-5xl font-black tracking-tighter mb-4 text-on-background">Boost Your Edge.</h1>
+<p class="text-on-surface-variant text-lg max-w-lg mb-6 leading-relaxed">You have <span class="text-primary font-bold">$1,250.00</span> in active bonuses currently unlocking. Stake on high-liquidity markets to accelerate wagering requirements.</p>
+<div class="flex flex-wrap gap-4">
+<button class="kinetic-gradient px-8 py-3 rounded-xl font-extrabold text-sm text-on-primary-container shadow-lg shadow-primary/20 hover:brightness-110 transition-all">Claim New Reward</button>
+<button class="bg-surface-container-high px-8 py-3 rounded-xl font-extrabold text-sm text-primary hover:bg-surface-container-highest transition-all">View Analytics</button>
+</div>
+</div>
+</header>
+<!-- Section: Active Bonuses (Progress Bars) -->
+<section class="mb-16">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h2 class="text-2xl font-bold tracking-tight mb-1">Live Bonus Tracking</h2>
+<p class="text-sm text-on-surface-variant">Real-time wagering progress for your active balances.</p>
+</div>
+<span class="text-xs font-bold text-primary cursor-pointer hover:underline">Market Rules</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Active Bonus Card 1 -->
+<div class="bg-surface-container-high rounded-2xl p-6 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-6xl">sports_football</span>
+</div>
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="font-bold text-xl mb-1 text-on-background">Welcome Pack: Match 1</h3>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Sportsbook Exclusive</p>
+</div>
+<div class="text-right">
+<span class="text-xs text-on-surface-variant block mb-1">Locked Value</span>
+<span class="text-2xl font-black text-primary">$500.00</span>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between text-sm font-bold">
+<span class="text-on-surface-variant">Wagering Requirement</span>
+<span class="text-tertiary">75% Complete</span>
+</div>
+<div class="h-3 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full kinetic-gradient w-[75%] rounded-full shadow-[0_0_12px_rgba(167,200,255,0.4)]"></div>
+</div>
+<div class="flex justify-between items-center text-[11px] text-on-surface-variant uppercase tracking-widest font-bold pt-2">
+<span>$15,000 Wagered</span>
+<span>$20,000 Total</span>
+</div>
+</div>
+</div>
+<!-- Active Bonus Card 2 -->
+<div class="bg-surface-container-high rounded-2xl p-6 relative overflow-hidden group border-l-4 border-tertiary/40">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-6xl">casino</span>
+</div>
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="font-bold text-xl mb-1 text-on-background">Weekend High-Roller</h3>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Live Dealer Only</p>
+</div>
+<div class="text-right">
+<span class="text-xs text-on-surface-variant block mb-1">Locked Value</span>
+<span class="text-2xl font-black text-tertiary">$750.00</span>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between text-sm font-bold">
+<span class="text-on-surface-variant">Wagering Requirement</span>
+<span class="text-tertiary">12% Complete</span>
+</div>
+<div class="h-3 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[12%] rounded-full shadow-[0_0_12px_rgba(171,212,94,0.4)]"></div>
+</div>
+<div class="flex justify-between items-center text-[11px] text-on-surface-variant uppercase tracking-widest font-bold pt-2">
+<span>$4,500 Wagered</span>
+<span>$37,500 Total</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Available Offers -->
+<section class="mb-16">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold tracking-tight">Available Liquid Incentives</h2>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg bg-surface-container-low text-on-surface-variant"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-2 rounded-lg bg-surface-container-high text-primary"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Offer Card 1 -->
+<div class="group bg-surface-container-low hover:bg-surface-container-high transition-all duration-300 rounded-3xl overflow-hidden border border-transparent hover:border-primary/20">
+<div class="h-32 bg-surface-container-highest overflow-hidden relative">
+<img alt="Reload Bonus" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" data-alt="Dynamic shot of a football flying through the air with glowing neon motion trails against a dark architectural stadium background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA49ggLV7QqQTSryLBwdF47-FgI9-b45N3GOTXr67RHnZiZW2liwrYJ3ue5o4FShJwj4qmbodLNmhfb7XBgMsbZgyWKlcd-rVPxAIQhipdpF0jHr4ruFPg-H6z1tvlQlWL82S1VhV9MShI4Gj45_kthpDPS8CyNVr7edrtwyT26VcUBbpzEmenvzLhZIzekrOjJoZn6Pk-MintFkBEiF8y_RGEr3AHgEggPu2z8nFlQv5mIT79Oa2yjZBsnlGihiWoZ59hdae_C32M"/>
+<div class="absolute top-4 left-4 bg-tertiary text-on-tertiary-container text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded">Limited Time</div>
+</div>
+<div class="p-6">
+<h4 class="text-lg font-bold mb-2">50% Kinetic Reload</h4>
+<p class="text-sm text-on-surface-variant leading-snug mb-6">Top up your balance by Friday and get up to $200 in bonus credits instantly.</p>
+<button class="w-full py-3 bg-surface-container-highest rounded-xl text-primary font-bold text-sm hover:kinetic-gradient hover:text-on-primary-container transition-all">Opt In Now</button>
+</div>
+</div>
+<!-- Offer Card 2 -->
+<div class="group bg-surface-container-low hover:bg-surface-container-high transition-all duration-300 rounded-3xl overflow-hidden border border-transparent hover:border-primary/20">
+<div class="h-32 bg-surface-container-highest overflow-hidden relative">
+<img alt="Free Bets" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" data-alt="Macro photography of a sleek modern tennis ball with high-contrast studio lighting and cyan and lime accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkyj7jsi22OFPGetLkkEW9nKym7Ph-CJsZdxkzOUm1hFQlylyg3viyBsN2yQfbBDP4X4wIR0Patd324QrUEXtfiBIQ8K2_vLtHGIDKWnrwHiifUhlv4PrdtULJp7JWRlfOJXvmo_GMzpseURo6H82DLF344rDc_rok5e0_Tox6jtbg38mDhS4w2kfZy9_0afO-QGK3Oa-g4gpxy8adu_LN9tSiTs54YRP3DmJq5Ec5IPBHuzs90-ITxfKcx2QhLCfEWSLcc5uocJE"/>
+<div class="absolute top-4 left-4 bg-primary text-on-primary-container text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded">Daily Perk</div>
+</div>
+<div class="p-6">
+<h4 class="text-lg font-bold mb-2">$25 Risk-Free Bet</h4>
+<p class="text-sm text-on-surface-variant leading-snug mb-6">Your first parlay of the day is protected. Get a refund if one leg lets you down.</p>
+<button class="w-full py-3 bg-surface-container-highest rounded-xl text-primary font-bold text-sm hover:kinetic-gradient hover:text-on-primary-container transition-all">Claim Reward</button>
+</div>
+</div>
+<!-- Offer Card 3 -->
+<div class="group bg-surface-container-low hover:bg-surface-container-high transition-all duration-300 rounded-3xl overflow-hidden border border-transparent hover:border-primary/20">
+<div class="h-32 bg-surface-container-highest overflow-hidden relative">
+<img alt="Verification Bonus" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" data-alt="Close up of a glossy pool table with billiard balls in vibrant colors reflecting a dark neon-lit lounge atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCitFhMxlK_Co8OzzXnK_-bvl_Zpz88dWfGqhkf_sbph1co5kDSkGmWdGjH0immbuOfpKBu0wMPBRbHxq3DbKH4TLZLa26TPWyJdk4AabygxYx4v80Lc_NgM9tELdMPb8ux3Y9AaYOfWYfDQBVM5X_MsjQS8rC_M_qrip8e95WX0VG5G_FJXlxcGro6i-c_NQ2PDEepL748NH8U4XRsZhOGB9pODaBh-kgKVLNFB1Izd1B0nslGRGvob1wNkipLamdDkS5T7zerYxI"/>
+<div class="absolute top-4 left-4 bg-surface-bright text-on-background text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded">Identity</div>
+</div>
+<div class="p-6">
+<h4 class="text-lg font-bold mb-2">Level 2 Unlock</h4>
+<p class="text-sm text-on-surface-variant leading-snug mb-6">Verify your ID today to unlock higher withdrawal limits and a $50 loyalty chip.</p>
+<button class="w-full py-3 bg-surface-container-highest rounded-xl text-primary font-bold text-sm hover:kinetic-gradient hover:text-on-primary-container transition-all">Verify Now</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Rewards History -->
+<section class="mb-20">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-2xl font-bold tracking-tight">Reward Ledger</h2>
+<div class="flex items-center gap-4 text-sm text-on-surface-variant font-medium">
+<span class="cursor-pointer text-primary border-b-2 border-primary pb-1">All History</span>
+<span class="cursor-pointer hover:text-on-background pb-1">Sports</span>
+<span class="cursor-pointer hover:text-on-background pb-1">Casino</span>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-3xl overflow-hidden shadow-2xl">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/50 text-[11px] font-black uppercase tracking-[0.1em] text-slate-500">
+<th class="px-8 py-5">Incentive Identity</th>
+<th class="px-8 py-5">Date Claimed</th>
+<th class="px-8 py-5">Type</th>
+<th class="px-8 py-5 text-right">Value</th>
+<th class="px-8 py-5 text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-highest/30">
+<tr class="hover:bg-surface-container-highest/20 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-sm">confirmation_number</span>
+</div>
+<span class="font-bold text-sm">Super Bowl LVIII Free Play</span>
+</div>
+</td>
+<td class="px-8 py-5 text-sm font-medium text-slate-400">Feb 11, 2024</td>
+<td class="px-8 py-5 text-sm font-medium text-slate-400">Fixed Credit</td>
+<td class="px-8 py-5 text-right font-bold text-on-background">$100.00</td>
+<td class="px-8 py-5 text-right">
+<span class="bg-tertiary/10 text-tertiary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Released</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/20 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-sm">payments</span>
+</div>
+<span class="font-bold text-sm">First Deposit Match</span>
+</div>
+</td>
+<td class="px-8 py-5 text-sm font-medium text-slate-400">Jan 15, 2024</td>
+<td class="px-8 py-5 text-sm font-medium text-slate-400">Bonus Carryover</td>
+<td class="px-8 py-5 text-right font-bold text-on-background">$1,000.00</td>
+<td class="px-8 py-5 text-right">
+<span class="bg-tertiary/10 text-tertiary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Released</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/20 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined text-sm">lock_reset</span>
+</div>
+<span class="font-bold text-sm">Referral Bonus - x2</span>
+</div>
+</td>
+<td class="px-8 py-5 text-sm font-medium text-slate-400">Jan 02, 2024</td>
+<td class="px-8 py-5 text-sm font-medium text-slate-400">Social Incentive</td>
+<td class="px-8 py-5 text-right font-bold text-on-background">$50.00</td>
+<td class="px-8 py-5 text-right">
+<span class="bg-error/10 text-error px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Expired</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-3 pb-8 bg-[#09141f]/85 backdrop-blur-lg border-t border-[#1b2a3a]/30 shadow-[0_-4px_24px_rgba(0,0,0,0.4)] rounded-t-2xl">
+<a class="flex flex-col items-center justify-center text-slate-400 opacity-70" href="#">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="font-inter font-semibold text-[11px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 opacity-70" href="#">
+<span class="material-symbols-outlined text-2xl">sensors</span>
+<span class="font-inter font-semibold text-[11px]">Live</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 opacity-70" href="#">
+<span class="material-symbols-outlined text-2xl">receipt_long</span>
+<span class="font-inter font-semibold text-[11px]">Bet Slip</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#abd45e] scale-110 drop-shadow-[0_0_8px_rgba(171,212,94,0.4)]" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">confirmation_number</span>
+<span class="font-inter font-semibold text-[11px]">Promos</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 opacity-70" href="#">
+<span class="material-symbols-outlined text-2xl">wallet</span>
+<span class="font-inter font-semibold text-[11px]">Wallet</span>
+</a>
+</nav>
+</body></html>

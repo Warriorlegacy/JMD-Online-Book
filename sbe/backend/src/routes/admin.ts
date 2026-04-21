@@ -1,8 +1,9 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { SettlementService } from "../services/settlement.js";
 import { db } from "../db/index.js";
-import { matches, marketHistory, tournaments, depositRequests, withdrawalRequests, wallets, ledgerEntries, users } from "../db/schema.js";
+import { matches, marketHistory, tournaments, depositRequests, withdrawalRequests, wallets, ledgerEntries, users, kycReviews, orders } from "../db/schema.js";
 import { eq, asc, sql, desc, and } from "drizzle-orm";
+import { supabase } from "../services/supabase.js";
 
 export async function seedDemoData() {
   try {
@@ -362,15 +363,15 @@ export default async function adminRoutes(fastify: FastifyInstance) {
           .where(eq(wallets.userId, withdrawal.userId))
           .limit(1);
 
-        if (!wallet || parseFloat(wallet.balance) < parseFloat(withdrawal.amount)) {
-          throw new Error("Insufficient balance during approval");
+        if (!wallet || parseFloat(wallet.lockedBalance) < parseFloat(withdrawal.amount)) {
+          throw new Error("Insufficient locked balance during approval");
         }
 
-        const newBalance = (parseFloat(wallet.balance) - parseFloat(withdrawal.amount)).toFixed(8);
+        const newLockedBalance = (parseFloat(wallet.lockedBalance) - parseFloat(withdrawal.amount)).toFixed(8);
 
         await tx
           .update(wallets)
-          .set({ balance: newBalance, updatedAt: new Date() })
+          .set({ lockedBalance: newLockedBalance, updatedAt: new Date() })
           .where(eq(wallets.id, wallet.id));
 
         await tx
@@ -387,10 +388,68 @@ export default async function adminRoutes(fastify: FastifyInstance) {
         });
       });
 
-      return { message: "Withdrawal approved and completed" };
+      return { message: "Withdrawal approved and funds released from lock" };
     } catch (e: any) {
       fastify.log.error(e);
       return reply.code(500).send({ error: e.message || "Failed to approve withdrawal" });
+    }
+  });
+
+  // Reject withdrawal
+  fastify.post("/admin/withdrawals/:id/reject", { preHandler: adminOnly }, async (request, reply) => {
+    const { id } = request.params as { id: string };
+
+    try {
+      const [withdrawal] = await db
+        .select()
+        .from(withdrawalRequests)
+        .where(eq(withdrawalRequests.id, id))
+        .limit(1);
+
+      if (!withdrawal || withdrawal.status !== "pending") {
+        return reply.code(400).send({ error: "Invalid withdrawal request" });
+      }
+
+      await db.transaction(async (tx) => {
+        const [wallet] = await tx
+          .select()
+          .from(wallets)
+          .where(eq(wallets.userId, withdrawal.userId))
+          .limit(1);
+
+        if (!wallet) throw new Error("Wallet not found");
+
+        // Release locked funds back to balance
+        const newBalance = (parseFloat(wallet.balance) + parseFloat(withdrawal.amount)).toFixed(8);
+        const newLockedBalance = (parseFloat(wallet.lockedBalance) - parseFloat(withdrawal.amount)).toFixed(8);
+
+        await tx
+          .update(wallets)
+          .set({ 
+            balance: newBalance, 
+            lockedBalance: newLockedBalance, 
+            updatedAt: new Date() 
+          })
+          .where(eq(wallets.id, wallet.id));
+
+        await tx
+          .update(withdrawalRequests)
+          .set({ status: "rejected" })
+          .where(eq(withdrawalRequests.id, id));
+
+        await tx.insert(ledgerEntries).values({
+          walletId: wallet.id,
+          amount: withdrawal.amount,
+          currency: "INR",
+          type: "withdrawal_rejected_release",
+          referenceId: withdrawal.id
+        });
+      });
+
+      return { message: "Withdrawal rejected and funds released" };
+    } catch (e: any) {
+      fastify.log.error(e);
+      return reply.code(500).send({ error: e.message || "Failed to reject withdrawal" });
     }
   });
 
@@ -413,5 +472,304 @@ export default async function adminRoutes(fastify: FastifyInstance) {
       .from(users)
       .leftJoin(wallets, eq(users.id, wallets.userId))
       .orderBy(desc(users.createdAt));
+  });
+
+  // --- KYC ADMIN ROUTES ---
+
+  // GET /admin/kyc/queue
+  fastify.get("/admin/kyc/queue", { preHandler: adminOnly }, async () => {
+    return await db
+      .select({
+        id: users.id,
+        username: users.username,
+        email: users.email,
+        status: users.kycStatus,
+        documents: users.kycDocuments,
+        createdAt: users.createdAt,
+      })
+      .from(users)
+      .where(eq(users.kycStatus, "pending"))
+      .orderBy(asc(users.createdAt));
+  });
+
+  // POST /admin/kyc/review
+  fastify.post("/admin/kyc/review", { preHandler: adminOnly }, async (request, reply) => {
+    const { userId, decision, notes } = request.body as { userId: string, decision: "verified" | "rejected", notes: string };
+    const admin = request.user as any;
+
+    if (!["verified", "rejected"].includes(decision)) {
+      return reply.code(400).send({ error: "Invalid decision" });
+    }
+
+    try {
+      await db.transaction(async (tx) => {
+        // Update user status
+        await tx
+          .update(users)
+          .set({ kycStatus: decision })
+          .where(eq(users.id, userId));
+
+        // Create review record
+        await tx.insert(kycReviews).values({
+          userId,
+          reviewerId: admin.id,
+          decision,
+          notes,
+        });
+      });
+
+      return { message: `KYC request for user ${userId} has been ${decision}` };
+    } catch (e: any) {
+      fastify.log.error(e);
+      return reply.code(500).send({ error: "Failed to review KYC request" });
+    }
+  });
+
+  // GET /admin/kyc/document/:path
+  fastify.get("/admin/kyc/document/:path*", { preHandler: adminOnly }, async (request, reply) => {
+    try {
+      const { path } = request.params as any;
+      const fullPath = path.join("/");
+      
+      const { data, error } = await supabase.storage
+        .from('kyc-documents')
+        .createSignedUrl(fullPath, 3600); // 1 hour
+
+      if (error) throw error;
+      
+      return { url: data.signedUrl };
+    } catch (e: any) {
+      fastify.log.error(e);
+      return reply.code(500).send({ error: "Failed to generate signed URL" });
+    }
+  });
+
+  // --- GLOBAL LIABILITY VIEW ---
+  fastify.get("/admin/liability", { preHandler: adminOnly }, async (request, reply) => {
+    try {
+      // Total global exposure
+      const totalExposureResult = await db.execute(sql`
+        SELECT 
+          COALESCE(SUM(CAST(stake AS NUMERIC) * (CAST(price AS NUMERIC) - 1)), 0) as total_exposure,
+          COUNT(DISTINCT "user_id") as active_users,
+          COUNT(*) as open_orders
+        FROM orders 
+        WHERE status IN ('open', 'partially_filled')
+      `);
+
+      // Liability by sport
+      const bySportResult = await db.execute(sql`
+        SELECT 
+          t.sport_type,
+          COALESCE(SUM(CAST(o.stake AS NUMERIC) * (CAST(o.price AS NUMERIC) - 1)), 0) as exposure,
+          COUNT(o.id) as order_count
+        FROM orders o
+        JOIN matches m ON o.match_id = m.id
+        JOIN tournaments t ON m.tournament_id = t.id
+        WHERE o.status IN ('open', 'partially_filled')
+        GROUP BY t.sport_type
+        ORDER BY exposure DESC
+      `);
+
+      // Liability by user (top 20)
+      const byUserResult = await db.execute(sql`
+        SELECT 
+          u.id,
+          u.username,
+          COALESCE(SUM(CAST(o.stake AS NUMERIC) * (CAST(o.price AS NUMERIC) - 1)), 0) as user_exposure,
+          COUNT(o.id) as user_orders
+        FROM orders o
+        JOIN users u ON o.user_id = u.id
+        WHERE o.status IN ('open', 'partially_filled')
+        GROUP BY u.id, u.username
+        ORDER BY user_exposure DESC
+        LIMIT 20
+      `);
+
+      return {
+        total: {
+          exposure: parseFloat(totalExposureResult.rows[0].total_exposure as string),
+          activeUsers: parseInt(totalExposureResult.rows[0].active_users as string),
+          openOrders: parseInt(totalExposureResult.rows[0].open_orders as string)
+        },
+        bySport: bySportResult.rows.map((row: any) => ({
+          sportType: row.sport_type,
+          exposure: parseFloat(row.exposure as string),
+          orderCount: parseInt(row.order_count as string)
+        })),
+        byUser: byUserResult.rows.map((row: any) => ({
+          id: row.id,
+          username: row.username,
+          exposure: parseFloat(row.user_exposure as string),
+          orderCount: parseInt(row.user_orders as string)
+        }))
+      };
+    } catch (e: any) {
+      fastify.log.error(e);
+      return reply.code(500).send({ error: "Failed to calculate liability view" });
+    }
+  });
+
+  // --- MARKET LIQUIDITY INJECTION ---
+  fastify.post("/admin/market/inject", { preHandler: adminOnly }, async (request, reply) => {
+    const { 
+      matchId, 
+      selectionId, 
+      type, 
+      price, 
+      stake 
+    } = request.body as { 
+      matchId: string, 
+      selectionId: string, 
+      type: "back" | "lay", 
+      price: number, 
+      stake: number 
+    };
+
+    // Validation
+    if (!matchId || !selectionId || !type || !price || !stake) {
+      return reply.code(400).send({ error: "All fields are required" });
+    }
+
+    if (!["back", "lay"].includes(type)) {
+      return reply.code(400).send({ error: "Type must be either 'back' or 'lay'" });
+    }
+
+    if (price <= 1 || price > 1000) {
+      return reply.code(400).send({ error: "Price must be between 1.01 and 1000" });
+    }
+
+    if (stake <= 0 || stake > 1000000) {
+      return reply.code(400).send({ error: "Stake must be positive and less than 1,000,000" });
+    }
+
+    try {
+      // Verify match exists and is active
+      const matchResult = await db.execute(sql`
+        SELECT id, status FROM matches WHERE id = ${matchId} AND status IN ('scheduled', 'in_play') LIMIT 1
+      `);
+
+      if (matchResult.rows.length === 0) {
+        return reply.code(404).send({ error: "Active match not found" });
+      }
+
+      const order = await db.transaction(async (tx) => {
+        // Create injected order with null user_id (system liquidity)
+        const [injectedOrder] = await tx.insert(orders).values({
+          matchID: matchId,
+          selectionId,
+          type,
+          price: price.toFixed(4),
+          stake: stake.toFixed(8),
+          filledStake: "0",
+          status: "open",
+          userId: (request.user as any).id // Admin user executing injection
+        }).returning();
+
+        await tx.insert(marketHistory).values({
+          matchId: matchId,
+          selectionId,
+          interval: "1m",
+          open: price.toString(),
+          high: price.toString(),
+          low: price.toString(),
+          close: price.toString(),
+          volume: stake.toString(),
+          timestamp: new Date()
+        });
+
+        return injectedOrder;
+      });
+
+      return {
+        success: true,
+        message: `Successfully injected ${stake} liquidity at price ${price}`,
+        orderId: order.id
+      };
+    } catch (e: any) {
+      fastify.log.error(e);
+      return reply.code(500).send({ error: "Failed to inject market liquidity" });
+    }
+  });
+
+  // --- KYC FINALIZATION ENDPOINTS ---
+  
+  // GET KYC history for user
+  fastify.get("/admin/kyc/history/:userId", { preHandler: adminOnly }, async (request, reply) => {
+    const { userId } = request.params as { userId: string };
+
+    try {
+      const reviews = await db
+        .select({
+          id: kycReviews.id,
+          reviewerId: kycReviews.reviewerId,
+          reviewerName: users.username,
+          decision: kycReviews.decision,
+          notes: kycReviews.notes,
+          createdAt: kycReviews.createdAt
+        })
+        .from(kycReviews)
+        .leftJoin(users, eq(users.id, kycReviews.reviewerId))
+        .where(eq(kycReviews.userId, userId))
+        .orderBy(desc(kycReviews.createdAt));
+
+      return reviews;
+    } catch (e: any) {
+      fastify.log.error(e);
+      return reply.code(500).send({ error: "Failed to fetch KYC history" });
+    }
+  });
+
+  // Bulk KYC queue stats
+  fastify.get("/admin/kyc/stats", { preHandler: adminOnly }, async () => {
+    const statsResult = await db.execute(sql`
+      SELECT 
+        kyc_status,
+        COUNT(*) as count
+      FROM users
+      GROUP BY kyc_status
+    `);
+
+    return statsResult.rows.reduce((acc: any, row: any) => {
+      acc[row.kyc_status] = parseInt(row.count);
+      return acc;
+    }, {});
+  });
+
+  // --- ADMIN REFERRAL ROUTES ---
+  fastify.get("/admin/referrals", { preHandler: adminOnly }, async () => {
+    try {
+      const topReferrers = await db.execute(sql`
+        SELECT 
+          u.id,
+          u.username,
+          u.referral_code,
+          COUNT(r.id) as referred_count,
+          COALESCE(SUM(CAST(re.amount AS NUMERIC)), 0) as total_earned
+        FROM users u
+        LEFT JOIN users r ON u.referral_code = r.referred_by_code
+        LEFT JOIN referrals ref ON u.id = ref.referrer_id
+        LEFT JOIN referral_earnings re ON ref.id = re.referral_id
+        GROUP BY u.id, u.username, u.referral_code
+        HAVING COUNT(r.id) > 0
+        ORDER BY referred_count DESC
+        LIMIT 50
+      `);
+
+      const globalStats = await db.execute(sql`
+        SELECT 
+          COUNT(*) as total_referrals,
+          COALESCE(SUM(CAST(amount AS NUMERIC)), 0) as total_commissions
+        FROM referral_earnings
+      `);
+
+      return {
+        referrers: topReferrers.rows,
+        stats: globalStats.rows[0]
+      };
+    } catch (e: any) {
+      fastify.log.error(e);
+      throw new Error("Failed to fetch referral data");
+    }
   });
 }

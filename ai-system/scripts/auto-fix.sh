@@ -1,9 +1,12 @@
 #!/bin/bash
-while true
-do
-  echo "Running app..."
-  npm run dev
+while true; do
+  echo "Running dev server and monitoring for errors..."
+  npm run dev 2> error.log
   if [ $? -ne 0 ]; then
-    echo "Error detected. Sending to AI debugger..."
+    echo "Error detected. Triggering debugger..."
+    # Conceptually trigger debugger
+    cat error.log
+    # In a real system, this would call a debugger agent script
+    break
   fi
 done

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic Admin | Performance Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#abd45e",
+                    "inverse-primary": "#005eb2",
+                    "surface-dim": "#09141f",
+                    "surface-container": "#16212b",
+                    "inverse-on-surface": "#26313d",
+                    "surface-variant": "#2b3641",
+                    "surface-container-highest": "#2b3641",
+                    "on-surface": "#d8e4f3",
+                    "surface-bright": "#2f3a46",
+                    "on-background": "#d8e4f3",
+                    "on-primary-container": "#002a55",
+                    "primary-fixed-dim": "#a7c8ff",
+                    "on-primary": "#003060",
+                    "on-tertiary-fixed-variant": "#364e00",
+                    "on-tertiary-fixed": "#131f00",
+                    "error-container": "#93000a",
+                    "tertiary-fixed": "#c6f176",
+                    "primary-container": "#3a91fa",
+                    "on-primary-fixed-variant": "#004788",
+                    "on-secondary-fixed-variant": "#35485e",
+                    "inverse-surface": "#d8e4f3",
+                    "tertiary-container": "#779d2c",
+                    "secondary-fixed-dim": "#b5c8e3",
+                    "surface-tint": "#a7c8ff",
+                    "on-primary-fixed": "#001b3c",
+                    "outline": "#8b919e",
+                    "on-secondary-fixed": "#071d31",
+                    "surface": "#09141f",
+                    "tertiary-fixed-dim": "#abd45e",
+                    "surface-container-high": "#202b36",
+                    "surface-container-low": "#111d27",
+                    "on-secondary": "#1f3247",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed": "#d1e4ff",
+                    "primary": "#a7c8ff",
+                    "on-secondary-container": "#a3b7d1",
+                    "on-error": "#690005",
+                    "on-tertiary": "#243600",
+                    "background": "#09141f",
+                    "secondary": "#b5c8e3",
+                    "secondary-container": "#35485e",
+                    "outline-variant": "#414753",
+                    "surface-container-lowest": "#040f19",
+                    "primary-fixed": "#d5e3ff",
+                    "on-tertiary-container": "#1f2e00",
+                    "error": "#ffb4ab",
+                    "on-surface-variant": "#c1c6d5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(15, 29, 45, 0.7);
+            backdrop-filter: blur(12px);
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #a7c8ff 0%, #3a91fa 100%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #09141f; }
+        ::-webkit-scrollbar-thumb { background: #2b3641; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 z-50 w-full bg-[#09141f]/80 backdrop-blur-xl shadow-2xl shadow-blue-900/20">
+<div class="flex items-center justify-between px-6 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#a7c8ff] italic">Kinetic Admin</span>
+<div class="hidden md:flex items-center gap-6 font-['Inter'] tracking-tight text-sm font-medium">
+<a class="text-slate-400 hover:text-slate-200 transition-colors" href="#">Dashboard</a>
+<a class="text-[#a7c8ff] border-b-2 border-[#a7c8ff] pb-2" href="#">Analytics</a>
+<a class="text-slate-400 hover:text-slate-200 transition-colors" href="#">Support</a>
+<a class="text-slate-400 hover:text-slate-200 transition-colors" href="#">Staff</a>
+<a class="text-slate-400 hover:text-slate-200 transition-colors" href="#">Reports</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<button class="p-2 hover:bg-white/5 rounded-md transition-all duration-300 active:scale-95 text-[#a7c8ff]">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<span class="absolute top-2 right-2 w-2 h-2 bg-tertiary rounded-full ring-2 ring-surface"></span>
+</div>
+<button class="p-2 hover:bg-white/5 rounded-md transition-all duration-300 active:scale-95 text-[#a7c8ff]">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-primary/20">
+<img alt="Administrator Profile" data-alt="professional male executive in a sharp navy suit looking confident and smiling slightly against a soft office background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEc7E4QDrX0DnYxc5O_vtMWyj8_rfmo7SLXuF5T3JjYiQFVj6Vj7qJdpri8tdOJLVESyg83t5zzFBltY3DGMdmd2wSZ8vHbkMMV-Mv08UcxWBnwZUAdM-kXs57TqKoTO4B3XRGQyeW7-rw1xK9uBcbTC56Ihb4MUkHJ71HM0Y1T1apTVFQuC5b1SC7ZjPG7pLJueGgRR5jiYJXUnqiAGO1hhdVet6k2ZGTI0ciw6zryAvPj2OhCBbw0tZLrA5ouasGiqB2wjJ5Eck"/>
+</div>
+</div>
+</div>
+<div class="bg-gradient-to-b from-white/5 to-transparent h-[1px]"></div>
+</nav>
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-white/5 bg-[#09141f] pt-20 pb-4 flex flex-col z-40 hidden md:flex">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></div>
+<span class="font-['Inter'] text-xs font-semibold uppercase tracking-widest text-[#a7c8ff]">Platform Health</span>
+</div>
+<p class="text-[10px] text-slate-500 font-medium">99.9% Uptime | Real-time</p>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 font-['Inter'] text-xs font-semibold uppercase tracking-widest bg-gradient-to-r from-[#a7c8ff]/10 to-transparent text-[#a7c8ff] border-l-4 border-[#a7c8ff] group" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="speed">speed</span>
+<span class="group-hover:translate-x-1 transition-transform duration-200">Health Monitor</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-['Inter'] text-xs font-semibold uppercase tracking-widest text-slate-500 hover:text-slate-300 hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="payments">payments</span>
+<span class="group-hover:translate-x-1 transition-transform duration-200">Financials</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-['Inter'] text-xs font-semibold uppercase tracking-widest text-slate-500 hover:text-slate-300 hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="forum">forum</span>
+<span class="group-hover:translate-x-1 transition-transform duration-200">Live Chat</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-['Inter'] text-xs font-semibold uppercase tracking-widest text-slate-500 hover:text-slate-300 hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="receipt_long">receipt_long</span>
+<span class="group-hover:translate-x-1 transition-transform duration-200">Bet History</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-['Inter'] text-xs font-semibold uppercase tracking-widest text-slate-500 hover:text-slate-300 hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="gpp_maybe">gpp_maybe</span>
+<span class="group-hover:translate-x-1 transition-transform duration-200">Risk Management</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-['Inter'] text-xs font-semibold uppercase tracking-widest text-slate-500 hover:text-slate-300 hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="assignment">assignment</span>
+<span class="group-hover:translate-x-1 transition-transform duration-200">Audit Logs</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-4">
+<button class="w-full py-2 kinetic-gradient rounded-lg text-on-primary-container font-bold text-xs uppercase tracking-wider active:scale-95 transition-transform">
+                Generate Report
+            </button>
+<div class="pt-4 border-t border-white/5 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-slate-300 text-[10px] uppercase tracking-widest font-bold" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="settings_suggest">settings_suggest</span>
+                    System Settings
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-error hover:text-red-400 text-[10px] uppercase tracking-widest font-bold" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="logout">logout</span>
+                    Logout
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="md:pl-64 pt-16 min-h-screen">
+<div class="p-6 max-w-[1600px] mx-auto space-y-6">
+<!-- Page Title Area -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
+<div>
+<h1 class="text-3xl font-extrabold tracking-tighter text-on-surface">Analytics Engine</h1>
+<p class="text-on-surface-variant text-sm mt-1">Live data feed from Ledger-Node-Alpha7</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-xl border border-white/5">
+<span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Timeframe:</span>
+<select class="bg-transparent border-none text-xs font-bold text-primary focus:ring-0 cursor-pointer p-0">
+<option>Real-Time (24h)</option>
+<option>Last 7 Days</option>
+<option>Monthly Overview</option>
+</select>
+</div>
+</div>
+</div>
+<!-- KPI Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- GGR Card -->
+<div class="bg-surface-container-low p-5 rounded-xl flex flex-col justify-between border-l-4 border-primary">
+<div class="flex justify-between items-start">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Gross Gaming Revenue</span>
+<span class="material-symbols-outlined text-primary text-xl" data-icon="trending_up">trending_up</span>
+</div>
+<div class="mt-4">
+<h3 class="text-2xl font-bold tracking-tight">$428,950.00</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-tertiary text-xs font-bold">+12.4%</span>
+<span class="text-slate-500 text-[10px]">vs previous day</span>
+</div>
+</div>
+</div>
+<!-- Active Players -->
+<div class="bg-surface-container-low p-5 rounded-xl flex flex-col justify-between border-l-4 border-tertiary">
+<div class="flex justify-between items-start">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Active Stakeholders</span>
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="groups">groups</span>
+</div>
+<div class="mt-4">
+<h3 class="text-2xl font-bold tracking-tight">14,822</h3>
+<div class="flex items-center gap-2 mt-1">
+<div class="flex -space-x-2">
+<div class="w-4 h-4 rounded-full bg-slate-700 border border-surface"></div>
+<div class="w-4 h-4 rounded-full bg-slate-600 border border-surface"></div>
+<div class="w-4 h-4 rounded-full bg-slate-500 border border-surface"></div>
+</div>
+<span class="text-slate-500 text-[10px]">842 currently online</span>
+</div>
+</div>
+</div>
+<!-- Liabilities -->
+<div class="bg-surface-container-low p-5 rounded-xl flex flex-col justify-between border-l-4 border-error">
+<div class="flex justify-between items-start">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Open Liabilities</span>
+<span class="material-symbols-outlined text-error text-xl" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div class="mt-4">
+<h3 class="text-2xl font-bold tracking-tight">$1,024,550.42</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-error text-xs font-bold">High Risk</span>
+<span class="text-slate-500 text-[10px]">62% in Tier 1 events</span>
+</div>
+</div>
+</div>
+<!-- Platform Uptime -->
+<div class="bg-surface-container-low p-5 rounded-xl flex flex-col justify-between border-l-4 border-on-secondary-container">
+<div class="flex justify-between items-start">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">System Stability</span>
+<span class="material-symbols-outlined text-on-secondary-container text-xl" data-icon="verified_user">verified_user</span>
+</div>
+<div class="mt-4">
+<h3 class="text-2xl font-bold tracking-tight">99.998%</h3>
+<div class="flex items-center gap-1 mt-1">
+<div class="flex items-center gap-0.5">
+<div class="w-1 h-3 bg-tertiary rounded-full"></div>
+<div class="w-1 h-4 bg-tertiary rounded-full"></div>
+<div class="w-1 h-2 bg-tertiary rounded-full"></div>
+<div class="w-1 h-5 bg-tertiary rounded-full"></div>
+<div class="w-1 h-3 bg-tertiary rounded-full"></div>
+</div>
+<span class="text-slate-500 text-[10px] ml-2">All services operational</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Section: Health & Financials -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<!-- Platform Health Monitor -->
+<div class="xl:col-span-2 bg-surface-container-low rounded-xl overflow-hidden">
+<div class="p-6 border-b border-white/5 flex items-center justify-between">
+<div>
+<h2 class="text-sm font-bold uppercase tracking-widest">Platform Health Monitor</h2>
+<p class="text-[10px] text-slate-500">Node cluster performance &amp; latency metrics</p>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<p class="text-[10px] text-slate-500 uppercase font-bold">Avg Latency</p>
+<p class="text-xs font-bold text-tertiary">24ms</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-slate-500 uppercase font-bold">Error Rate</p>
+<p class="text-xs font-bold text-primary">0.002%</p>
+</div>
+</div>
+</div>
+<div class="p-6 h-64 flex items-end gap-1 relative">
+<!-- Simulated Chart Grid -->
+<div class="absolute inset-x-6 inset-y-6 flex flex-col justify-between pointer-events-none opacity-10">
+<div class="border-t border-on-surface"></div>
+<div class="border-t border-on-surface"></div>
+<div class="border-t border-on-surface"></div>
+<div class="border-t border-on-surface"></div>
+</div>
+<!-- Simulated Load Bars -->
+<div class="flex-1 bg-primary/20 rounded-t h-[40%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[35%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[55%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[75%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[60%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[45%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[85%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[65%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[40%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[30%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[50%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[70%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[90%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[60%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[40%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[55%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[35%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[25%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[45%] hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-[55%] hover:bg-primary/40 transition-colors"></div>
+</div>
+</div>
+<!-- Financial Snapshot -->
+<div class="bg-surface-container-low rounded-xl flex flex-col">
+<div class="p-6 border-b border-white/5">
+<h2 class="text-sm font-bold uppercase tracking-widest">Financial Mix</h2>
+<p class="text-[10px] text-slate-500">Deposit vs Withdrawal velocity</p>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-center space-y-6">
+<div>
+<div class="flex justify-between text-[10px] font-bold mb-2">
+<span class="text-slate-400 uppercase tracking-widest">Fiat (USD/EUR)</span>
+<span class="text-on-surface">62%</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[62%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[10px] font-bold mb-2">
+<span class="text-slate-400 uppercase tracking-widest">Crypto (BTC/ETH/USDT)</span>
+<span class="text-on-surface">38%</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[38%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-4">
+<div class="p-3 bg-surface-container rounded-lg">
+<p class="text-[10px] text-slate-500 font-bold uppercase">Deposits</p>
+<p class="text-lg font-bold text-tertiary">$1.2M</p>
+</div>
+<div class="p-3 bg-surface-container rounded-lg">
+<p class="text-[10px] text-slate-500 font-bold uppercase">Withdrawals</p>
+<p class="text-lg font-bold text-error">$840k</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Risk & Activity -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Risk Management Panel -->
+<div class="bg-surface-container-low rounded-xl border border-error/10 overflow-hidden">
+<div class="p-6 bg-error/5 border-b border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error" data-icon="gpp_maybe">gpp_maybe</span>
+<div>
+<h2 class="text-sm font-bold uppercase tracking-widest">Risk Management Alerts</h2>
+<p class="text-[10px] text-slate-500">Live monitoring of high-exposure markets</p>
+</div>
+</div>
+<span class="bg-error/20 text-error text-[10px] px-2 py-1 rounded font-bold">3 CRITICAL</span>
+</div>
+<div class="divide-y divide-white/5">
+<div class="p-4 hover:bg-white/5 transition-colors group cursor-pointer">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-xs font-bold">Multiple Account Correlation: User#8291</h4>
+<p class="text-[10px] text-slate-500 mt-1">IP Address match with 4 other accounts in "Premier League" market.</p>
+</div>
+<button class="text-primary text-[10px] font-bold uppercase hover:underline">Investigate</button>
+</div>
+</div>
+<div class="p-4 hover:bg-white/5 transition-colors group cursor-pointer">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-xs font-bold">Heavy Liability Spike: Lakers vs Celtics</h4>
+<p class="text-[10px] text-slate-500 mt-1">$400k liability on Lakers ML in last 5 minutes from Tier 3 region.</p>
+</div>
+<button class="text-primary text-[10px] font-bold uppercase hover:underline">Adjust Odds</button>
+</div>
+</div>
+<div class="p-4 hover:bg-white/5 transition-colors group cursor-pointer">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-xs font-bold">Rapid Deposit Cycle: User#1104</h4>
+<p class="text-[10px] text-slate-500 mt-1">$5,000 deposited via Crypto, immediate 1.01 odds wagering pattern detected.</p>
+</div>
+<button class="text-primary text-[10px] font-bold uppercase hover:underline">Lock Account</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Staff Activity & Audit -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden">
+<div class="p-6 border-b border-white/5">
+<h2 class="text-sm font-bold uppercase tracking-widest">Staff Activity Log</h2>
+<p class="text-[10px] text-slate-500">System changes and administrative actions</p>
+</div>
+<div class="p-6">
+<ul class="space-y-6">
+<li class="flex gap-4">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm text-slate-400" data-icon="edit">edit</span>
+</div>
+<div>
+<p class="text-xs font-medium"><span class="text-primary">Admin_Sarah</span> adjusted margin for <span class="text-on-surface font-bold">ATP Wimbledon Finals</span></p>
+<p class="text-[10px] text-slate-500 mt-1">4 minutes ago</p>
+</div>
+</li>
+<li class="flex gap-4">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm text-slate-400" data-icon="vpn_key">vpn_key</span>
+</div>
+<div>
+<p class="text-xs font-medium"><span class="text-primary">Sys_Manager</span> updated security protocols for <span class="text-on-surface font-bold">Withdrawal Gateway</span></p>
+<p class="text-[10px] text-slate-500 mt-1">1 hour ago</p>
+</div>
+</li>
+<li class="flex gap-4">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm text-slate-400" data-icon="block">block</span>
+</div>
+<div>
+<p class="text-xs font-medium"><span class="text-primary">Risk_Bot_v2</span> suspended account <span class="text-on-surface font-bold">ID: #9902</span> (Fraud Detection)</p>
+<p class="text-[10px] text-slate-500 mt-1">2 hours ago</p>
+</div>
+</li>
+<li class="flex gap-4">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm text-slate-400" data-icon="cloud_done">cloud_done</span>
+</div>
+<div>
+<p class="text-xs font-medium"><span class="text-primary">System</span> automatic backup completed for <span class="text-on-surface font-bold">Master Ledger</span></p>
+<p class="text-[10px] text-slate-500 mt-1">5 hours ago</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Export Analytics) -->
+<button class="fixed bottom-8 right-8 kinetic-gradient text-on-primary-container px-6 py-3 rounded-full flex items-center gap-2 shadow-2xl shadow-blue-500/40 font-bold text-sm hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+        Export Full Data Pack
+    </button>
+</body></html>

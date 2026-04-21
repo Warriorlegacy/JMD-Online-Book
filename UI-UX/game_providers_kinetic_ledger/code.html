@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Game Providers | KINETIC CASINO</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#111d27",
+                    "secondary-container": "#35485e",
+                    "on-error": "#690005",
+                    "on-primary-fixed": "#001b3c",
+                    "surface-container-lowest": "#040f19",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed": "#c6f176",
+                    "on-surface-variant": "#c1c6d5",
+                    "primary-fixed-dim": "#a7c8ff",
+                    "outline": "#8b919e",
+                    "inverse-on-surface": "#26313d",
+                    "surface-container": "#16212b",
+                    "surface-variant": "#2b3641",
+                    "on-background": "#d8e4f3",
+                    "background": "#09141f",
+                    "primary": "#a7c8ff",
+                    "on-tertiary-fixed": "#131f00",
+                    "outline-variant": "#414753",
+                    "on-error-container": "#ffdad6",
+                    "secondary": "#b5c8e3",
+                    "primary-fixed": "#d5e3ff",
+                    "tertiary-container": "#779d2c",
+                    "secondary-fixed-dim": "#b5c8e3",
+                    "inverse-surface": "#d8e4f3",
+                    "surface-tint": "#a7c8ff",
+                    "tertiary": "#abd45e",
+                    "on-secondary": "#1f3247",
+                    "surface": "#09141f",
+                    "surface-dim": "#09141f",
+                    "surface-container-highest": "#2b3641",
+                    "on-tertiary-fixed-variant": "#364e00",
+                    "on-secondary-container": "#a3b7d1",
+                    "surface-bright": "#2f3a46",
+                    "on-secondary-fixed": "#071d31",
+                    "secondary-fixed": "#d1e4ff",
+                    "on-secondary-fixed-variant": "#35485e",
+                    "on-primary-container": "#002a55",
+                    "primary-container": "#3a91fa",
+                    "on-tertiary-container": "#1f2e00",
+                    "on-tertiary": "#243600",
+                    "inverse-primary": "#005eb2",
+                    "surface-container-high": "#202b36",
+                    "error-container": "#93000a",
+                    "on-primary": "#003060",
+                    "tertiary-fixed-dim": "#abd45e",
+                    "on-primary-fixed-variant": "#004788",
+                    "on-surface": "#d8e4f3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(43, 54, 65, 0.85);
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #a7c8ff 0%, #3a91fa 100%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-[#09141f] dark:bg-[#09141f] docked full-width top-0 sticky z-50 bg-[#0b1d2e] no-border tonal-shift shadow-[0_32px_64px_rgba(9,20,31,0.1)] flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black tracking-tighter text-[#a7c8ff]">KINETIC CASINO</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-400 font-medium hover:text-white transition-colors duration-200 Inter label-sm uppercase tracking-widest" href="#">Sports</a>
+<a class="text-[#a7c8ff] border-b-2 border-[#a7c8ff] pb-1 Inter label-sm uppercase tracking-widest" href="#">Casino</a>
+<a class="text-slate-400 font-medium hover:text-white transition-colors duration-200 Inter label-sm uppercase tracking-widest" href="#">Live Dealer</a>
+<a class="text-slate-400 font-medium hover:text-white transition-colors duration-200 Inter label-sm uppercase tracking-widest" href="#">Promos</a>
+<a class="text-slate-400 font-medium hover:text-white transition-colors duration-200 Inter label-sm uppercase tracking-widest" href="#">VIP</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-surface-container-low px-3 py-1.5 rounded-lg border border-outline-variant/20">
+<span class="material-symbols-outlined text-slate-400 text-sm mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none text-sm focus:ring-0 p-0 w-48 text-on-surface placeholder-slate-500" placeholder="Search games..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined text-slate-400 hover:text-white transition-colors" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-slate-400 hover:text-white transition-colors" data-icon="account_circle">account_circle</button>
+<button class="kinetic-gradient text-on-primary-container px-4 py-1.5 rounded-lg text-sm font-bold tracking-tight scale-95 transition-transform duration-150 active:scale-90">DEPOSIT</button>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-4rem)]">
+<!-- SideNavBar -->
+<aside class="bg-[#0b1d2e] dark:bg-[#0b1d2e] docked left-0 h-[calc(100vh-4rem)] w-64 sticky top-16 tonal-layering surface-container-low on surface flat-tonal-depth flex flex-col py-6 space-y-2">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="person">person</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface leading-tight Inter title-sm anchors">Pro Bettor</p>
+<p class="text-xs text-tertiary font-medium Inter label-md data">Level 4 VIP</p>
+</div>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-400 hover:bg-[#162a3d] hover:text-white transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="casino">casino</span>
+<span class="text-sm font-medium">Slots</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-400 hover:bg-[#162a3d] hover:text-white transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="person_play">person_play</span>
+<span class="text-sm font-medium">Live Dealer</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-400 hover:bg-[#162a3d] hover:text-white transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="playing_cards">playing_cards</span>
+<span class="text-sm font-medium">Table Games</span>
+</a>
+<!-- Active Tab: Providers -->
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-gradient-to-r from-[#a7c8ff1a] to-transparent text-[#a7c8ff] border-r-4 border-[#a7c8ff] transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="token">token</span>
+<span class="text-sm font-medium">Providers</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-400 hover:bg-[#162a3d] hover:text-white transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="workspace_premium">workspace_premium</span>
+<span class="text-sm font-medium">Jackpots</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-400 hover:bg-[#162a3d] hover:text-white transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+<span class="text-sm font-medium">Instant Win</span>
+</a>
+</nav>
+<div class="px-6 py-4 mt-auto border-t border-slate-800/30">
+<button class="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-surface-container-highest text-primary text-xs font-bold hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="headset_mic">headset_mic</span>
+                    Live Support
+                </button>
+</div>
+<div class="px-3 pb-6 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-500 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="verified_user">verified_user</span>
+<span class="text-xs">Responsible Gaming</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-500 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="settings">settings</span>
+<span class="text-xs">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 bg-surface p-6 lg:p-10">
+<!-- Header Section -->
+<div class="relative overflow-hidden mb-12 rounded-xl bg-surface-container-low p-8 lg:p-12">
+<div class="relative z-10 max-w-2xl">
+<h1 class="text-4xl lg:text-5xl font-black tracking-tighter text-on-surface mb-4 Inter display-md">GAME <span class="text-primary">PROVIDERS</span></h1>
+<p class="text-slate-400 text-lg mb-8 leading-relaxed">Experience the cutting edge of iGaming. We partner with the world's most innovative studios to bring you a premium library of over 4,000 certified titles.</p>
+<div class="flex flex-col sm:flex-row gap-4">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary" data-icon="search">search</span>
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-4 pl-12 pr-4 text-on-surface focus:ring-2 focus:ring-primary/20 placeholder-slate-500" placeholder="Find your favorite studio..." type="text"/>
+</div>
+<button class="kinetic-gradient text-on-primary-container px-8 py-4 rounded-xl font-bold tracking-tight hover:shadow-[0_0_20px_rgba(58,145,250,0.4)] transition-all">
+                            EXPLORE ALL
+                        </button>
+</div>
+</div>
+<!-- Decorative background elements -->
+<div class="absolute -right-20 -top-20 w-80 h-80 bg-primary/10 rounded-full blur-[100px]"></div>
+<div class="absolute right-20 bottom-0 w-64 h-64 bg-tertiary/5 rounded-full blur-[80px]"></div>
+</div>
+<!-- Filter Section -->
+<div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-10">
+<div class="flex items-center gap-2 p-1 bg-surface-container-low rounded-xl">
+<button class="px-6 py-2 rounded-lg bg-surface-container-highest text-primary text-sm font-bold shadow-lg">Popular</button>
+<button class="px-6 py-2 rounded-lg text-slate-400 text-sm font-medium hover:text-white transition-colors">A-Z</button>
+<button class="px-6 py-2 rounded-lg text-slate-400 text-sm font-medium hover:text-white transition-colors">Newest</button>
+<button class="px-6 py-2 rounded-lg text-slate-400 text-sm font-medium hover:text-white transition-colors">Most Games</button>
+</div>
+<div class="flex items-center gap-4 text-slate-500 text-sm">
+<span>Showing <span class="text-on-surface font-bold">124</span> total providers</span>
+</div>
+</div>
+<!-- Provider Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Pragmatic Play -->
+<div class="group relative bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-all duration-300">
+<div class="h-32 bg-[#2d1e1e] flex items-center justify-center p-8 relative overflow-hidden">
+<img class="relative z-10 h-10 object-contain brightness-0 invert" data-alt="Pragmatic Play studio logo on a dark textured background with subtle red glow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_Lu9_y4dLSC9Vf3_onCPHH6-3FhgcaNSWwEBzV6LgI0rQkYEqpg7bQkNJoIw50eukdBVUyvHJ6RMciDBSNFbBUBHh9QdfwbHM7shd-ddtn-k3ULWzzsnCVCQu6_6ylUAOT3qbA4wUJ1hf1xxaA3B94u5zooV2UjI0INZr3zJEADvCvVgkuK4nTjgHfDFV0JRIQZ5kqE5iL6_CV5eUhQ3xeGDkeRq2xNUe78VKae8-163lWdvlMYudki6IKzRYo1LU5NcnXcficXw"/>
+<div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="vibrant slot machine graphics with golden symbols and high energy sparks" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDhQJChCEiVhSQdmFWfI76K2FVwQSdTmdFojUqrh1C7quPjwLMUEy_7roJSXJPjb75AbkgCxmI4kIQMzrFIAB9j02GbfbC_VZq5RC9BuRCIB8n_r-MYBKC2Wtzc2qRk0qiOiYaRbp3_vEdqqeNFRMuA1yiJA0xT6vOadwT33ao1F3DTvd07cfKpYRWlbUfH-zxmBpOFUEMCMJQjsZFoANWnT_kyXZWUm9a4_0zdufktXOol7UNw5lTBXx6IK4LRZSpfxVyStXA8cg"/>
+</div>
+</div>
+<div class="p-5 flex justify-between items-center bg-surface-container-low">
+<div>
+<h3 class="text-on-surface font-bold tracking-tight">Pragmatic Play</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest font-bold">324 Games</p>
+</div>
+<button class="material-symbols-outlined text-primary group-hover:scale-125 transition-transform" data-icon="arrow_forward_ios">arrow_forward_ios</button>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+<button class="bg-white text-surface px-6 py-2 rounded-lg font-black text-xs tracking-widest uppercase">View All Games</button>
+</div>
+</div>
+<!-- Evolution -->
+<div class="group relative bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-all duration-300">
+<div class="h-32 bg-[#1a1a1a] flex items-center justify-center p-8 relative overflow-hidden">
+<img class="relative z-10 h-10 object-contain brightness-0 invert" data-alt="Evolution Gaming logo centered in a sophisticated dark luxury setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVGeWXlK8Jy6TQGHroo0UzGCkxyykkFi_9eIBinJwTtO3WFLep67F3ZfFNo_J87DA2LiKjBQn-AR4D8L9ahmv4UeGujUyq-ydrSZqLVHsH35iicdthhRykWQJkcvFYy5Gf2MgtW0a6VHnElEMDsYQnocZRKlhJxU-pDmGthieNL4rIseDBq7T7nKF102bVYu5j_JU1np9NXmv5h0jyavlqKGaJ3a4GwIAE7YVzYpIqK0SfRjBx2_OtVdUFPpfWf85_7seMbZb3FsE"/>
+<div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="elegant casino roulette wheel and velvet tables in a high-stakes live dealer studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz5EaHCjH1lsFp_coylpQtKHVe9cBh6Ro562JBlaODIZZ7j9yZwsHiBwuplQetuW2shtM_hrGWYkO1YqrAkhlyxpN-l_33REFe78k-nk4V4RGRCAiqhRUMRKBd215bW2DL29_Cy6LueuC5zoczgMKCaSIk-Trkh9XxmWov0T8j0cSWwNPu3R2SGyp94jxjhnCrjnCB9b2Gzti1G_PQNF8k0bnefr1xGXvHQlUoN8PrmuBhHQc93WD8y5sdMbS5f0YqJOQojdjCueM"/>
+</div>
+</div>
+<div class="p-5 flex justify-between items-center bg-surface-container-low">
+<div>
+<h3 class="text-on-surface font-bold tracking-tight">Evolution</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest font-bold">118 Games</p>
+</div>
+<button class="material-symbols-outlined text-primary group-hover:scale-125 transition-transform" data-icon="arrow_forward_ios">arrow_forward_ios</button>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+<button class="bg-white text-surface px-6 py-2 rounded-lg font-black text-xs tracking-widest uppercase">View All Games</button>
+</div>
+</div>
+<!-- Hacksaw -->
+<div class="group relative bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-all duration-300">
+<div class="h-32 bg-[#333] flex items-center justify-center p-8 relative overflow-hidden">
+<img class="relative z-10 h-12 object-contain brightness-0 invert" data-alt="Hacksaw Gaming logo with modern minimalist typography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuMVvG-w0AW8txw_vM0rBMJ3HisK95-20Y7jDt7Mos29Gju0o00pFq3GlJjzt2ZB5ec9qteqSPUqF9SO3lREwieFX9jioBoS9aQccnuvpu9RvEKxMaqe23qqXSwPgqreepvb5uUcCzNtkZUN7XLsuK1fRHZIU5-udMYOppkQzHOsY-U7YqUcD6VN45e0TNnvSSpOcPna_wQZqBUgBqWQmYUOSH4vVWV6H29d27IZ55j3-VxyjU0HycaNn4TWjNsnP9qpjFOZirwhQ"/>
+<div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="gritty urban street art and neon lighting representing a dark modern game aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0tZKqOm1PTVsDSXH1eYdISHD4rb8ZiQCeyZghlp0smWgu04OZ3BkGcr4mSyPElSyqrRGoFeIulBWzQIqWBY7WRjY6Ty9p8KnkyutXK_6zGvqJzdtKKuBZPbsgsCvAKbChBkx4Kz4VqaEZNf1ojQ4MVr4RmWeVhL0RT0oIYS87l4_3JLvXPTjtH28yCR8P6Pewljx2tuXH1QINcG_aCdQ4F4tILm88BcYhU2U3SJE5PIXOVhj6tty1OBqsWIf6B7-2c_TmHVUBiFg"/>
+</div>
+</div>
+<div class="p-5 flex justify-between items-center bg-surface-container-low">
+<div>
+<h3 class="text-on-surface font-bold tracking-tight">Hacksaw Gaming</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest font-bold">86 Games</p>
+</div>
+<button class="material-symbols-outlined text-primary group-hover:scale-125 transition-transform" data-icon="arrow_forward_ios">arrow_forward_ios</button>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+<button class="bg-white text-surface px-6 py-2 rounded-lg font-black text-xs tracking-widest uppercase">View All Games</button>
+</div>
+</div>
+<!-- Nolimit City -->
+<div class="group relative bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-all duration-300">
+<div class="h-32 bg-[#4a1c1c] flex items-center justify-center p-8 relative overflow-hidden">
+<img class="relative z-10 h-10 object-contain brightness-0 invert" data-alt="Nolimit City brand mark in a bold high-contrast layout" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLACX3cdYQN0Dhj84n_nJkQpNWzxsFaQI2l_IjHd8PKtTjPDLG6LVT50J-_NjwAC-CDa7ZynFgOyttg6l2cnfAX01VVWroOQiLKvLijUwEIbmJ86pNlDmgKFa4gWwYGQSfUxmdha8lquqPxBTK40RdlE-zg94zH0Ia6nws-0DOHDV6_9uaEKaZWscopg1uYlU517YKk7oo42de2LFopmb5b5em7aYtaOB0066Rg4dr1DVN1_XXYTNXFiUyDl_gxG7B4zYjOltmGPM"/>
+<div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="dark cinematic scenes from a horror themed slot machine with intense red highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVNbfHa_2YGWt7ylvtgpb040omXDGLQWu3yYyzdpuFAs00eDup_DjOVfpUlwR-K9k1iRFGETQBA52FYaqBIHejd1Yx_VEMYeXK2EOilQZmCUNCjaz-fWe1Eu93hCpxdrCboYBqsZFqpFFHhjQi7xmfBLJ-74qZW6SHjurUlBBuKOx0z2RQgbEpqmpADggN6U5Y9AnZPBxZ0oy_c8JoqOd_CpgkBjYM7glUlRl16Z1fKsdKnnOMdEUZJcmv5plUB-QWpN57djzkQgY"/>
+</div>
+</div>
+<div class="p-5 flex justify-between items-center bg-surface-container-low">
+<div>
+<h3 class="text-on-surface font-bold tracking-tight">Nolimit City</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest font-bold">72 Games</p>
+</div>
+<button class="material-symbols-outlined text-primary group-hover:scale-125 transition-transform" data-icon="arrow_forward_ios">arrow_forward_ios</button>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+<button class="bg-white text-surface px-6 py-2 rounded-lg font-black text-xs tracking-widest uppercase">View All Games</button>
+</div>
+</div>
+<!-- Play'n GO -->
+<div class="group relative bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-all duration-300">
+<div class="h-32 bg-[#002b5c] flex items-center justify-center p-8 relative overflow-hidden">
+<img class="relative z-10 h-10 object-contain brightness-0 invert" data-alt="Play'n GO logo in classic blue and white corporate branding" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI-75gJL0rSb6Qk1zt8zSC3JkbZIp5kAjG27qaqy8yOPAADsWhxEqQoSSiJe9l_pnMGBXl8c0FmhCZnjTy9UqdOlRI82-XtLaLAc-dVkeRCDFcqvYKDhd2COlM2_FPAm4-foQH8E1efc9iwxFaoLv_fQI0sftAaLYHm-XlMy51iBmPD1BIg1WDqUcCRrVQGC4mNcIb62WJnTkoTK0JppWsmISMylatZXUazguf6xb8GQ7lSDTmjR6ohrPlOapWRpx-YWcsfHtIf8o"/>
+<div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="ancient egyptian pyramid ruins and glowing treasure chests from a popular adventure slot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1t9gynN4wjdvSDT7yQAim3Pm0VnMC_sPszP7zekXcIYTuFOdHhYGhiJGj_RP3O0ROz4RLONFriK7n_EuGGT1j0vYSu6gYyuFf3rh6IzBCxOgjtiIaCL7GSzz1NbpJqCZc-i5xNjk-uO7okqZB2WFNqcDokE_7CiU2_c1rIMI8jvbu94vQOrB3zaeUhEz-LxheuSlxM--WnjReH23GScovjZXUEOG5pwxRxXAs6L8DQUHAiAgWbQBsKJNKEuihU8mg1pQ3goB7cJA"/>
+</div>
+</div>
+<div class="p-5 flex justify-between items-center bg-surface-container-low">
+<div>
+<h3 class="text-on-surface font-bold tracking-tight">Play'n GO</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest font-bold">290 Games</p>
+</div>
+<button class="material-symbols-outlined text-primary group-hover:scale-125 transition-transform" data-icon="arrow_forward_ios">arrow_forward_ios</button>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+<button class="bg-white text-surface px-6 py-2 rounded-lg font-black text-xs tracking-widest uppercase">View All Games</button>
+</div>
+</div>
+<!-- Red Tiger -->
+<div class="group relative bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-all duration-300">
+<div class="h-32 bg-[#8c1c1c] flex items-center justify-center p-8 relative overflow-hidden">
+<img class="relative z-10 h-12 object-contain brightness-0 invert" data-alt="Red Tiger Gaming stylized tiger head logo in gold and red" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBT0l8WKjIe09XHz-d-f3mI91ydUkPGsEgfHzg9ID-uWaNGCPfECbwLMA_5Gb5n1rvcZf_nhi90SW0DD2CLwlmYJhnAck3Zb9XJe7XLXkAWBmI-0A6ps6RvgMh5PAIDKJaOInhcI8MWaL6bpLj5PtEnRvikYy1hGSUxqBc8JWKidElwvmpViFssTPonwPVGEGZdTMA13sU2s5by8EsxOGWC4WZ0qgbtH4t2g76o4htBx1d0eU6LM_qOeQC0TT4OW_2ciwzTBaJWJWc"/>
+<div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="mystical asian temple and cherry blossoms with floating lanterns at twilight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnZjaUtg-mwQNJ8RelU9eEYUj4vemAjtTfbKwmIRGpUApLVGTPsjzctdQMFmCblkj7vlECde4RxTFRndc9sqa23gYfAmYVkLX5HgPUJ7qQ-Ii2NgqiFPRWrK8mCosqbMmAoyaF97Vpc3Yb42m0oIYf2VeQ8G1iC_YmFGlEuD4po55IJUN8v_L2lgusw2dQRVPCiJ2m0lhKP84r5PEgbmjdUX1Tn9moiK2vhoUzV57eMg2R7n8-yl3NSRoSNHCFzvCtMlm1HQCA1PY"/>
+</div>
+</div>
+<div class="p-5 flex justify-between items-center bg-surface-container-low">
+<div>
+<h3 class="text-on-surface font-bold tracking-tight">Red Tiger</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest font-bold">215 Games</p>
+</div>
+<button class="material-symbols-outlined text-primary group-hover:scale-125 transition-transform" data-icon="arrow_forward_ios">arrow_forward_ios</button>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+<button class="bg-white text-surface px-6 py-2 rounded-lg font-black text-xs tracking-widest uppercase">View All Games</button>
+</div>
+</div>
+<!-- NetEnt -->
+<div class="group relative bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-all duration-300">
+<div class="h-32 bg-[#1a3d3d] flex items-center justify-center p-8 relative overflow-hidden">
+<img class="relative z-10 h-10 object-contain brightness-0 invert" data-alt="NetEnt corporate logo with sleek modern font" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4jo7zBFP2O_OFALxe5cPPm4eSu2NPf0oM6RcX8hHZ-2Kn5z58zfA2cmgndYNSXB9pZgTpViiDAP2lvRcPbK8gQL1295d-SRLnWrMOvVz9hHnCvgfZdrjfHDMsnFb_cwRoSyxy0j7OeNwL4JBtRyA1agJ7zI30V26jRMAwGzKpTXmvdFHKA7BeCUt_6yq5DmXK1blxYl2Fz6msuVhWzvPJ2xHAMXd1MHqdsGjcHHRq1fp_B1gWMA_gYIB_Wn37w5ryjDIiGZJn_4Y"/>
+<div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="cosmic outer space scene with glowing colorful crystals and stardust" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDD-XHqyvNwB0RyCqBTxLeHenKWrtXhbDT4Cb2foYGJnEz4fixbXKm01OC5LT0MJY3Prc9L3fIb0gyXWqg3atcvIfYHsyhon97Ee6N5UiIr011BJxeoaM_M3OFgLaMzkNd6fhVAP_Sirtub5PsFZW2JOtTl3y3uVIP8SX_U1nF1w09_jfcRKAzFYUJXnwiVZAtMGX__piFfgs9R_gyOBcakVmshE4eEijPIuxS2gao4vYLX9o7rhMET8rXvHtYOaNOHfLxeXljelrQ"/>
+</div>
+</div>
+<div class="p-5 flex justify-between items-center bg-surface-container-low">
+<div>
+<h3 class="text-on-surface font-bold tracking-tight">NetEnt</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest font-bold">186 Games</p>
+</div>
+<button class="material-symbols-outlined text-primary group-hover:scale-125 transition-transform" data-icon="arrow_forward_ios">arrow_forward_ios</button>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+<button class="bg-white text-surface px-6 py-2 rounded-lg font-black text-xs tracking-widest uppercase">View All Games</button>
+</div>
+</div>
+<!-- Relax Gaming -->
+<div class="group relative bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-all duration-300">
+<div class="h-32 bg-[#2d3a46] flex items-center justify-center p-8 relative overflow-hidden">
+<img class="relative z-10 h-10 object-contain brightness-0 invert" data-alt="Relax Gaming logo on a professional slate background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJjgqk29fIVwPDIwouaHbLkRgXOx4oJ74gYs1ilvyblkAGM4Wrh2Meeyp4tkazta4xu5MHbJ_zeymPPKYIj0NPlEHsHJHo6EiyYcElqZyWWWk1ZhA0Poz2kJy5q9nZFRhInL9bXtItN5PvuFFliYP-be742wB_Ps07sPT_XOxSBmWOpnR_vYlFaHnIq4HcExuFReX0wvNrjFTznXE-_uArvcIywJ_PuUhVOKT5Nt4asmfMI_fTA4LNdnF6wV_G-FyjNjnsYtfCd84"/>
+<div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="post-apocalyptic desert landscape with steampunk machinery and metallic textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9qF8e6rsu_45_LkxIS-23qz9u-e8wujbQcsO36PfWgqf58ILVDHSG5aC8lFXOGvUT3_BzQ1QOt6p_od3fsoHodbSAp4o_JfGUywRc_veR1SR2zu7gcba4V3PGTmCkryVeCH_3Xn9yes0yiDcu0Nd_AoTv8SIrcb50NgU3uMoWHZ0A3oCp_n3WJiD90WHWkP88KSywHcNwYHbqb4nWeiZpa4AlURmWuBa4dUHRUhonTnI2Yiq8NrQyHryS5FAhJV_wjzrAvcPHOXk"/>
+</div>
+</div>
+<div class="p-5 flex justify-between items-center bg-surface-container-low">
+<div>
+<h3 class="text-on-surface font-bold tracking-tight">Relax Gaming</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest font-bold">142 Games</p>
+</div>
+<button class="material-symbols-outlined text-primary group-hover:scale-125 transition-transform" data-icon="arrow_forward_ios">arrow_forward_ios</button>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+<button class="bg-white text-surface px-6 py-2 rounded-lg font-black text-xs tracking-widest uppercase">View All Games</button>
+</div>
+</div>
+</div>
+<!-- Footer Section -->
+<footer class="bg-[#09141f] dark:bg-[#09141f] full-width py-12 border-t border-slate-800/30 no-shadows flex flex-col items-center gap-6 px-10 mt-20">
+<span class="text-lg font-bold text-slate-500">KINETIC CASINO</span>
+<div class="flex flex-wrap justify-center gap-x-8 gap-y-4">
+<a class="text-slate-500 hover:text-[#abd45e] transition-colors Inter label-sm tracking-tighter opacity-60" href="#">Terms of Service</a>
+<a class="text-slate-500 hover:text-[#abd45e] transition-colors Inter label-sm tracking-tighter opacity-60" href="#">Privacy Policy</a>
+<a class="text-slate-500 hover:text-[#abd45e] transition-colors Inter label-sm tracking-tighter opacity-60" href="#">Responsible Gaming</a>
+<a class="text-slate-500 hover:text-[#abd45e] transition-colors Inter label-sm tracking-tighter opacity-60" href="#">Affiliates</a>
+<a class="text-slate-500 hover:text-[#abd45e] transition-colors Inter label-sm tracking-tighter opacity-60" href="#">Help Center</a>
+</div>
+<p class="text-slate-500 text-xs text-center opacity-40">© 2024 KINETIC CASINO. All Rights Reserved. BeGambleAware.org</p>
+<div class="flex items-center gap-6 opacity-30 grayscale mt-4">
+<img class="h-6" data-alt="official gambling commission certification logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCnnxnXH-LmranuJhNmspFlWC1doVcJxDh9aCNGs_2YSZtPCFvFWuVocr0jjvw98VdN5hL0b9jMJxMQBaOwF6zv194TX5HSGEcX8u2W3X00cHt90M6GkjCKy1mTDdMomiJbGskkpu26uXzvbeR8F8x-maBIH6DQke9KDRPSDJUiXMTuG6zbiPivUKbwS6eXnnD6lar8wJfzJM8HDOfA0_PLSZTxy8ohDzOoBb21m7YqckDnXzpkJ6LLrGh5SnTFBc04SzWOqbSB00"/>
+<img class="h-6" data-alt="responsible gaming protection trust mark" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOU4FVARb-QVkrtfSr4H7RwggOI50jdy81JorF1quuClvZPT8wqLHJHhKQQ2uk0g1sDmV4uU5oGoR49FvZVcImImrNOqM3w4mhN9q402EoUuM7qIbFNCXxq7q-QYA5FrUDyEB3wCtT3McObe6p1f2hk6DxIRIwbLf_DtRnNr-8u2sdh0XP-qemXmnC2oYG6E2pmtXQBPYzTjGxX7bCcRehus-ElUXV0Obuld33KgcJPShi_HQwm8uAeHrGWRRz4l7Nmlj4-g-Gz5c"/>
+<img class="h-6" data-alt="secure payment provider verified badge" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApm6hU6oOiNQztSI1Al1LF7xqUJ4XhhJMn0_EzFkff3oMLgmRcZeTssY5wXnM8YuUhtamDU4C6Cbbh7qEq5pPWcHpnOYO46jOpe4wAuLcPNPPmY_a57E-2nt1h_C24XsN-6ZnpUKIgt6fLFH1J6Y7WWYLYUJ4s1MdxUN0QrERMN15GRhDWMLH2hn47oFe3ZT_P9LmlF3UrOleYU8wLf94a2MJa-VC_yuuROe2S7V3PHt0rEjQjsMXttdIrY05mUFkryPUqgbiibGo"/>
+</div>
+</footer>
+</main>
+</div>
+<!-- Floating Action Button for Support -->
+<button class="fixed bottom-8 right-8 w-14 h-14 kinetic-gradient rounded-full shadow-[0_8px_32px_rgba(58,145,250,0.4)] flex items-center justify-center text-on-primary-container z-40 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+</button>
+</body></html>

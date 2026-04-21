@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Check, X, Edit, Trash2 } from "lucide-react";
+import { Check, X, Edit, Trash2, Megaphone } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import type { Announcement } from "@/types";
 
@@ -81,26 +81,31 @@ export function AnnouncementManager() {
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-black text-white uppercase italic">
-        Announcements
-      </h2>
+    <div className="space-y-6">
+      <div className="flex items-center gap-2">
+        <Megaphone className="w-5 h-5 text-[#0071e3]" />
+        <h2 className="text-xl font-bold tracking-tight text-white font-display">
+          Announcements
+        </h2>
+      </div>
 
       {/* New announcement */}
-      <div className="flex gap-2">
+      <div className="glass-card p-6 space-y-4">
         <textarea
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Enter announcement message..."
-          className="flex-1 h-16 bg-white/5 border border-white/5 rounded-2xl p-4 text-sm text-white placeholder:text-slate-500 resize-none focus:outline-none focus:border-cyan-500/50"
+          placeholder="Enter premium announcement text..."
+          className="w-full h-24 bg-black/40 border border-[#f5f5f7]/10 rounded-xl p-4 text-sm text-[#f5f5f7] placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-[#0071e3]/40 transition-all font-text"
         />
-        <button
-          onClick={handleCreate}
-          disabled={loading || !newMessage.trim()}
-          className="px-6 h-16 bg-cyan-600 text-white font-bold rounded-2xl hover:bg-cyan-500 disabled:opacity-50 self-end"
-        >
-          Add
-        </button>
+        <div className="flex justify-end">
+          <button
+            onClick={handleCreate}
+            disabled={loading || !newMessage.trim()}
+            className="px-8 h-12 bg-[#0071e3] text-white font-semibold rounded-full hover:bg-[#0071e3]/90 active:scale-95 transition-all disabled:opacity-50 text-sm font-display shadow-lg shadow-[#0071e3]/20"
+          >
+            Post Announcement
+          </button>
+        </div>
       </div>
 
       {/* List */}
@@ -108,35 +113,35 @@ export function AnnouncementManager() {
         {announcements.map((ann) => (
           <div
             key={ann.id}
-            className="p-4 rounded-2xl border border-white/5 bg-slate-900/40 flex items-start gap-4"
+            className="p-4 rounded-2xl glass-card flex items-start gap-4 hover:border-[#0071e3]/30 transition-colors group"
           >
-            <div className="flex-1">
+            <div className="flex-1 mt-1">
               {editingId === ann.id ? (
                 <textarea
                   value={editText}
                   onChange={(e) => setEditText(e.target.value)}
-                  className="w-full h-20 bg-white/5 border border-white/5 rounded-xl p-3 text-sm text-white resize-none"
+                  className="w-full h-24 bg-black/20 border border-[#0071e3]/20 rounded-xl p-4 text-sm text-white resize-none focus:outline-none ring-1 ring-[#0071e3]/40 font-text"
                   autoFocus
                 />
               ) : (
-                <div className="text-sm text-white">{ann.message}</div>
+                <div className="text-sm text-[#f5f5f7]/90 leading-relaxed font-text">{ann.message}</div>
               )}
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
               {editingId === ann.id ? (
                 <>
                   <button
                     onClick={() => handleUpdate(ann.id)}
                     disabled={loading}
-                    className="p-2 text-emerald-400 hover:bg-emerald-500/10 rounded-lg"
+                    className="p-2.5 text-emerald-400 hover:bg-emerald-500/10 rounded-xl transition-colors"
                   >
-                    <Check className="w-4 h-4" />
+                    <Check className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => setEditingId(null)}
-                    className="p-2 text-slate-400 hover:bg-white/10 rounded-lg"
+                    className="p-2.5 text-[#f5f5f7]/40 hover:bg-white/5 rounded-xl transition-colors"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-5 h-5" />
                   </button>
                 </>
               ) : (
@@ -146,13 +151,13 @@ export function AnnouncementManager() {
                       setEditingId(ann.id);
                       setEditText(ann.message);
                     }}
-                    className="p-2 text-cyan-400 hover:bg-cyan-500/10 rounded-lg"
+                    className="p-2.5 text-[#0071e3] hover:bg-[#0071e3]/10 rounded-xl transition-colors opacity-0 group-hover:opacity-100"
                   >
                     <Edit className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(ann.id)}
-                    className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg"
+                    className="p-2.5 text-red-400/60 hover:bg-red-500/10 hover:text-red-400 rounded-xl transition-colors opacity-0 group-hover:opacity-100"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -161,6 +166,12 @@ export function AnnouncementManager() {
             </div>
           </div>
         ))}
+        {announcements.length === 0 && (
+          <div className="text-center py-12 glass-card rounded-2xl">
+            <Megaphone className="w-8 h-8 text-white/10 mx-auto mb-3" />
+            <p className="text-white/40 text-sm font-text">No active announcements</p>
+          </div>
+        )}
       </div>
     </div>
   );

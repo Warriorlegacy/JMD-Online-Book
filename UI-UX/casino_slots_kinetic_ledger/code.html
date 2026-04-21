@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic Ledger | Premium Gaming &amp; Casino</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#16212b",
+                        "surface-container-lowest": "#040f19",
+                        "on-primary-container": "#002a55",
+                        "surface-container-high": "#202b36",
+                        "secondary": "#b5c8e3",
+                        "on-tertiary-container": "#1f2e00",
+                        "inverse-primary": "#005eb2",
+                        "surface-dim": "#09141f",
+                        "secondary-fixed": "#d1e4ff",
+                        "tertiary-container": "#779d2c",
+                        "surface-container-low": "#111d27",
+                        "on-tertiary": "#243600",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#c6f176",
+                        "secondary-container": "#35485e",
+                        "on-error": "#690005",
+                        "primary-container": "#3a91fa",
+                        "tertiary": "#abd45e",
+                        "error": "#ffb4ab",
+                        "on-secondary": "#1f3247",
+                        "tertiary-fixed-dim": "#abd45e",
+                        "outline": "#8b919e",
+                        "on-primary": "#003060",
+                        "surface-tint": "#a7c8ff",
+                        "secondary-fixed-dim": "#b5c8e3",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "on-secondary-fixed": "#071d31",
+                        "surface-container-highest": "#2b3641",
+                        "on-secondary-fixed-variant": "#35485e",
+                        "background": "#09141f",
+                        "on-tertiary-fixed-variant": "#364e00",
+                        "on-background": "#d8e4f3",
+                        "inverse-surface": "#d8e4f3",
+                        "outline-variant": "#414753",
+                        "inverse-on-surface": "#26313d",
+                        "surface-bright": "#2f3a46",
+                        "on-tertiary-fixed": "#131f00",
+                        "on-secondary-container": "#a3b7d1",
+                        "surface": "#09141f",
+                        "surface-variant": "#2b3641",
+                        "primary": "#a7c8ff",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#d5e3ff",
+                        "on-primary-fixed": "#001b3c",
+                        "on-surface-variant": "#c1c6d5",
+                        "on-primary-fixed-variant": "#004788",
+                        "on-surface": "#d8e4f3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #09141f;
+            color: #d8e4f3;
+            font-family: 'Inter', sans-serif;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body selection:bg-primary/30 selection:text-primary-fixed">
+<!-- TopNavBar Shell -->
+<nav class="bg-[#09141f]/90 backdrop-blur-xl shadow-2xl shadow-[#000000]/40 flex justify-between items-center w-full px-6 py-3 docked full-width top-0 sticky z-50">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black italic tracking-tighter text-[#a7c8ff]">KINETIC CASINO</span>
+<div class="hidden md:flex gap-6">
+<a class="font-['Inter'] font-medium hover:text-white transition-colors text-slate-400 text-sm uppercase tracking-tight" href="#">Sports</a>
+<a class="font-['Inter'] font-medium hover:text-white transition-colors text-slate-400 text-sm uppercase tracking-tight" href="#">In-Play</a>
+<a class="text-[#a7c8ff] border-b-2 border-[#a7c8ff] pb-1 font-['Inter'] font-bold tracking-tight text-sm uppercase" href="#">Casino</a>
+<a class="font-['Inter'] font-medium hover:text-white transition-colors text-slate-400 text-sm uppercase tracking-tight" href="#">Live Casino</a>
+<a class="font-['Inter'] font-medium hover:text-white transition-colors text-slate-400 text-sm uppercase tracking-tight" href="#">Promos</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center gap-4 px-4 py-1.5 bg-surface-container-low rounded-lg">
+<span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Balance: $12,450.00</span>
+<span class="material-symbols-outlined text-[#a7c8ff] scale-95" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<button class="material-symbols-outlined text-slate-400 hover:text-white transition-colors" data-icon="notifications">notifications</button>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary-container font-bold px-6 py-2 rounded-lg text-sm hover:scale-95 active:opacity-80 transition-all">Deposit</button>
+<div class="w-10 h-10 rounded-full border-2 border-primary/20 bg-surface-container-high overflow-hidden">
+<img alt="User profile avatar" data-alt="Close up professional portrait of a tech-savvy user with modern lighting and high-tech background aesthetics" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAD4D-RUWIucoYI7CJohen1VzTltaWh0FbGjevYPkb954P9BIN_dHKNRW1eM11u4jtHwiVu11GsOGz8YF_W22RH5z5gtwdLhnPFz1jVqGuCJQ7IHcoSjeYKFaycHSEB4pouVxeRWSIM4lCgWnGWZJoe0Mw8P-J3L1ldiLaB4tVnB2Z2mW-LnAd79vURKGwCxlyTZoCgG-AnGi3ZWSiOiBLQqjKzTw_bKf-Mu1Wqu2e0jofy8v_amPFXyfKYLIwRPQMHMjje9rq72s"/>
+</div>
+</div>
+</nav>
+<div class="flex">
+<!-- SideNavBar Shell -->
+<aside class="bg-[#09141f] h-screen w-64 fixed left-0 top-0 pt-20 flex flex-col border-r border-white/5 hidden md:flex z-40 bg-gradient-to-r from-[#09141f] to-[#0c1d2d]">
+<div class="px-6 py-4 flex flex-col gap-1">
+<span class="text-lg font-bold text-white">Gaming Floor</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="stars" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="text-[0.65rem] uppercase tracking-widest text-slate-400 font-bold">Level: Platinum Elite</span>
+</div>
+</div>
+<nav class="flex-1 mt-4">
+<a class="bg-[#a7c8ff]/10 text-[#a7c8ff] border-l-4 border-[#abd45e] py-3 px-6 flex items-center gap-3 transition-all font-['Inter'] text-[0.8125rem] font-semibold tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="slot_machine">casino</span>
+                    Slots
+                </a>
+<a class="text-slate-400 py-3 px-6 flex items-center gap-3 hover:text-white hover:bg-white/5 transition-all font-['Inter'] text-[0.8125rem] font-semibold tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+                    Live Dealer
+                </a>
+<a class="text-slate-400 py-3 px-6 flex items-center gap-3 hover:text-white hover:bg-white/5 transition-all font-['Inter'] text-[0.8125rem] font-semibold tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="stars">stars</span>
+                    Jackpots
+                </a>
+<a class="text-slate-400 py-3 px-6 flex items-center gap-3 hover:text-white hover:bg-white/5 transition-all font-['Inter'] text-[0.8125rem] font-semibold tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="casino">casino</span>
+                    Table Games
+                </a>
+<a class="text-slate-400 py-3 px-6 flex items-center gap-3 hover:text-white hover:bg-white/5 transition-all font-['Inter'] text-[0.8125rem] font-semibold tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+                    Instant Win
+                </a>
+<a class="text-slate-400 py-3 px-6 flex items-center gap-3 hover:text-white hover:bg-white/5 transition-all font-['Inter'] text-[0.8125rem] font-semibold tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="factory">factory</span>
+                    Providers
+                </a>
+</nav>
+<div class="p-6 mt-auto border-t border-white/5 flex flex-col gap-4">
+<button class="bg-surface-container-high text-xs font-bold py-3 px-4 rounded-lg flex items-center justify-between group hover:bg-surface-container-highest transition-colors">
+                    Tournament Leaderboard
+                    <span class="material-symbols-outlined text-tertiary group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 text-slate-500 text-[0.8125rem] hover:text-slate-300" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="contact_support">contact_support</span>
+                        Support
+                    </a>
+<a class="flex items-center gap-3 text-slate-500 text-[0.8125rem] hover:text-slate-300" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="verified_user">verified_user</span>
+                        Responsible Gaming
+                    </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 min-h-screen bg-surface">
+<!-- Hero Carousel Section -->
+<section class="relative w-full h-[480px] overflow-hidden bg-surface-container-low">
+<div class="absolute inset-0 flex transition-transform duration-700">
+<div class="min-w-full h-full relative">
+<img class="w-full h-full object-cover opacity-60" data-alt="High-end dark casino interior with neon lights, luxury gaming tables, and dramatic cinematic lighting with deep blue and purple hues" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7PCooAtre8A1fO77UIk1t6O0z4oYS0lydu4KHcjvqZmDaAv7gR2Mf8atCypJeySsM1Ov8OmWvO35Q_10GvwKrLs5pSHIplQmHB018dV8UGqYHa7YgHMX6vObkUGoFFb1IqHTlv2mPrlZghiYV8t5RjwvUT2C56hVnIyWA0JeYrJc2GID1hWbwUeToJp6NwWEKDRcLbu6dSsjFULK5i6nhaB-uowio7GCaaZX8fl25QQeTXN6Kr3i0R5EhNC7Fy5TpCD_I5ZT8vnw"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/40 to-transparent flex flex-col justify-center px-12">
+<span class="bg-tertiary/20 text-tertiary px-3 py-1 text-[0.65rem] font-black uppercase tracking-widest rounded mb-4 w-fit">New Releases</span>
+<h1 class="text-5xl md:text-6xl font-black italic tracking-tighter text-white max-w-2xl leading-none mb-6">UNLEASH THE<br/><span class="text-primary">CYBER REELS</span></h1>
+<p class="text-lg text-slate-300 max-w-lg mb-8 leading-relaxed">Experience the next generation of 4D slot mechanics. Play exclusive Kinetic titles before anyone else.</p>
+<div class="flex gap-4">
+<button class="bg-tertiary text-on-tertiary font-bold px-8 py-4 rounded-xl flex items-center gap-3 hover:scale-105 active:opacity-90 transition-all">
+                                    PLAY NOW
+                                    <span class="material-symbols-outlined" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<button class="bg-white/5 backdrop-blur-md text-white font-bold px-8 py-4 rounded-xl hover:bg-white/10 transition-all">LEARN MORE</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Winners Ticker -->
+<div class="absolute bottom-0 w-full bg-black/40 backdrop-blur-md border-t border-white/5 py-3 overflow-hidden">
+<div class="flex items-center gap-12 whitespace-nowrap animate-marquee">
+<div class="flex items-center gap-3">
+<span class="text-tertiary font-black text-xs">LATEST WINNER</span>
+<span class="text-white text-sm font-bold">Player_882</span>
+<span class="text-slate-400 text-sm">won</span>
+<span class="text-primary font-black text-sm">$4,250.00</span>
+<span class="text-slate-500 text-xs">on Starburst X</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-tertiary font-black text-xs">LATEST WINNER</span>
+<span class="text-white text-sm font-bold">MaximusPrime</span>
+<span class="text-slate-400 text-sm">won</span>
+<span class="text-primary font-black text-sm">$12,800.00</span>
+<span class="text-slate-500 text-xs">on Dragon Vault</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-tertiary font-black text-xs">LATEST WINNER</span>
+<span class="text-white text-sm font-bold">LadyLuck</span>
+<span class="text-slate-400 text-sm">won</span>
+<span class="text-primary font-black text-sm">$940.00</span>
+<span class="text-slate-500 text-xs">on Neon Blackjack</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Search and Category Filters -->
+<section class="px-8 py-10">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex gap-2 p-1 bg-surface-container-low rounded-xl">
+<button class="px-6 py-2 bg-surface-container-highest text-primary font-bold rounded-lg text-sm transition-all">Popular</button>
+<button class="px-6 py-2 text-slate-400 font-bold rounded-lg text-sm hover:text-white transition-all">New</button>
+<button class="px-6 py-2 text-slate-400 font-bold rounded-lg text-sm hover:text-white transition-all">Jackpots</button>
+<button class="px-6 py-2 text-slate-400 font-bold rounded-lg text-sm hover:text-white transition-all">Table Games</button>
+<button class="px-6 py-2 text-slate-400 font-bold rounded-lg text-sm hover:text-white transition-all">All Games</button>
+</div>
+<div class="relative w-full md:w-80">
+<input class="w-full bg-surface-container-low border-none rounded-xl py-3 pl-12 pr-4 text-sm text-white placeholder-slate-500 focus:ring-2 focus:ring-primary/40 transition-all" placeholder="Search games, providers..." type="text"/>
+<span class="material-symbols-outlined absolute left-4 top-3 text-slate-500" data-icon="search">search</span>
+</div>
+</div>
+</section>
+<!-- Top Slots Grid -->
+<section class="px-8 pb-12">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-black italic tracking-tighter text-white">TOP SLOTS</h2>
+<a class="text-primary text-xs font-bold uppercase tracking-widest hover:underline transition-all" href="#">View All</a>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+<!-- Slot Tile 1 -->
+<div class="group relative aspect-[3/4] rounded-2xl overflow-hidden bg-surface-container-high shadow-lg">
+<img alt="Game Tile" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Vibrant slot machine game graphic with neon crystals, sparkling golden coins, and dark cosmic background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW7oZp-gCc5kEwD7PvtfGuOFNc0F517QRoxOOpBZhXLsw06pn58P7Ym4E_Yk8f0Z93p-Y726I83eXSHuqEaz4yoAdYXgs7J59G2BiEXyWXgDXOte7-_Fy0sIZOnBWMSyErAteSbJ7_6u_AoI4jcnwv8xKzVRhWsDwiKqOe7TxzZ8Sd4tVHH56Qzhf0Bk87WkJYpXozARbMtetzvEPN2H2r2pDRz5uAUy00CKgviO2HFOuV5WEhBeatxs8p-XhANnUb36TJc8nwFds"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-4 p-6 backdrop-blur-[2px]">
+<button class="w-full py-3 bg-tertiary text-on-tertiary font-black text-xs rounded-xl hover:scale-105 active:opacity-90 transition-transform">PLAY NOW</button>
+<button class="w-full py-3 bg-white/10 text-white font-bold text-xs rounded-xl hover:bg-white/20 transition-colors">DEMO</button>
+</div>
+<div class="absolute bottom-4 left-4 right-4">
+<span class="text-white font-black italic tracking-tight text-lg drop-shadow-md">COSMIC REELS</span>
+<p class="text-[0.65rem] text-tertiary font-bold tracking-widest uppercase">Pragmatic Play</p>
+</div>
+</div>
+<!-- Slot Tile 2 -->
+<div class="group relative aspect-[3/4] rounded-2xl overflow-hidden bg-surface-container-high shadow-lg">
+<img alt="Game Tile" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Cyberpunk themed casino game art with futuristic city lights, digital rain elements, and metallic textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxZkMb6w-p9LoFW7GuxScXDqwH31lQYQ-uKbiIsIoBKcrbvbmjD3JBVxK4Z3dyl0NNWBWepb_5KQ3Uzq6puJOlYyLGBO6T0LiWUJyIogWSymZq-vmSLd2pLCYztm1VRZN_F7sY69pUUhUXdPKoOKSfHCZlojdbBEWnaGJRET5tLgnnJVq0BMCUnFZmCvzXJrwLZw82xgI47RFWRohFeDxXk7PFdVgIyuouGlSFr_4DnGtM9ylwOEk3z28oDz4a2aq4Ck5xLsuKo6c"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-4 p-6 backdrop-blur-[2px]">
+<button class="w-full py-3 bg-tertiary text-on-tertiary font-black text-xs rounded-xl hover:scale-105 transition-transform">PLAY NOW</button>
+<button class="w-full py-3 bg-white/10 text-white font-bold text-xs rounded-xl hover:bg-white/20 transition-colors">DEMO</button>
+</div>
+<div class="absolute bottom-4 left-4 right-4">
+<span class="text-white font-black italic tracking-tight text-lg drop-shadow-md">NEON VOLTAGE</span>
+<p class="text-[0.65rem] text-tertiary font-bold tracking-widest uppercase">NetEnt</p>
+</div>
+<div class="absolute top-4 right-4 bg-error-container text-white text-[0.6rem] font-black px-2 py-1 rounded">HOT</div>
+</div>
+<!-- Slot Tile 3 -->
+<div class="group relative aspect-[3/4] rounded-2xl overflow-hidden bg-surface-container-high shadow-lg">
+<img alt="Game Tile" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Ancient Egyptian style slot game graphics with golden scarabs, hieroglyphs, and warm glowing sand particles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKC4yEx_JxiAzeQToAkPjsTAIONvpwibcQJFAkVWjjriqx_YZCTnrl_cAzTVgTxLynadDmQoaHPZKAmNQsTNmrGrnAL9568FNcTVhKNYIqcCORMtF9HPGTudvqUniBFiQbJBeqhY-AJDxP9ldCxV7sjU71HW4tCrJhbrcAesOoHjcgqboE6ddmLKba2aNn9KLJbZic1Hm77a1cuQnYyWDoLMUp3id5hI8YzdknHzFIWIZuxBjV7O1AsrMN6w7-Ko7zR5lAB2DJJtM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-4 p-6 backdrop-blur-[2px]">
+<button class="w-full py-3 bg-tertiary text-on-tertiary font-black text-xs rounded-xl hover:scale-105 transition-transform">PLAY NOW</button>
+<button class="w-full py-3 bg-white/10 text-white font-bold text-xs rounded-xl hover:bg-white/20 transition-colors">DEMO</button>
+</div>
+<div class="absolute bottom-4 left-4 right-4">
+<span class="text-white font-black italic tracking-tight text-lg drop-shadow-md">GOLDEN SCARAB</span>
+<p class="text-[0.65rem] text-tertiary font-bold tracking-widest uppercase">Play'n GO</p>
+</div>
+</div>
+<!-- Slot Tile 4 -->
+<div class="group relative aspect-[3/4] rounded-2xl overflow-hidden bg-surface-container-high shadow-lg">
+<img alt="Game Tile" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Modern geometric abstract gaming graphic with floating shapes and high-contrast blue and lime lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMIrfYAV_k1HgQ_iFNUySmcxZpGQO2gCpsF44GjpPQUcBXuGeekA6eYymR6iOLmIbby-cG_WFGUifg3Z3LNkhSFvbNONfz9Dd7KBy2J9b0YfwGsS7dBH5N6NzMjNsSCPJcZu9lBMBSUhUENIuhjerkIqIBA9lV0lHYWoRtgFA3bfm0iiO7Z7a-pK1BhpjggbX1ZA9TBf0rvPaJ_9LvUtrYxg50VLDb7Cgv_sxHTpLBb8dx8Ropqz6_ns8PZzTmjUcIaqGKyA3-4RA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-4 p-6 backdrop-blur-[2px]">
+<button class="w-full py-3 bg-tertiary text-on-tertiary font-black text-xs rounded-xl hover:scale-105 transition-transform">PLAY NOW</button>
+<button class="w-full py-3 bg-white/10 text-white font-bold text-xs rounded-xl hover:bg-white/20 transition-colors">DEMO</button>
+</div>
+<div class="absolute bottom-4 left-4 right-4">
+<span class="text-white font-black italic tracking-tight text-lg drop-shadow-md">KINETIC PULSE</span>
+<p class="text-[0.65rem] text-tertiary font-bold tracking-widest uppercase">Exclusives</p>
+</div>
+<div class="absolute top-4 left-4 bg-primary text-on-primary-container text-[0.6rem] font-black px-2 py-1 rounded">NEW</div>
+</div>
+<!-- Slot Tile 5 -->
+<div class="group relative aspect-[3/4] rounded-2xl overflow-hidden bg-surface-container-high shadow-lg">
+<img alt="Game Tile" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Traditional slot fruit machine with modern gloss and digital effects, cherry and 7 icons in high definition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPyhxOnoyjBa48nyxzNRzIKHL9yquPIcMBjbUCtbISoRcM1KXVQHeroJORVumXz2x_byR-LCu8MYjn_r7kpZRzYQp5YcUh4S574WF56yWW2hbebk7_zTV3492HYplpmsRl-qsX2tDiZgUwjvvTYqKvfPG2Jx3BiuI97NbjlQrNKWYFukf4h1YQQI4Efw5eJ5rPsvJ6igQR6V9_zTd0mQHCpn89kakOjDoLMT0etQ9yicyKE6IE1oKiU9Y4CN45DyXE9pgrc6xp9F4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-4 p-6 backdrop-blur-[2px]">
+<button class="w-full py-3 bg-tertiary text-on-tertiary font-black text-xs rounded-xl hover:scale-105 transition-transform">PLAY NOW</button>
+<button class="w-full py-3 bg-white/10 text-white font-bold text-xs rounded-xl hover:bg-white/20 transition-colors">DEMO</button>
+</div>
+<div class="absolute bottom-4 left-4 right-4">
+<span class="text-white font-black italic tracking-tight text-lg drop-shadow-md">FRUIT FRENZY</span>
+<p class="text-[0.65rem] text-tertiary font-bold tracking-widest uppercase">Evolution</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Live Casino Row -->
+<section class="px-8 pb-20">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<h2 class="text-2xl font-black italic tracking-tighter text-white uppercase">LIVE CASINO</h2>
+<div class="flex items-center gap-1.5 px-2 py-0.5 bg-error-container/20 rounded-full">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+<span class="text-[0.6rem] font-black text-error uppercase tracking-wider">LIVE NOW</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-white hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-white hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Live Game 1 -->
+<div class="group relative h-64 rounded-2xl overflow-hidden bg-surface-container-high shadow-2xl">
+<img alt="Live Roulette" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Professional live roulette table with an elegant dealer, focused lighting, and high-quality studio broadcast setup" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHQAfPhC24JRuqDTXvDCELQUehYtr3xjLqyx1UIBVttN2itj1Tp6PGEctDMUiUkPc9qV7C0jNpKm_TrCBWWrO8vt-w5xUYl1nsHN0CgowAANK1Bkdhn6jl8rD7COqFKAAJS9Dep0f-S3orLHLBAnDifxPeBKCpCUba4Fizy4FdEvogxmTmyfMa4PKGuup5YprLN5W1j2g6LorErIPv3eC9-yMWtG9lsIU7vLSCT2tdOFbnnbfGILLeAhFys1z1ROY_vn9NNu-LGwE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-surface-dim/40 to-transparent"></div>
+<div class="absolute top-4 left-4 flex gap-2">
+<span class="bg-black/50 backdrop-blur px-2 py-1 rounded text-[0.65rem] font-bold text-white uppercase tracking-tighter flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px] text-primary" data-icon="person">person</span>
+                                1,240
+                            </span>
+</div>
+<div class="absolute bottom-6 left-6 right-6">
+<h3 class="text-xl font-black italic text-white mb-1">LIGHTNING ROULETTE</h3>
+<div class="flex items-center justify-between">
+<p class="text-xs text-slate-300">Min: $1 | Max: $5,000</p>
+<button class="p-2 bg-tertiary text-on-tertiary rounded-full hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Live Game 2 -->
+<div class="group relative h-64 rounded-2xl overflow-hidden bg-surface-container-high shadow-2xl">
+<img alt="Blackjack" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Close up of a blackjack table with cards being dealt, luxury casino atmosphere, and sharp shallow depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqO_00KICns0ksy7_MumeGBUzJ46CKncgoXz7c05u3dpfbSil7ZfkseqEx3XcBPA42NL9aqYes6aPc9cZaALBGuLNHB-dFMFX4aOaObZPyDpVCFyCjUg63HGjcZW9DHRGN5aGYp0jq_7uE3AF6PSupZABHsh_Dxh2zWY3thJ9Tu6ZC5ByZEpkqT2KB1XOfU5-dHXAy75CRvXuz7b1giwVcLb_csAtXMxfVMmI5mnZahVf04JpgPJ1LqWjoSIkSmixeChYWcQIBxoo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-surface-dim/40 to-transparent"></div>
+<div class="absolute top-4 left-4 flex gap-2">
+<span class="bg-black/50 backdrop-blur px-2 py-1 rounded text-[0.65rem] font-bold text-white uppercase tracking-tighter flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px] text-primary" data-icon="person">person</span>
+                                845
+                            </span>
+</div>
+<div class="absolute bottom-6 left-6 right-6">
+<h3 class="text-xl font-black italic text-white mb-1">VIP BLACKJACK</h3>
+<div class="flex items-center justify-between">
+<p class="text-xs text-slate-300">Min: $10 | Max: $25,000</p>
+<button class="p-2 bg-tertiary text-on-tertiary rounded-full hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Live Game 3 -->
+<div class="group relative h-64 rounded-2xl overflow-hidden bg-surface-container-high shadow-2xl">
+<img alt="Baccarat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="High stakes baccarat game in progress with refined props and elegant casino lighting and deep shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxTtPictYZbFhoYkLUEWza9HJaXcvmylCQMoJKOBtS-R33dvHuFydZC60rn6ziUHAGjneR2tuaUYkEYo7IcccV9GAJ1i1sHJT94M7hEc7rKJudBlNRzQpoPgCyKB7cbRk0we9SeZqw3igS1al8ClyYR84V4lKeqbCeyAyZM4ppNEmKXfV-5W1W0HEC6xtRugXDO9e0J32kXr4PTIXB2RTiYAyk2SSaTCznGZnWeBKc5qUx6pZjEyKqL0AIBE9LC5yKt6QmYYRAUyc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-surface-dim/40 to-transparent"></div>
+<div class="absolute top-4 left-4 flex gap-2">
+<span class="bg-black/50 backdrop-blur px-2 py-1 rounded text-[0.65rem] font-bold text-white uppercase tracking-tighter flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px] text-primary" data-icon="person">person</span>
+                                420
+                            </span>
+</div>
+<div class="absolute bottom-6 left-6 right-6">
+<h3 class="text-xl font-black italic text-white mb-1">SPEED BACCARAT</h3>
+<div class="flex items-center justify-between">
+<p class="text-xs text-slate-300">Min: $5 | Max: $10,000</p>
+<button class="p-2 bg-tertiary text-on-tertiary rounded-full hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Shell -->
+<footer class="bg-[#070d14] w-full py-12 px-8 mt-auto flex flex-col md:flex-row justify-between items-center gap-8 border-t border-white/5">
+<div class="flex flex-col gap-2 items-center md:items-start">
+<span class="text-xl font-black italic tracking-tighter text-[#a7c8ff]">KINETIC CASINO</span>
+<p class="font-['Inter'] text-[0.6875rem] text-slate-500 uppercase tracking-[0.05em]">© 2024 KINETIC LEDGER GAMING. LICENSED AND REGULATED.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-['Inter'] text-[0.6875rem] text-slate-500 uppercase tracking-[0.05em] hover:text-slate-300 hover:underline transition-all" href="#">Terms of Service</a>
+<a class="font-['Inter'] text-[0.6875rem] text-slate-500 uppercase tracking-[0.05em] hover:text-slate-300 hover:underline transition-all" href="#">Privacy Policy</a>
+<a class="font-['Inter'] text-[0.6875rem] text-slate-500 uppercase tracking-[0.05em] hover:text-slate-300 hover:underline transition-all" href="#">Fair Play</a>
+<a class="font-['Inter'] text-[0.6875rem] text-slate-500 uppercase tracking-[0.05em] hover:text-slate-300 hover:underline transition-all" href="#">Payout Rates</a>
+<a class="font-['Inter'] text-[0.6875rem] text-[#abd45e] font-bold uppercase tracking-[0.05em] hover:underline transition-all" href="#">Help Center</a>
+</div>
+<div class="flex gap-4">
+<img alt="MGA Logo" class="h-6 opacity-30 grayscale hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer" data-alt="Malta Gaming Authority certification logo in vector format" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpm7K1T-0nEuN4P4DqmlURckJn_UNO2J5HBGzhAjunzLf6qs3WjnDcDV-tFQiCqRb-Fp8u8rzu34vJoN52BFhWl5j62OT_Evt9cyGFrH_zqAtdoVcNApUeznV-NVS81uICMHYK2nKxHeRObp3aIok2VFPrTQzzEOS8g6TwWlZc92ufw8PtHYCsn7VFQW9gpTxjmsn08inH9lMPfUJf7fGsFyvnu7bqoPy7HdCWEi6Rdnzz-4f0114q1By9qeYKjYvgH8Ef0z2n82I"/>
+<img alt="18+" class="h-6 opacity-30 grayscale hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer" data-alt="Responsible gaming 18 plus age restriction symbol" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1jGiOkZLfjs1C6AXacL_tjKOu2FXW7jNmviKIuA2wh-Az7BiivWHsosSx5P7fBJNxDmYL5hMfNG_n3dGYpIkqQqEWqnYgWDDSpfBmUw6AuPxh9KD5MXL63Psk39KZM4cQCVH93G141UN3RZCDIOyDV_TmJxVcD6I62OW9AwBQsM_lnCkMHnirTteZY23rVSwRvze51Y_OOviHbfOo3LYFTDeasut_5A9QHKG9ZdbDC20vnfvVoakqKvDubxXvwC1k5isWHWzpgxQ"/>
+</div>
+</footer>
+</main>
+</div>
+<!-- Floating Mobile NavBar (Hidden on Desktop) -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#09141f]/95 backdrop-blur-xl border-t border-white/10 px-6 py-4 flex justify-between items-center">
+<a class="flex flex-col items-center gap-1 text-[#a7c8ff]" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[0.6rem] font-bold uppercase tracking-widest">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500" href="#">
+<span class="material-symbols-outlined" data-icon="slot_machine">casino</span>
+<span class="text-[0.6rem] font-bold uppercase tracking-widest">Slots</span>
+</a>
+<div class="relative -top-8">
+<button class="w-14 h-14 bg-tertiary text-on-tertiary rounded-full flex items-center justify-center shadow-xl shadow-tertiary/20">
+<span class="material-symbols-outlined text-3xl" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-slate-500" href="#">
+<span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+<span class="text-[0.6rem] font-bold uppercase tracking-widest">Live</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[0.6rem] font-bold uppercase tracking-widest">Me</span>
+</a>
+</div>
+</body></html>

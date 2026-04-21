@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KINETIC LEDGER | User Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#414753",
+                        "on-primary": "#003060",
+                        "surface": "#09141f",
+                        "primary": "#a7c8ff",
+                        "secondary-container": "#35485e",
+                        "inverse-primary": "#005eb2",
+                        "secondary-fixed-dim": "#b5c8e3",
+                        "on-surface": "#d8e4f3",
+                        "secondary-fixed": "#d1e4ff",
+                        "on-secondary-fixed-variant": "#35485e",
+                        "inverse-on-surface": "#26313d",
+                        "tertiary": "#abd45e",
+                        "primary-container": "#3a91fa",
+                        "on-primary-fixed": "#001b3c",
+                        "on-secondary-container": "#a3b7d1",
+                        "tertiary-container": "#779d2c",
+                        "error": "#ffb4ab",
+                        "on-background": "#d8e4f3",
+                        "on-secondary-fixed": "#071d31",
+                        "outline": "#8b919e",
+                        "on-tertiary-fixed-variant": "#364e00",
+                        "on-tertiary-container": "#1f2e00",
+                        "surface-bright": "#2f3a46",
+                        "inverse-surface": "#d8e4f3",
+                        "primary-fixed": "#d5e3ff",
+                        "surface-container-low": "#111d27",
+                        "on-surface-variant": "#c1c6d5",
+                        "on-tertiary": "#243600",
+                        "surface-tint": "#a7c8ff",
+                        "surface-dim": "#09141f",
+                        "tertiary-fixed-dim": "#abd45e",
+                        "surface-container": "#16212b",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "surface-container-lowest": "#040f19",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#2b3641",
+                        "surface-container-high": "#202b36",
+                        "secondary": "#b5c8e3",
+                        "on-primary-fixed-variant": "#004788",
+                        "tertiary-fixed": "#c6f176",
+                        "on-tertiary-fixed": "#131f00",
+                        "background": "#09141f",
+                        "on-secondary": "#1f3247",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#2b3641",
+                        "on-primary-container": "#002a55"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(43, 54, 65, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #a7c8ff 0%, #3a91fa 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full flex items-center justify-between px-6 h-16 bg-[#09141f]/85 backdrop-blur-xl shadow-2xl shadow-[#000000]/40 z-50">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black italic tracking-tighter text-[#a7c8ff]">KINETIC LEDGER</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="font-['Inter'] font-bold tracking-tight text-sm uppercase text-slate-400 font-medium hover:text-white transition-colors duration-200" href="#">Sports</a>
+<a class="font-['Inter'] font-bold tracking-tight text-sm uppercase text-slate-400 font-medium hover:text-white transition-colors duration-200" href="#">Live</a>
+<a class="font-['Inter'] font-bold tracking-tight text-sm uppercase text-slate-400 font-medium hover:text-white transition-colors duration-200" href="#">Casino</a>
+<a class="font-['Inter'] font-bold tracking-tight text-sm uppercase text-slate-400 font-medium hover:text-white transition-colors duration-200" href="#">Promotions</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-3 text-slate-400">
+<span class="material-symbols-outlined cursor-pointer hover:text-white transition-colors">settings</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-white transition-colors">language</span>
+<span class="material-symbols-outlined cursor-pointer text-[#a7c8ff]" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</div>
+<button class="bg-[#3a91fa] text-[#001b3c] px-4 py-1.5 rounded-lg font-bold text-xs uppercase tracking-wider hover:opacity-90 active:scale-95 transition-all">Deposit</button>
+</div>
+</nav>
+<div class="flex min-h-screen pt-16">
+<!-- SideNavBar (Account Focused) -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-[#0b1e2e] pt-20 flex flex-col gap-1 z-40 hidden md:flex">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="professional male portrait with neutral background and soft studio lighting for user profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_ty6sb2bCDCdgGtuBX1EUnwHSk0eSLC0hXMqR7DJ1lr4bufg96QApsithtvLK_9pV7EW47iUksCs4WDJvRkeVAMHf5jEXlUx0LzLphUdj-t3ks9rcxhPL2sV-I-HZR0yky3nceCo1MEPluKEv7o6iV_xPbX-4rATHNFIXNZEprBVHPXi3jbVk34AnLY4ipQXsthCxCn6CVHID4iU1Rzb6putxksu_Y3MUm1PfO98GvBQB1ipmC_GNzMnlevZWls4sGLClI3QPY44"/>
+</div>
+<div>
+<p class="text-xs font-semibold uppercase tracking-widest text-[#a7c8ff]">Sports Hub</p>
+<p class="text-[10px] text-slate-500 uppercase">Live &amp; Upcoming</p>
+</div>
+</div>
+</div>
+<a class="flex items-center gap-3 bg-[#162a3d] text-[#a7c8ff] px-6 py-3 rounded-r-full border-l-4 border-[#a7c8ff] font-['Inter'] text-xs font-semibold uppercase tracking-widest transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                Overview
+            </a>
+<a class="flex items-center gap-3 text-slate-500 px-6 py-3 hover:bg-[#162a3d]/50 font-['Inter'] text-xs font-semibold uppercase tracking-widest transition-all hover:text-[#a7c8ff]" href="#">
+<span class="material-symbols-outlined">person</span>
+                Profile
+            </a>
+<a class="flex items-center gap-3 text-slate-500 px-6 py-3 hover:bg-[#162a3d]/50 font-['Inter'] text-xs font-semibold uppercase tracking-widest transition-all hover:text-[#a7c8ff]" href="#">
+<span class="material-symbols-outlined">verified_user</span>
+                Verification
+            </a>
+<a class="flex items-center gap-3 text-slate-500 px-6 py-3 hover:bg-[#162a3d]/50 font-['Inter'] text-xs font-semibold uppercase tracking-widest transition-all hover:text-[#a7c8ff]" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+                Payments
+            </a>
+<a class="flex items-center gap-3 text-slate-500 px-6 py-3 hover:bg-[#162a3d]/50 font-['Inter'] text-xs font-semibold uppercase tracking-widest transition-all hover:text-[#a7c8ff]" href="#">
+<span class="material-symbols-outlined">history</span>
+                Bet History
+            </a>
+<a class="flex items-center gap-3 text-slate-500 px-6 py-3 hover:bg-[#162a3d]/50 font-['Inter'] text-xs font-semibold uppercase tracking-widest transition-all hover:text-[#a7c8ff]" href="#">
+<span class="material-symbols-outlined">security</span>
+                Responsible Gaming
+            </a>
+<div class="mt-auto p-6">
+<button class="w-full py-3 rounded-xl border border-outline-variant/20 text-slate-400 text-[10px] font-bold uppercase tracking-widest hover:bg-surface-container-high transition-colors">
+                    View All Sports
+                </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 p-6 lg:p-10 bg-surface">
+<!-- Dashboard Header / Balance Bento -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
+<div class="lg:col-span-8 flex flex-col justify-between p-8 rounded-xl bg-surface-container-low relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32 group-hover:bg-primary/10 transition-colors"></div>
+<div class="relative z-10">
+<span class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary mb-2 block">Account Total Balance</span>
+<div class="flex items-baseline gap-4">
+<h1 class="text-5xl font-black tracking-tighter text-on-surface">$12,450.00</h1>
+<span class="text-tertiary flex items-center text-sm font-bold">
+<span class="material-symbols-outlined text-sm mr-1">trending_up</span>
+                                +2.4%
+                            </span>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-8 mt-12 relative z-10">
+<div>
+<p class="text-[10px] uppercase text-slate-500 font-bold tracking-wider mb-1">Real Money</p>
+<p class="text-xl font-bold text-on-surface">$10,200.00</p>
+</div>
+<div class="w-px h-8 bg-outline-variant/30"></div>
+<div>
+<p class="text-[10px] uppercase text-slate-500 font-bold tracking-wider mb-1">Bonus Credit</p>
+<p class="text-xl font-bold text-primary">$2,250.00</p>
+</div>
+<div class="ml-auto flex gap-3">
+<button class="px-6 py-3 rounded-lg border border-outline-variant bg-surface-container-high text-on-surface font-bold text-xs uppercase tracking-widest hover:bg-surface-bright transition-all">Withdraw</button>
+<button class="px-8 py-3 rounded-lg kinetic-gradient text-on-primary font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/20 hover:opacity-90 active:scale-95 transition-all">Quick Deposit</button>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 p-8 rounded-xl bg-surface-container-high border border-outline-variant/10 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-6">
+<span class="text-[10px] font-bold uppercase tracking-[0.2em] text-tertiary">VIP Status</span>
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<h3 class="text-2xl font-black tracking-tight text-on-surface">Diamond Tier</h3>
+<p class="text-xs text-slate-400 mt-2">Next reward: $500 Weekly Rebate</p>
+</div>
+<div class="mt-8">
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest mb-2">
+<span class="text-slate-500">Progress</span>
+<span class="text-on-surface">85%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[85%] rounded-full shadow-[0_0_12px_rgba(171,212,94,0.3)]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Bets & Recommendations Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+<!-- Left: Active Bets (2 cols) -->
+<div class="lg:col-span-2">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-black uppercase tracking-tight text-on-surface">Active Bets <span class="ml-2 text-primary bg-primary/10 px-2 py-0.5 rounded text-xs">2</span></h2>
+<a class="text-[10px] font-bold text-primary uppercase tracking-widest hover:underline" href="#">View All</a>
+</div>
+<div class="space-y-4">
+<!-- Bet Card 1 -->
+<div class="p-5 rounded-xl bg-surface-container-low border-l-4 border-primary group hover:bg-surface-container transition-all">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="text-[10px] font-bold text-tertiary uppercase tracking-widest">Live Now • 74'</span>
+</div>
+<h4 class="text-sm font-bold text-on-surface uppercase tracking-tight">Manchester City vs Liverpool</h4>
+<p class="text-xs text-slate-500">English Premier League</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1">Potential Win</p>
+<p class="text-lg font-black text-on-surface">$458.50</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-high rounded-lg mb-4">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 p-2 rounded text-primary">
+<span class="material-symbols-outlined text-sm">sports_soccer</span>
+</div>
+<div>
+<p class="text-[10px] text-slate-500 font-bold uppercase">Selection</p>
+<p class="text-xs font-bold text-on-surface">Manchester City - Home Win @ 1.85</p>
+</div>
+</div>
+<div class="w-32 h-1 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[75%]"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Stake: $250.00</p>
+<button class="px-6 py-2 rounded bg-tertiary/10 text-tertiary text-[10px] font-black uppercase tracking-widest hover:bg-tertiary hover:text-on-tertiary transition-all">Cash Out $385.20</button>
+</div>
+</div>
+<!-- Bet Card 2 -->
+<div class="p-5 rounded-xl bg-surface-container-low border-l-4 border-slate-700 group hover:bg-surface-container transition-all">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Starts in 4h 15m</span>
+</div>
+<h4 class="text-sm font-bold text-on-surface uppercase tracking-tight">Lakers vs Warriors</h4>
+<p class="text-xs text-slate-500">NBA Regular Season</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1">Potential Win</p>
+<p class="text-lg font-black text-on-surface">$120.00</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-high rounded-lg">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 p-2 rounded text-primary">
+<span class="material-symbols-outlined text-sm">sports_basketball</span>
+</div>
+<div>
+<p class="text-[10px] text-slate-500 font-bold uppercase">Selection</p>
+<p class="text-xs font-bold text-on-surface">Lakers - Moneyline @ 2.40</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-600">lock</span>
+</div>
+</div>
+</div>
+<!-- Recent Transactions -->
+<div class="mt-12">
+<h2 class="text-xl font-black uppercase tracking-tight text-on-surface mb-6">Recent Transactions</h2>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-separate border-spacing-y-2">
+<thead>
+<tr class="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em]">
+<th class="px-4 py-2">Reference</th>
+<th class="px-4 py-2">Date &amp; Time</th>
+<th class="px-4 py-2">Type</th>
+<th class="px-4 py-2">Status</th>
+<th class="px-4 py-2 text-right">Amount</th>
+</tr>
+</thead>
+<tbody class="text-xs font-bold">
+<tr class="bg-surface-container-low/50 hover:bg-surface-container transition-colors">
+<td class="px-4 py-4 rounded-l-lg text-slate-300">#TXN-998210</td>
+<td class="px-4 py-4 text-slate-500">24 Oct, 14:32</td>
+<td class="px-4 py-4 text-on-surface">Card Deposit</td>
+<td class="px-4 py-4">
+<span class="px-2 py-1 rounded-full bg-tertiary/10 text-tertiary text-[9px] uppercase font-black">Success</span>
+</td>
+<td class="px-4 py-4 rounded-r-lg text-right text-tertiary">+$1,000.00</td>
+</tr>
+<tr class="bg-surface-container-low/50 hover:bg-surface-container transition-colors">
+<td class="px-4 py-4 rounded-l-lg text-slate-300">#TXN-998155</td>
+<td class="px-4 py-4 text-slate-500">23 Oct, 18:10</td>
+<td class="px-4 py-4 text-on-surface">Bet Placement</td>
+<td class="px-4 py-4">
+<span class="px-2 py-1 rounded-full bg-primary/10 text-primary text-[9px] uppercase font-black">Settled</span>
+</td>
+<td class="px-4 py-4 rounded-r-lg text-right text-error">-$250.00</td>
+</tr>
+<tr class="bg-surface-container-low/50 hover:bg-surface-container transition-colors">
+<td class="px-4 py-4 rounded-l-lg text-slate-300">#TXN-997401</td>
+<td class="px-4 py-4 text-slate-500">22 Oct, 09:45</td>
+<td class="px-4 py-4 text-on-surface">Withdrawal</td>
+<td class="px-4 py-4">
+<span class="px-2 py-1 rounded-full bg-secondary-container text-slate-400 text-[9px] uppercase font-black">Pending</span>
+</td>
+<td class="px-4 py-4 rounded-r-lg text-right text-on-surface">-$1,200.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Right: Recommendations & Info -->
+<div class="lg:col-span-1 space-y-10">
+<section>
+<h2 class="text-xl font-black uppercase tracking-tight text-on-surface mb-6">For You</h2>
+<div class="space-y-4">
+<!-- Rec Card 1 -->
+<div class="p-1 rounded-xl bg-surface-container-high group cursor-pointer overflow-hidden relative">
+<div class="h-28 w-full relative">
+<img class="w-full h-full object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-500" data-alt="dramatic wide shot of a professional soccer stadium lights shining through night fog with empty pitch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn5dL3AdcYvpvvlklH6tUi5d9Pha1hu-CYw9ipVXw0V9T4TKGIld6A1YIMSvNS94O8FVAX7DNcrmk2d0W-uq5m-5w0XvDYKEBqK84VHI5PA9XhlLWnwhAGICH2fzalNKcp1PeC-LNtbe5nPaFgf4B-SitA7XuEEZZicZBM0xPLVDuH2ATlxQFhM4T95kHUomFUXUpZP-xWwbuGo9xbO-jYwk2EptIX_tY7pEfNjAbkZG2VhgoO45dG7gOuPl0yBU5YFYL3yRyrsYk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-high to-transparent"></div>
+<span class="absolute top-2 left-2 px-2 py-1 bg-primary text-on-primary text-[9px] font-black uppercase rounded">Suggested</span>
+</div>
+<div class="p-4">
+<h4 class="text-sm font-bold text-on-surface mb-1">Champions League Weekly</h4>
+<p class="text-xs text-slate-500 mb-4">Based on your recent interest in UEFA markets.</p>
+<div class="flex gap-2">
+<div class="flex-1 bg-surface-container-lowest p-2 rounded text-center">
+<p class="text-[9px] text-slate-500 uppercase font-bold">Real Madrid</p>
+<p class="text-xs font-black text-primary">2.10</p>
+</div>
+<div class="flex-1 bg-surface-container-lowest p-2 rounded text-center">
+<p class="text-[9px] text-slate-500 uppercase font-bold">Draw</p>
+<p class="text-xs font-black text-primary">3.40</p>
+</div>
+<div class="flex-1 bg-surface-container-lowest p-2 rounded text-center">
+<p class="text-[9px] text-slate-500 uppercase font-bold">AC Milan</p>
+<p class="text-xs font-black text-primary">4.20</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Rec Card 2 -->
+<div class="p-4 rounded-xl bg-surface-container-high border border-outline-variant/10 group cursor-pointer hover:bg-surface-bright transition-all">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<div>
+<p class="text-[10px] text-tertiary font-black uppercase tracking-widest">Enhanced Odds</p>
+<h4 class="text-sm font-bold text-on-surface">NBA Parlay Boost</h4>
+<p class="text-xs text-slate-500">+15% on any 3+ leg NBA parlay today.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Security / Responsible Gaming Notice -->
+<div class="p-6 rounded-xl bg-surface-container-lowest border border-outline-variant/20">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-sm">verified</span>
+<h3 class="text-xs font-black uppercase tracking-widest text-on-surface">Secure Environment</h3>
+</div>
+<p class="text-[11px] text-slate-500 leading-relaxed mb-4">Your account is protected by 256-bit encryption. All funds are held in segregated accounts for your security.</p>
+<div class="flex items-center justify-between p-3 rounded bg-surface-container-low border border-outline-variant/10">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Daily Deposit Limit</span>
+<span class="text-xs font-black text-on-surface">$500.00</span>
+</div>
+<button class="w-full mt-4 text-[10px] font-bold text-primary uppercase tracking-widest hover:underline text-center">Manage Limits</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full mt-auto flex flex-col items-center gap-4 text-center bg-[#09141f] full-width py-12 px-6 border-t border-[#162a3d]">
+<div class="flex gap-6 mb-4">
+<a class="font-['Inter'] text-[10px] leading-relaxed text-slate-600 hover:text-[#abd45e] transition-all" href="#">Terms</a>
+<a class="font-['Inter'] text-[10px] leading-relaxed text-slate-600 hover:text-[#abd45e] transition-all" href="#">Privacy</a>
+<a class="font-['Inter'] text-[10px] leading-relaxed text-slate-600 hover:text-[#abd45e] transition-all" href="#">Support</a>
+<a class="font-['Inter'] text-[10px] leading-relaxed text-slate-600 hover:text-[#abd45e] transition-all" href="#">Responsible Gambling</a>
+<a class="font-['Inter'] text-[10px] leading-relaxed text-slate-600 hover:text-[#abd45e] transition-all" href="#">Affiliates</a>
+</div>
+<p class="text-slate-600 font-bold font-['Inter'] text-[10px]">KINETIC LEDGER</p>
+<p class="font-['Inter'] text-[10px] leading-relaxed text-slate-500 uppercase tracking-widest">© 2024 KINETIC LEDGER. RESPONSIBLE GAMING ONLY.</p>
+</footer>
+</body></html>
