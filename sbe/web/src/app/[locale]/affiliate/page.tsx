@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TrendingUp, Users, MousePointer, UserPlus, BarChart3, Copy, ChevronRight, ArrowUpRight, ArrowDownRight, DollarSign, Download } from "lucide-react";
+import { TrendingUp, MousePointer, UserPlus, Copy, ArrowUpRight, ArrowDownRight, DollarSign } from "lucide-react";
 
 const COMMISSION_DATA = [30, 50, 65, 48, 80, 70, 90, 65, 75, 85, 72, 95];
 const REVENUE_DATA = [45, 65, 80, 60, 95, 85, 110, 80, 92, 105, 88, 120];

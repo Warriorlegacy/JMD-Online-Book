@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSocket } from "@/context/socket-context";
 import { useBetSlip } from "@/context/bet-slip-context";
-import type { Match, MatchStatus, PriceLevel } from "@/types";
+import type { Match, PriceLevel } from "@/types";
 import { OrderBook } from "@/components/order-book";
 import { MarketChart } from "@/components/market-chart";
 import { LiveScoreWidget } from "@/components/live-score-widget";
@@ -493,6 +493,252 @@ export default function MatchPage({ params }: { params: { id: string } }) {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          {/* ── In-Play Markets ─────────────────────────────────────────── */}
+          <div className="border-t border-white/5 pt-6">
+            {/* Market tab row */}
+            <div className="flex items-center gap-1 flex-wrap mb-5">
+              {["MAIN MARKETS", "GOALS", "CORNERS", "HALF", "PLAYERS", "SPECIALS"].map(tab => (
+                <button
+                  key={tab}
+                  className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
+                    tab === "MAIN MARKETS"
+                      ? "bg-[#0071e3] text-white"
+                      : "bg-white/5 border border-white/10 text-white/40 hover:text-white"
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {/* Full Time Result */}
+              <div className="glass-card p-5 rounded-2xl border border-white/5">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-black text-white text-sm uppercase tracking-tight">FULL TIME RESULT (1X2)</h4>
+                  <span className="w-4 h-4 rounded bg-white/5 border border-white/10 flex items-center justify-center">
+                    <span className="text-[8px] text-white/20">🔒</span>
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { label: match?.teamA || "Team A", odds: "1.18", accent: true },
+                    { label: "DRAW",                   odds: "5.50", accent: false },
+                    { label: match?.teamB || "Team B", odds: "12.00", accent: false },
+                  ].map(btn => (
+                    <button
+                      key={btn.label}
+                      onClick={() => match && setSelection({
+                        matchId: match.id,
+                        matchName: `${match.teamA} v ${match.teamB}`,
+                        marketName: "Full Time Result",
+                        selectionId: btn.label.toLowerCase().replace(/ /g, "_"),
+                        selectionName: btn.label,
+                        odds: parseFloat(btn.odds),
+                        side: "back",
+                      })}
+                      className={`py-4 rounded-xl border transition-all active:scale-95 hover:brightness-110 text-center ${
+                        btn.accent
+                          ? "bg-[#0071e3]/10 border-[#0071e3]/20"
+                          : "bg-white/5 border-white/10"
+                      }`}
+                    >
+                      <p className="text-[9px] font-bold text-white/30 uppercase mb-1 truncate px-1">{btn.label}</p>
+                      <p className={`text-2xl font-black ${btn.accent ? "text-[#0071e3]" : "text-white"}`}>{btn.odds}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Next Goal */}
+              <div className="glass-card p-5 rounded-2xl border border-white/5">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-black text-white text-sm uppercase tracking-tight">NEXT GOAL (GOAL 4)</h4>
+                  <span className="flex items-center gap-1 text-[8px] text-emerald-400 font-black border border-emerald-500/20 rounded-full px-2 py-0.5">● LIVE</span>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { label: match?.teamA || "Team A", odds: "1.85" },
+                    { label: "NO GOAL",                odds: "2.40" },
+                    { label: match?.teamB || "Team B", odds: "4.10" },
+                  ].map(btn => (
+                    <button
+                      key={btn.label}
+                      onClick={() => match && setSelection({
+                        matchId: match.id,
+                        matchName: `${match.teamA} v ${match.teamB}`,
+                        marketName: "Next Goal",
+                        selectionId: btn.label.toLowerCase().replace(/ /g, "_"),
+                        selectionName: btn.label,
+                        odds: parseFloat(btn.odds),
+                        side: "back",
+                      })}
+                      className="py-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all active:scale-95 text-center"
+                    >
+                      <p className="text-[9px] font-bold text-white/30 uppercase mb-1 truncate px-1">{btn.label}</p>
+                      <p className="text-2xl font-black text-white">{btn.odds}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Total Goals O/U */}
+              <div className="glass-card p-5 rounded-2xl border border-white/5">
+                <h4 className="font-black text-white text-sm uppercase tracking-tight mb-4">TOTAL GOALS (OVER/UNDER)</h4>
+                <div className="space-y-2">
+                  {[{ label: "Over 3.5", odds: "1.68" }, { label: "Under 3.5", odds: "2.10" }].map(row => (
+                    <button
+                      key={row.label}
+                      onClick={() => match && setSelection({
+                        matchId: match.id,
+                        matchName: `${match.teamA} v ${match.teamB}`,
+                        marketName: "Total Goals",
+                        selectionId: row.label.toLowerCase().replace(/ /g, "_"),
+                        selectionName: row.label,
+                        odds: parseFloat(row.odds),
+                        side: "back",
+                      })}
+                      className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[#0071e3]/20 transition-all group"
+                    >
+                      <span className="text-white/60 font-bold text-sm group-hover:text-white transition-colors">{row.label}</span>
+                      <span className="text-[#0071e3] font-black text-xl">{row.odds}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Asian Handicap */}
+              <div className="glass-card p-5 rounded-2xl border border-white/5">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-black text-white text-sm uppercase tracking-tight">ASIAN HANDICAP (LIVE)</h4>
+                </div>
+                <div className="space-y-2">
+                  {[
+                    { label: `${match?.teamA || "Team A"} (-1.0)`, odds: "2.05", id: "hc_a" },
+                    { label: `${match?.teamB || "Team B"} (+1.0)`, odds: "1.75", id: "hc_b" },
+                  ].map(row => (
+                    <button
+                      key={row.id}
+                      onClick={() => match && setSelection({
+                        matchId: match.id,
+                        matchName: `${match.teamA} v ${match.teamB}`,
+                        marketName: "Asian Handicap",
+                        selectionId: row.id,
+                        selectionName: row.label,
+                        odds: parseFloat(row.odds),
+                        side: "back",
+                      })}
+                      className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[#0071e3]/20 transition-all group"
+                    >
+                      <span className="text-white/60 font-bold text-sm group-hover:text-white transition-colors truncate mr-4">{row.label}</span>
+                      <span className="text-[#0071e3] font-black text-xl flex-shrink-0">{row.odds}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Corner / Card / Pressure stats row */}
+            <div className="grid grid-cols-3 gap-4 mt-4">
+              <div className="glass-card p-5 rounded-2xl border border-white/5">
+                <p className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-2">TOTAL CORNERS</p>
+                <p className="text-4xl font-black text-white">12</p>
+                <p className="text-[9px] text-emerald-400 font-bold mt-1">+2 in last 10&apos;</p>
+              </div>
+              <div className="glass-card p-5 rounded-2xl border border-white/5">
+                <p className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-2">TOTAL CARDS</p>
+                <p className="text-4xl font-black text-white">3</p>
+                <p className="text-[9px] text-white/30 font-bold mt-1">0 Red</p>
+              </div>
+              <div className="glass-card p-5 rounded-2xl border border-white/5">
+                <p className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-3">ATTACK PRESSURE (LAST 5&apos;)</p>
+                <div className="flex items-center gap-1.5 h-5">
+                  {[true, false, true, false, true, false, true, true].map((a, i) => (
+                    <div
+                      key={i}
+                      className={`flex-1 h-full rounded-sm ${a ? "bg-[#0071e3]/70" : "bg-[#AFFF00]/40"}`}
+                    />
+                  ))}
+                </div>
+                <div className="flex justify-between mt-1">
+                  <span className="text-[8px] text-[#0071e3] font-bold">{match?.teamA?.split(" ")[0] || "H"}</span>
+                  <span className="text-[8px] text-[#AFFF00] font-bold">{match?.teamB?.split(" ")[0] || "A"}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Head to head + boosted row */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+              {/* H2H */}
+              <div className="glass-card p-5 rounded-2xl border border-white/5">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-black text-white text-sm uppercase tracking-tight">HEAD TO HEAD</h4>
+                  <button className="text-[#0071e3] text-[9px] font-black hover:underline uppercase tracking-widest">FULL STATISTICS CENTER</button>
+                </div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[9px] text-white/30 font-bold uppercase tracking-widest">LAST 5 MATCHES</span>
+                  <div className="flex items-center gap-1">
+                    <span className="text-white font-black text-sm">{match?.teamA?.split(" ").pop() || "Home"}</span>
+                    <span className="text-white/20 text-xs">3-1-1</span>
+                  </div>
+                </div>
+                <div className="flex gap-1.5 mb-4">
+                  {["W","W","W","L","W"].map((r, i) => (
+                    <div key={i} className={`flex-1 h-2 rounded-full ${r === "W" ? "bg-emerald-500" : r === "D" ? "bg-amber-500" : "bg-red-500"}`} />
+                  ))}
+                </div>
+                <div className="space-y-2">
+                  {[
+                    { date: "Nov 2023", score: `${match?.teamA?.split(" ").pop() || "MC"} 4 - 4 LIV` },
+                    { date: "Apr 2023", score: `${match?.teamA?.split(" ").pop() || "MC"} 4 - 1 LIV` },
+                  ].map((row, i) => (
+                    <div key={i} className="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
+                      <span className="text-[10px] text-white/30 font-bold">{row.date}</span>
+                      <span className="text-[10px] text-white font-black">{row.score}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Boosted Odds */}
+              <div className="glass-card p-5 rounded-2xl border border-amber-500/20 bg-amber-500/3 relative overflow-hidden">
+                <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-amber-500 opacity-5 blur-2xl" />
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="px-2 py-1 rounded-lg bg-amber-500/20 border border-amber-500/30">
+                    <span className="text-amber-400 text-[8px] font-black uppercase tracking-widest">BOOSTED ODDS</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-16 h-16 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-3xl flex-shrink-0">⚽</div>
+                  <div>
+                    <p className="text-white font-black text-base leading-tight">ERLING HAALAND TO SCORE NEXT</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-4xl font-black text-amber-400">4.50</p>
+                    <p className="text-white/20 text-xs font-bold line-through">3.20</p>
+                  </div>
+                  <button
+                    onClick={() => match && setSelection({
+                      matchId: match.id,
+                      matchName: `${match.teamA} v ${match.teamB}`,
+                      marketName: "Next Goalscorer",
+                      selectionId: "haaland_next",
+                      selectionName: "Haaland Next Goal",
+                      odds: 4.50,
+                      side: "back",
+                    })}
+                    className="px-6 py-3 rounded-xl bg-amber-500 text-black font-black text-sm uppercase tracking-widest hover:bg-amber-400 active:scale-95 transition-all"
+                  >
+                    BET NOW
+                  </button>
                 </div>
               </div>
             </div>
