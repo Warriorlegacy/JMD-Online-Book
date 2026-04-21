@@ -2,18 +2,39 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "@/i18n/navigation";
-import { CheckCircle2, XCircle, Clock, Eye, User, FileText } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, Eye, User, FileText, Activity, BarChart3, MessageSquare, Shield, ScrollText, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
 import { AdminMatchRow } from "@/components/admin-match-row";
 import { DepositRequestRow } from "@/components/deposit-request-row";
 import { AnnouncementManager } from "@/components/announcement-manager";
+import AnalyticsTab from "@/components/admin-analytics-tab";
+import SupportTab from "@/components/admin-support-tab";
 import type { Match, Tournament } from "@/types";
+
+type AdminTab = "dashboard" | "analytics" | "support" | "matches" | "market" | "liability" | "deposits" | "kyc" | "users" | "announcements" | "referrals";
+
+const SIDEBAR_NAV: { id: AdminTab; label: string; icon: React.ReactNode; }[] = [
+  { id: "dashboard", label: "Dashboard", icon: <BarChart3 className="w-4 h-4" /> },
+  { id: "analytics", label: "Analytics", icon: <Activity className="w-4 h-4" /> },
+  { id: "support", label: "Live Chat", icon: <MessageSquare className="w-4 h-4" /> },
+  { id: "matches", label: "Bet History", icon: <ScrollText className="w-4 h-4" /> },
+  { id: "liability", label: "Risk Management", icon: <Shield className="w-4 h-4" /> },
+  { id: "kyc", label: "Audit Logs", icon: <FileText className="w-4 h-4" /> },
+];
+
+const TOP_NAV: { id: AdminTab; label: string }[] = [
+  { id: "dashboard", label: "Dashboard" },
+  { id: "analytics", label: "Analytics" },
+  { id: "support", label: "Support" },
+  { id: "matches", label: "Staff" },
+  { id: "referrals", label: "Reports" },
+];
 
 export default function AdminPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"matches" | "liability" | "deposits" | "kyc" | "users" | "announcements" | "referrals">("matches");
+  const [activeTab, setActiveTab] = useState<AdminTab>("analytics");
 
   // Redirect if not admin
   useEffect(() => {
@@ -25,56 +46,121 @@ export default function AdminPage() {
   if (loading) return <div className="py-20 text-center animate-pulse text-primary font-bold">LOADING ADMIN SYSTEM...</div>;
   if (!user || user.role !== "admin") return null;
 
-  // Tabs
-  const tabs = [
-    { id: "matches", label: "Matches" },
-    { id: "market", label: "Market Control" },
-    { id: "liability", label: "Liability" },
-    { id: "deposits", label: "Deposits" },
-    { id: "kyc", label: "KYC Queue" },
-    { id: "users", label: "Users" },
-    { id: "announcements", label: "Announcements" },
-    { id: "referrals", label: "Referrals" },
-  ] as const;
-
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <div className="flex items-center justify-between mb-12">
-        <h1 className="text-4xl font-bold tracking-tight text-foreground bg-gradient-to-r from-white to-white/50 bg-clip-text text-transparent">
-          KINETIC <span className="text-primary">CONTROL</span>
-        </h1>
-        <div className="px-4 py-2 glass rounded-full text-[10px] font-bold text-primary border border-primary/20">
-          SYSTEM STATUS: OPTIMAL
+    <div className="flex min-h-screen bg-[#0a0e17] -mt-4 -mx-4">
+      {/* Left Sidebar */}
+      <aside className="w-52 flex-shrink-0 flex flex-col border-r border-white/5 bg-[#0d1117] py-5 hidden lg:flex">
+        {/* Brand */}
+        <div className="px-5 mb-8">
+          <span className="text-white font-black text-base tracking-tight">Kinetic Admin</span>
         </div>
-      </div>
-      
-      {/* Tab Headers */}
-      <div className="flex flex-wrap gap-2 p-1 glass rounded-2xl mb-12 border border-white/5">
-        {tabs.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`px-6 py-3 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-300
-              ${activeTab === tab.id 
-                ? 'bg-primary text-white shadow-[0_0_20px_rgba(0,113,227,0.4)] scale-105' 
-                : 'text-white/40 hover:text-white hover:bg-white/5'}`}
-          >
-            {tab.label}
+
+        {/* Platform Health */}
+        <div className="px-4 mb-6">
+          <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+            <div className="flex items-center gap-1.5 mb-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-emerald-400 font-black text-[10px] uppercase tracking-widest">PLATFORM HEALTH</span>
+            </div>
+            <p className="text-emerald-400/60 text-[9px]">99.9% Uptime | Real-time</p>
+          </div>
+        </div>
+
+        {/* Nav links */}
+        <nav className="flex-1 space-y-1 px-2">
+          {SIDEBAR_NAV.map(item => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                activeTab === item.id
+                  ? "bg-[#0071e3]/20 text-[#0071e3] border border-[#0071e3]/20"
+                  : "text-white/40 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              {item.icon}
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
+        <div className="px-4 pt-4 space-y-2 border-t border-white/5">
+          <button className="w-full flex items-center gap-2 px-4 py-2.5 text-white/30 hover:text-white rounded-xl hover:bg-white/5 transition-all text-sm">
+            <Settings className="w-4 h-4" /><span>System Settings</span>
           </button>
-        ))}
-      </div>
-  
-      {/* Tab Content */}
-       <div className="min-h-[600px] animate-in fade-in duration-700">
-          {activeTab === "matches" && <MatchesTab />}
-          {activeTab === "market" && <MarketControlTab />}
-          {activeTab === "liability" && <LiabilityTab />}
-          {activeTab === "deposits" && <DepositsTab />}
-          {activeTab === "kyc" && <KYCTab />}
-          {activeTab === "users" && <UsersTab />}
-          {activeTab === "announcements" && <AnnouncementManager />}
-          {activeTab === "referrals" && <ReferralsTab />}
+          <button onClick={() => router.push("/")} className="w-full flex items-center gap-2 px-4 py-2.5 text-white/30 hover:text-red-400 rounded-xl hover:bg-red-500/5 transition-all text-sm">
+            <LogOut className="w-4 h-4" /><span>Logout</span>
+          </button>
         </div>
+      </aside>
+
+      {/* Main area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Top Nav */}
+        <header className="flex items-center justify-between px-6 h-14 border-b border-white/5 bg-[#0a0e17]/95 backdrop-blur-sm sticky top-0 z-20">
+          <nav className="flex items-center gap-1">
+            {TOP_NAV.map(item => (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                  activeTab === item.id
+                    ? "text-white border-b-2 border-[#0071e3]"
+                    : "text-white/40 hover:text-white"
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+          <div className="flex items-center gap-3">
+            <button className="relative p-2 rounded-xl hover:bg-white/5 transition-colors">
+              <Activity className="w-5 h-5 text-white/40" />
+              <div className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
+            </button>
+            <button className="p-2 rounded-xl hover:bg-white/5 transition-colors">
+              <Settings className="w-5 h-5 text-white/40" />
+            </button>
+            <div className="w-8 h-8 rounded-full bg-[#0071e3]/20 border border-[#0071e3]/30 flex items-center justify-center">
+              <User className="w-4 h-4 text-[#0071e3]" />
+            </div>
+          </div>
+        </header>
+
+        {/* Content */}
+        <div className="flex-1 p-6 overflow-y-auto">
+          {/* Advanced Tabs overflow for narrower screens */}
+          <div className="flex flex-wrap gap-2 p-1 glass rounded-2xl mb-8 border border-white/5 lg:hidden">
+            {["matches", "market", "liability", "deposits", "kyc", "users", "announcements", "referrals"].map(id => (
+              <button
+                key={id}
+                onClick={() => setActiveTab(id as AdminTab)}
+                className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all ${
+                  activeTab === id
+                    ? "bg-primary text-white"
+                    : "text-white/40 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                {id}
+              </button>
+            ))}
+          </div>
+
+          <div className="min-h-[600px] animate-in fade-in duration-500">
+            {activeTab === "analytics" && <AnalyticsTab />}
+            {activeTab === "support" && <SupportTab />}
+            {activeTab === "dashboard" && <AnalyticsTab />}
+            {activeTab === "matches" && <MatchesTab />}
+            {activeTab === "market" && <MarketControlTab />}
+            {activeTab === "liability" && <LiabilityTab />}
+            {activeTab === "deposits" && <DepositsTab />}
+            {activeTab === "kyc" && <KYCTab />}
+            {activeTab === "users" && <UsersTab />}
+            {activeTab === "announcements" && <AnnouncementManager />}
+            {activeTab === "referrals" && <ReferralsTab />}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -393,7 +479,7 @@ function DepositsTab() {
     <div className="space-y-4">
        {deposits.length === 0 ? (
          <div className="glass-card p-12 text-center rounded-3xl border border-white/5">
-           <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">{t("errors.no_deposits")}</p>
+           <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">No pending deposits</p>
          </div>
        ) : (
          <div className="grid grid-cols-1 gap-4">
