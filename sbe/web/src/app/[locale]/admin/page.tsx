@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "@/i18n/navigation";
-import { CheckCircle2, XCircle, Clock, Eye, User, FileText, Activity, BarChart3, MessageSquare, Shield, ScrollText, Settings, LogOut } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, Eye, User, FileText, Activity, BarChart3, MessageSquare, Shield, ScrollText, Settings, LogOut, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
 import { AdminMatchRow } from "@/components/admin-match-row";
@@ -10,13 +10,15 @@ import { DepositRequestRow } from "@/components/deposit-request-row";
 import { AnnouncementManager } from "@/components/announcement-manager";
 import AnalyticsTab from "@/components/admin-analytics-tab";
 import SupportTab from "@/components/admin-support-tab";
+import OutcomeCenter from "@/components/outcome-center";
 import type { Match, Tournament } from "@/types";
 
-type AdminTab = "dashboard" | "analytics" | "support" | "matches" | "market" | "liability" | "deposits" | "kyc" | "users" | "announcements" | "referrals";
+type AdminTab = "dashboard" | "analytics" | "support" | "outcomes" | "matches" | "market" | "liability" | "deposits" | "kyc" | "users" | "announcements" | "referrals";
 
 const SIDEBAR_NAV: { id: AdminTab; label: string; icon: React.ReactNode; }[] = [
   { id: "dashboard", label: "Dashboard", icon: <BarChart3 className="w-4 h-4" /> },
   { id: "analytics", label: "Analytics", icon: <Activity className="w-4 h-4" /> },
+  { id: "outcomes", label: "Outcome Center", icon: <Bell className="w-4 h-4" /> },
   { id: "support", label: "Live Chat", icon: <MessageSquare className="w-4 h-4" /> },
   { id: "matches", label: "Bet History", icon: <ScrollText className="w-4 h-4" /> },
   { id: "liability", label: "Risk Management", icon: <Shield className="w-4 h-4" /> },
@@ -149,6 +151,7 @@ export default function AdminPage() {
           <div className="min-h-[600px] animate-in fade-in duration-500">
             {activeTab === "analytics" && <AnalyticsTab />}
             {activeTab === "support" && <SupportTab />}
+            {activeTab === "outcomes" && <OutcomeCenter />}
             {activeTab === "dashboard" && <AnalyticsTab />}
             {activeTab === "matches" && <MatchesTab />}
             {activeTab === "market" && <MarketControlTab />}

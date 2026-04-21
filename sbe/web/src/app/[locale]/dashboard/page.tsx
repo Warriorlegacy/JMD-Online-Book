@@ -1,340 +1,335 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from '@/i18n/navigation';
-import { useAuth } from '@/context/auth-context';
+import { useState } from "react";
+import Link from "next/link";
+import { useAuth } from "@/context/auth-context";
+import { useRouter } from "@/i18n/navigation";
 import {
-  Wallet, ArrowUpRight, ArrowDownLeft, UserPlus, Bell, Gift,
-  TrendingUp, Clock, Coins, Flame, Trophy, Star, ChevronRight,
-  Zap, Crown, Dices, Activity, Shield, BarChart3
-} from 'lucide-react';
+  LayoutDashboard, User, ShieldCheck, CreditCard,
+  History, AlertTriangle, ChevronRight, ArrowUpRight,
+  Lock, ExternalLink,
+} from "lucide-react";
 
-// ─── Mock Data ────────────────────────────────────────────────────────────────
-const CHART_DATA = [42, 58, 35, 72, 55, 88, 65, 79, 60, 90, 74, 85, 68, 95];
+// ── sidebar nav ──────────────────────────────────────────────────────────────
+const SIDEBAR = [
+  { id: "overview",    label: "Overview",           icon: LayoutDashboard, href: "/dashboard" },
+  { id: "profile",     label: "Profile",            icon: User,            href: "/profile" },
+  { id: "verification",label: "Verification",       icon: ShieldCheck,     href: "/profile/verification" },
+  { id: "payments",    label: "Payments",           icon: CreditCard,      href: "/wallet" },
+  { id: "bet-history", label: "Bet History",        icon: History,         href: "/dashboard/bet-history" },
+  { id: "rg",          label: "Responsible Gaming", icon: AlertTriangle,   href: "/dashboard/limits" },
+];
+
+// ── demo data ────────────────────────────────────────────────────────────────
+const ACTIVE_BETS = [
+  {
+    id: "b1", live: true, minute: 74,
+    title: "Manchester City vs Liverpool",
+    league: "English Premier League",
+    selection: "Manchester City – Home Win @ 1.85",
+    stake: 250, potentialWin: 458.50, cashOut: 385.20,
+  },
+  {
+    id: "b2", live: false, startsIn: "4h 15m",
+    title: "Lakers vs Warriors",
+    league: "NBA Regular Season",
+    selection: "Lakers – Moneyline @ 2.40",
+    stake: 50, potentialWin: 120.00, cashOut: null,
+  },
+];
 
 const TRANSACTIONS = [
-  { id: '1', type: 'win' as const, amount: 250, date: '2 mins ago', label: 'Game Win — Andar Bahar' },
-  { id: '2', type: 'deposit' as const, amount: 500, date: '1 hour ago', label: 'Deposit via UPI' },
-  { id: '3', type: 'loss' as const, amount: -120, date: '2 hours ago', label: 'Game Loss — Teen Patti' },
-  { id: '4', type: 'bonus' as const, amount: 10, date: 'Yesterday', label: 'Daily Login Bonus' },
-  { id: '5', type: 'withdraw' as const, amount: -1000, date: '2 days ago', label: 'Withdrawal Request' },
+  { ref: "#TXN-998210", date: "24 Oct, 14:32", type: "Card Deposit",   status: "success", amount: "+$1,000.00", positive: true },
+  { ref: "#TXN-998155", date: "23 Oct, 18:10", type: "Bet Placement",  status: "settled", amount: "-$250.00",   positive: false },
+  { ref: "#TXN-997401", date: "22 Oct, 09:45", type: "Withdrawal",     status: "pending", amount: "-$1,200.00", positive: false },
 ];
 
-const HOT_GAMES = [
-  { id: '1', name: 'Andar Bahar', players: 1245, emoji: '🃏', hot: true },
-  { id: '2', name: 'Teen Patti', players: 892, emoji: '🎴', hot: true },
-  { id: '3', name: 'Dragon Tiger', players: 761, emoji: '🐉', hot: false },
-  { id: '4', name: 'Live Roulette', players: 543, emoji: '🎡', hot: false },
+const FOR_YOU = [
+  {
+    id: "fy1", tag: "SUGGESTED",
+    title: "Champions League Weekly",
+    desc: "Based on your recent interest in UEFA markets.",
+    odds: [{ label: "REAL\nMADRID", val: "2.10" }, { label: "DRAW", val: "3.40" }, { label: "AC MILAN", val: "4.20" }],
+  },
 ];
 
-const TX_STYLES = {
-  win:     { color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20', icon: <Trophy className="w-4 h-4" /> },
-  deposit: { color: 'text-[#0071e3]',   bg: 'bg-[#0071e3]/10 border-[#0071e3]/20',   icon: <ArrowUpRight className="w-4 h-4" /> },
-  loss:    { color: 'text-red-400',     bg: 'bg-red-500/10 border-red-500/20',       icon: <TrendingUp className="w-4 h-4 rotate-180" /> },
-  bonus:   { color: 'text-amber-400',   bg: 'bg-amber-500/10 border-amber-500/20',   icon: <Gift className="w-4 h-4" /> },
-  withdraw:{ color: 'text-purple-400',  bg: 'bg-purple-500/10 border-purple-500/20', icon: <ArrowDownLeft className="w-4 h-4" /> },
+const STATUS_COLORS: Record<string, string> = {
+  success: "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20",
+  settled: "bg-[#0071e3]/15 text-[#0071e3] border border-[#0071e3]/20",
+  pending: "bg-amber-500/15 text-amber-400 border border-amber-500/20",
 };
 
-function TrendChart() {
-  const max = Math.max(...CHART_DATA);
-  return (
-    <div className="flex items-end gap-1 h-full w-full">
-      {CHART_DATA.map((v, i) => (
-        <div
-          key={i}
-          className="flex-1 rounded-t-sm transition-all duration-300"
-          style={{
-            height: `${(v / max) * 100}%`,
-            background: `rgba(0,113,227,${0.15 + (v / max) * 0.5})`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
 export default function DashboardPage() {
-  const router = useRouter();
   const { user } = useAuth();
-  const [chartPeriod, setChartPeriod] = useState<'W' | 'M' | 'Y'>('W');
+  const router   = useRouter();
+  const [activeNav, setActiveNav] = useState("overview");
 
-  const balance = parseFloat(user?.balance || '0');
+  const balance     = parseFloat(user?.balance || "12450.00");
+  const realMoney   = balance * 0.82;
+  const bonusCredit = balance * 0.18;
 
   return (
-    <div className="min-h-screen bg-[#0a0e17] -mt-4 -mx-4 px-4 pt-6 pb-12">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-[#0a0e17] -mt-4 -mx-4 flex">
 
-        {/* ── Welcome header ─────────────────────────────────────── */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-black text-white tracking-tight">
-              Welcome back, <span className="text-[#0071e3]">{user?.username || 'Player'}</span> 👋
-            </h1>
-            <p className="text-white/30 text-sm mt-1">All systems operational — your edge awaits.</p>
+      {/* ── Left sidebar ─────────────────────────────────────── */}
+      <div className="w-52 flex-shrink-0 flex flex-col border-r border-white/5 bg-[#0d1120] min-h-screen">
+
+        {/* Sports Hub label */}
+        <div className="px-5 pt-6 pb-4 border-b border-white/5">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[#0071e3]/10 border border-[#0071e3]/20 flex items-center justify-center">
+              <span className="text-[#0071e3] text-xs font-black">SH</span>
+            </div>
+            <div>
+              <p className="text-white font-black text-sm">Sports Hub</p>
+              <p className="text-emerald-400 text-[9px] font-bold">Live &amp; Upcoming</p>
+            </div>
           </div>
-          <button className="relative p-3 glass-card rounded-2xl border border-white/5 hover:border-white/10 transition-all">
-            <Bell className="w-5 h-5 text-white/40" />
-            <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-[9px] font-black flex items-center justify-center">5</div>
-          </button>
         </div>
 
-        {/* ── Main grid ──────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Nav */}
+        <nav className="flex-1 px-3 pt-3 space-y-0.5">
+          {SIDEBAR.map(s => {
+            const Icon = s.icon;
+            return (
+              <button
+                key={s.id}
+                onClick={() => { setActiveNav(s.id); router.push(s.href as any); }}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all text-left ${
+                  activeNav === s.id
+                    ? "bg-[#0071e3]/10 text-[#0071e3] border-l-2 border-[#0071e3]"
+                    : "text-white/40 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <Icon className="w-4 h-4 flex-shrink-0" />
+                {s.label}
+              </button>
+            );
+          })}
+        </nav>
 
-          {/* Left: main column */}
-          <div className="lg:col-span-8 space-y-5">
+        {/* View All Sports */}
+        <div className="p-3 border-t border-white/5">
+          <Link href="/sports" className="flex items-center justify-between px-3 py-2.5 rounded-xl text-white/30 hover:text-white hover:bg-white/5 transition-all text-[10px] font-black uppercase tracking-widest">
+            VIEW ALL SPORTS <ChevronRight className="w-3 h-3" />
+          </Link>
+        </div>
+      </div>
 
-            {/* Wallet card */}
-            <div className="glass-card p-6 rounded-3xl border border-white/5 relative overflow-hidden">
-              {/* decorative glow */}
-              <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-[#0071e3] opacity-5 blur-3xl pointer-events-none" />
+      {/* ── Main area ─────────────────────────────────────────── */}
+      <div className="flex-1 min-w-0 flex gap-5 p-5 overflow-y-auto">
 
-              <div className="flex items-start justify-between mb-6">
-                <div>
-                  <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-2">LIVE WALLET BALANCE</p>
-                  <p className="text-5xl font-black text-white font-mono">
-                    ₹{balance.toFixed(2)}
-                  </p>
-                  <div className="flex items-center gap-1.5 mt-2">
-                    <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="text-emerald-400 text-xs font-bold">+12.5% this week</span>
-                  </div>
-                </div>
-                <div className="p-3.5 bg-[#0071e3]/10 border border-[#0071e3]/20 rounded-2xl">
-                  <Wallet className="w-6 h-6 text-[#0071e3]" />
-                </div>
-              </div>
+        {/* Centre column */}
+        <div className="flex-1 min-w-0 space-y-5">
 
-              <div className="grid grid-cols-4 gap-3">
-                {[
-                  { label: 'Deposit', icon: <ArrowUpRight className="w-5 h-5" />, accent: '#10B981', href: '/wallet' },
-                  { label: 'Withdraw', icon: <ArrowDownLeft className="w-5 h-5" />, accent: '#0071e3', href: '/wallet' },
-                  { label: 'Referral', icon: <UserPlus className="w-5 h-5" />, accent: '#8B5CF6', href: '/affiliate' },
-                  { label: 'Alerts', icon: <Bell className="w-5 h-5" />, accent: '#F97316', href: '#' },
-                ].map(btn => (
-                  <button
-                    key={btn.label}
-                    onClick={() => router.push(btn.href as any)}
-                    className="flex flex-col items-center gap-2 py-4 rounded-2xl border border-white/5 hover:border-white/10 transition-all hover:scale-105 active:scale-95"
-                    style={{ background: `${btn.accent}10` }}
-                  >
-                    <div style={{ color: btn.accent }}>{btn.icon}</div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">{btn.label}</span>
-                  </button>
-                ))}
+          {/* Balance card */}
+          <div className="rounded-2xl border border-white/5 bg-[#0d1120] p-7">
+            <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-2">Account Total Balance</p>
+            <div className="flex items-end gap-3 mb-5">
+              <p className="text-white font-black text-5xl tracking-tight">
+                ${balance.toLocaleString("en", { minimumFractionDigits: 2 })}
+              </p>
+              <div className="flex items-center gap-1 pb-2 text-emerald-400 text-sm font-black">
+                <ArrowUpRight className="w-4 h-4" /> +2.4%
               </div>
             </div>
-
-            {/* Daily Reward */}
-            <div className="flex items-center justify-between p-5 rounded-2xl border border-amber-500/20 bg-amber-500/5 glass-card">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
-                  <Gift className="w-6 h-6 text-amber-400" />
-                </div>
-                <div>
-                  <h3 className="font-black text-white">Daily Reward Available!</h3>
-                  <p className="text-amber-400/60 text-xs mt-0.5">Your login bonus is waiting for you</p>
-                </div>
+            <div className="flex items-center gap-6 mb-6">
+              <div>
+                <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest mb-1">Real Money</p>
+                <p className="text-white font-black text-xl">${realMoney.toLocaleString("en", { minimumFractionDigits: 2 })}</p>
               </div>
-              <button className="px-5 py-2.5 rounded-xl bg-amber-500 text-black text-sm font-black hover:bg-amber-400 active:scale-95 transition-all">
-                Claim ₹10
+              <div className="w-px h-10 bg-white/5" />
+              <div>
+                <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest mb-1">Bonus Credit</p>
+                <p className="text-[#0071e3] font-black text-xl">${bonusCredit.toLocaleString("en", { minimumFractionDigits: 2 })}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <button onClick={() => router.push("/wallet" as any)} className="px-6 py-2.5 rounded-xl border border-white/15 text-white font-bold text-sm hover:bg-white/5 transition-all">
+                Withdraw
+              </button>
+              <button onClick={() => router.push("/wallet" as any)} className="px-6 py-2.5 rounded-xl bg-[#0071e3] text-white font-bold text-sm hover:bg-[#0064cc] active:scale-95 transition-all">
+                Quick Deposit
               </button>
             </div>
+          </div>
 
-            {/* Balance trend */}
-            <div className="glass-card p-6 rounded-3xl border border-white/5">
-              <div className="flex items-center justify-between mb-5">
-                <h3 className="font-black text-white">Balance Trend</h3>
-                <div className="flex items-center gap-1 p-1 glass rounded-full border border-white/5">
-                  {(['W', 'M', 'Y'] as const).map(p => (
-                    <button
-                      key={p}
-                      onClick={() => setChartPeriod(p)}
-                      className={`px-3 py-1 rounded-full text-[10px] font-black transition-all ${chartPeriod === p ? 'bg-[#0071e3] text-white' : 'text-white/30 hover:text-white'}`}
-                    >
-                      {p === 'W' ? 'WEEK' : p === 'M' ? 'MONTH' : 'YEAR'}
-                    </button>
-                  ))}
-                </div>
+          {/* Active Bets */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <h2 className="text-white font-black text-sm uppercase tracking-tight">Active Bets</h2>
+                <span className="px-2 py-0.5 bg-[#0071e3]/20 border border-[#0071e3]/30 rounded-full text-[#0071e3] text-[9px] font-black">{ACTIVE_BETS.length}</span>
               </div>
-              <div className="h-36">
-                <TrendChart />
-              </div>
+              <button className="text-[#0071e3] text-[9px] font-black uppercase tracking-widest hover:underline">VIEW ALL</button>
             </div>
-
-            {/* Stats mini-cards */}
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { label: 'Pending Requests', value: '2', icon: <Clock className="w-5 h-5" />, color: 'text-[#0071e3]', bg: 'bg-[#0071e3]/10 border-[#0071e3]/20' },
-                { label: 'Unread Alerts', value: '5', icon: <Bell className="w-5 h-5" />, color: 'text-purple-400', bg: 'bg-purple-500/10 border-purple-500/20' },
-                { label: 'Referral Earnings', value: '₹245', icon: <Coins className="w-5 h-5" />, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
-              ].map(card => (
-                <div key={card.label} className="glass-card p-5 rounded-2xl border border-white/5">
-                  <div className={`p-2.5 rounded-xl border ${card.bg} ${card.color} mb-3 w-fit`}>
-                    {card.icon}
+            <div className="space-y-3">
+              {ACTIVE_BETS.map(bet => (
+                <div key={bet.id} className="rounded-2xl border border-white/5 bg-[#0d1120] p-5">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      {bet.live ? (
+                        <div className="flex items-center gap-1.5 px-2 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          <span className="text-emerald-400 text-[9px] font-black">LIVE NOW • {bet.minute}&apos;</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1.5 px-2 py-1 bg-white/5 border border-white/10 rounded-full">
+                          <span className="text-white/40 text-[9px] font-black">STARTS IN {bet.startsIn}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[8px] font-bold text-white/20 uppercase tracking-widest">Potential Win</p>
+                      <p className="text-white font-black text-lg">${bet.potentialWin.toFixed(2)}</p>
+                    </div>
                   </div>
-                  <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest">{card.label}</p>
-                  <p className={`text-2xl font-black mt-1 ${card.color}`}>{card.value}</p>
+                  <p className="text-white font-black text-base">{bet.title}</p>
+                  <p className="text-white/30 text-xs mb-3">{bet.league}</p>
+                  <div className="flex items-center gap-2 p-3 rounded-xl bg-black/30 border border-white/5 mb-3">
+                    <div className="w-6 h-6 rounded-lg bg-[#0071e3]/10 border border-[#0071e3]/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-[#0071e3] text-[8px] font-black">S</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest">Selection</p>
+                      <p className="text-white text-xs font-bold truncate">{bet.selection}</p>
+                    </div>
+                    {!bet.cashOut && <Lock className="w-3.5 h-3.5 text-white/20 flex-shrink-0" />}
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] text-white/30 font-bold">STAKE: ${bet.stake.toFixed(2)}</p>
+                    {bet.cashOut && (
+                      <button className="px-5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase hover:bg-emerald-500/20 transition-all">
+                        CASH OUT ${bet.cashOut.toFixed(2)}
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
+          </div>
 
-            {/* Recent Activity */}
-            <div className="glass-card rounded-3xl border border-white/5 overflow-hidden">
-              <div className="flex items-center justify-between px-6 py-5 border-b border-white/5">
-                <h3 className="font-black text-white">Recent Activity</h3>
-                <button
-                  onClick={() => router.push('/wallet')}
-                  className="flex items-center gap-1 text-[#0071e3] text-xs font-bold hover:underline"
-                >
-                  View all<ChevronRight className="w-3.5 h-3.5" />
-                </button>
+          {/* Recent Transactions */}
+          <div>
+            <h2 className="text-white font-black text-sm uppercase tracking-tight mb-3">Recent Transactions</h2>
+            <div className="rounded-2xl border border-white/5 bg-[#0d1120] overflow-hidden">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-[8px] font-black text-white/20 uppercase tracking-widest border-b border-white/5">
+                    <th className="px-5 py-3.5 text-left">Reference</th>
+                    <th className="px-5 py-3.5 text-left">Date &amp; Time</th>
+                    <th className="px-5 py-3.5 text-left">Type</th>
+                    <th className="px-5 py-3.5 text-left">Status</th>
+                    <th className="px-5 py-3.5 text-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {TRANSACTIONS.map(tx => (
+                    <tr key={tx.ref} className="hover:bg-white/2 transition-colors">
+                      <td className="px-5 py-4 font-mono text-sm text-white font-bold">{tx.ref}</td>
+                      <td className="px-5 py-4 text-white/40 text-sm">{tx.date}</td>
+                      <td className="px-5 py-4 text-white/70 text-sm">{tx.type}</td>
+                      <td className="px-5 py-4">
+                        <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase ${STATUS_COLORS[tx.status]}`}>
+                          {tx.status}
+                        </span>
+                      </td>
+                      <td className={`px-5 py-4 text-right font-mono font-black text-sm ${tx.positive ? "text-emerald-400" : "text-white"}`}>
+                        {tx.amount}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Right rail ─────────────────────────────────────── */}
+        <div className="w-72 flex-shrink-0 space-y-4">
+
+          {/* VIP Status */}
+          <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-900/10 to-[#0d1120] p-5">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-[9px] font-black text-amber-400/60 uppercase tracking-widest">VIP Status</p>
+              <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                <span className="text-amber-400 text-sm">👑</span>
               </div>
-              <div className="divide-y divide-white/5">
-                {TRANSACTIONS.map(tx => {
-                  const style = TX_STYLES[tx.type];
-                  return (
-                    <div key={tx.id} className="flex items-center gap-4 px-6 py-4 hover:bg-white/2 transition-colors">
-                      <div className={`p-2.5 rounded-xl border ${style.bg} ${style.color} flex-shrink-0`}>
-                        {style.icon}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white font-bold text-sm">{tx.label}</p>
-                        <p className="text-white/30 text-xs mt-0.5">{tx.date}</p>
-                      </div>
-                      <p className={`font-black ${tx.amount >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                        {tx.amount >= 0 ? '+' : ''}₹{Math.abs(tx.amount).toLocaleString()}
-                      </p>
-                    </div>
-                  );
-                })}
+            </div>
+            <h3 className="text-white font-black text-2xl mb-1">Diamond Tier</h3>
+            <p className="text-white/40 text-xs mb-4">Next reward: $500 Weekly Rebate</p>
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest">Progress</p>
+                <p className="text-[9px] font-black text-amber-400">85%</p>
+              </div>
+              <div className="h-1.5 bg-white/5 rounded-full">
+                <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-300 transition-all" style={{ width: "85%" }} />
               </div>
             </div>
           </div>
 
-          {/* Right sidebar */}
-          <div className="lg:col-span-4 space-y-5">
+          {/* For You */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-white font-black text-sm uppercase tracking-tight">For You</h3>
+            </div>
+            {FOR_YOU.map(item => (
+              <div key={item.id} className="rounded-2xl border border-white/5 bg-[#0d1120] overflow-hidden mb-3">
+                <div className="px-2 py-1.5 bg-white/5 border-b border-white/5">
+                  <span className="text-[8px] font-black text-white/40 uppercase tracking-widest">{item.tag}</span>
+                </div>
+                {/* Match image area */}
+                <div className="h-28 bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <span className="text-4xl opacity-30">⚽</span>
+                  <div className="absolute bottom-2 left-3">
+                    <p className="text-white font-black text-xs">{item.title}</p>
+                  </div>
+                </div>
+                <div className="p-3">
+                  <p className="text-white/40 text-[10px] mb-3">{item.desc}</p>
+                  <div className="grid grid-cols-3 gap-1.5">
+                    {item.odds.map(o => (
+                      <button
+                        key={o.label}
+                        className="py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-[#0071e3]/10 hover:border-[#0071e3]/20 transition-all active:scale-95 text-center"
+                      >
+                        <p className="text-[7px] font-bold text-white/30 uppercase whitespace-pre-line">{o.label}</p>
+                        <p className="text-white font-black text-sm">{o.val}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
 
-            {/* Daily Streak */}
-            <div className="glass-card p-6 rounded-3xl border border-white/5 relative overflow-hidden">
-              <div className="absolute -bottom-10 -right-10 w-32 h-32 rounded-full bg-orange-500 opacity-5 blur-2xl pointer-events-none" />
-              <div className="flex items-center gap-3 mb-5">
-                <div className="p-2.5 bg-orange-500/10 border border-orange-500/20 rounded-xl">
-                  <Flame className="w-5 h-5 text-orange-400" />
-                </div>
-                <div>
-                  <h3 className="text-white font-black">Daily Streak</h3>
-                  <p className="text-white/30 text-xs">Keep it going!</p>
-                </div>
+            {/* Enhanced Odds promo */}
+            <div className="rounded-2xl border border-[#AFFF00]/15 bg-[#AFFF00]/3 p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <ArrowUpRight className="w-3.5 h-3.5 text-[#AFFF00]" />
+                <span className="text-[8px] font-black text-[#AFFF00] uppercase tracking-widest">Enhanced Odds</span>
               </div>
-              <p className="text-4xl font-black text-orange-400 mb-4">12 <span className="text-xl text-orange-400/60 font-bold">days</span></p>
-              <div className="flex gap-1.5">
-                {Array.from({ length: 7 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className={`flex-1 h-8 rounded-lg transition-all ${i < 5 ? 'bg-orange-500/80 shadow-[0_0_8px_rgba(249,115,22,0.4)]' : 'bg-white/5'}`}
-                  />
-                ))}
-              </div>
+              <p className="text-white font-black text-sm mb-1">NBA Parlay Boost</p>
+              <p className="text-white/40 text-[10px]">+15% on any 3+ leg NBA parlay today.</p>
             </div>
 
-            {/* Level Progress */}
-            <div className="glass-card p-6 rounded-3xl border border-white/5">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2.5 bg-amber-500/10 border border-amber-500/20 rounded-xl">
-                  <Crown className="w-5 h-5 text-amber-400" />
-                </div>
-                <div>
-                  <h3 className="text-white font-black">Level 7</h3>
-                  <p className="text-white/30 text-xs">78% to Level 8</p>
-                </div>
+            {/* Secure Environment */}
+            <div className="mt-3 rounded-2xl border border-white/5 bg-[#0d1120] p-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#0071e3]" />
+                <span className="text-white font-black text-xs uppercase">Secure Environment</span>
               </div>
-              <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full"
-                  style={{ width: '78%' }}
-                />
+              <p className="text-white/30 text-[10px] leading-relaxed">
+                Your account is protected by 256-bit encryption. All funds are held in segregated accounts for your security.
+              </p>
+              <div className="flex items-center justify-between py-3 border-t border-white/5">
+                <span className="text-[9px] font-bold text-white/30 uppercase tracking-widest">Daily Deposit Limit</span>
+                <span className="text-white font-black text-sm">$500.00</span>
               </div>
-              <div className="flex items-center justify-between mt-2">
-                <span className="text-[9px] text-white/20 font-bold uppercase">LVL 7</span>
-                <span className="text-[9px] text-white/20 font-bold uppercase">LVL 8</span>
-              </div>
-            </div>
-
-            {/* Wins */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="glass-card p-5 rounded-2xl border border-white/5 space-y-2">
-                <div className="p-2 bg-[#0071e3]/10 border border-[#0071e3]/20 rounded-xl w-fit">
-                  <Zap className="w-4 h-4 text-[#0071e3]" />
-                </div>
-                <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest">Today Wins</p>
-                <p className="text-2xl font-black text-[#0071e3]">3</p>
-              </div>
-              <div className="glass-card p-5 rounded-2xl border border-white/5 space-y-2">
-                <div className="p-2 bg-amber-500/10 border border-amber-500/20 rounded-xl w-fit">
-                  <Trophy className="w-4 h-4 text-amber-400" />
-                </div>
-                <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest">Total Wins</p>
-                <p className="text-2xl font-black text-amber-400">147</p>
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            <div className="glass-card p-5 rounded-3xl border border-white/5">
-              <h3 className="text-white font-black mb-4 text-sm uppercase tracking-tight">Quick Actions</h3>
-              <div className="space-y-2">
-                {[
-                  { label: 'Sports Betting', icon: <Activity className="w-4 h-4" />, href: '/sports', accent: '#0071e3' },
-                  { label: 'Casino Games', icon: <Dices className="w-4 h-4" />, href: '/casino', accent: '#8B5CF6' },
-                  { label: 'KYC Verification', icon: <Shield className="w-4 h-4" />, href: '/profile/verification', accent: '#10B981' },
-                  { label: 'Affiliate Hub', icon: <BarChart3 className="w-4 h-4" />, href: '/affiliate', accent: '#F97316' },
-                ].map(link => (
-                  <button
-                    key={link.label}
-                    onClick={() => router.push(link.href as any)}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-white/5 hover:border-white/10 hover:bg-white/5 transition-all text-white/60 hover:text-white group"
-                  >
-                    <div className="p-1.5 rounded-lg" style={{ background: `${link.accent}15`, color: link.accent }}>
-                      {link.icon}
-                    </div>
-                    <span className="text-sm font-bold flex-1 text-left">{link.label}</span>
-                    <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: link.accent }} />
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Hot Games */}
-            <div className="glass-card rounded-3xl border border-white/5 overflow-hidden">
-              <div className="flex items-center gap-3 px-5 py-4 border-b border-white/5">
-                <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-                <h3 className="text-white font-black text-sm uppercase tracking-tight">Hot Games Now</h3>
-              </div>
-              <div className="divide-y divide-white/5">
-                {HOT_GAMES.map(game => (
-                  <button
-                    key={game.id}
-                    onClick={() => router.push('/casino' as any)}
-                    className="w-full flex items-center gap-3 px-5 py-3.5 hover:bg-white/3 transition-colors text-left"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-xl flex-shrink-0">
-                      {game.emoji}
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-white font-bold text-sm">{game.name}</p>
-                      <div className="flex items-center gap-1 mt-0.5">
-                        <Flame className="w-3 h-3 text-orange-400" />
-                        <p className="text-white/30 text-xs">{game.players.toLocaleString()} online</p>
-                      </div>
-                    </div>
-                    {game.hot && (
-                      <span className="px-2 py-1 bg-red-500/15 border border-red-500/20 text-red-400 text-[8px] font-black rounded-full uppercase tracking-widest">
-                        HOT
-                      </span>
-                    )}
-                  </button>
-                ))}
-              </div>
+              <button className="w-full py-2 rounded-xl border border-white/10 text-white/40 hover:text-white text-[9px] font-black uppercase hover:border-white/20 transition-all">
+                Manage Limits
+              </button>
             </div>
           </div>
         </div>

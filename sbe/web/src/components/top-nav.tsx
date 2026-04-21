@@ -14,7 +14,9 @@ const TopNav = () => {
   
   const baseNavLinks: NavLink[] = [
     { label: 'Sports', href: '/sports', active: true },
+    { label: 'Virtuals', href: '/virtuals' },
     { label: 'Live', href: '/live' },
+    { label: 'Schedules', href: '/sports' },
     { label: 'Casino', href: '/casino' },
     { label: 'Promotions', href: '/promotions' },
   ];
