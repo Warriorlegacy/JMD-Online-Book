@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bell, CheckCircle, Loader, X, ChevronRight, Shield } from "lucide-react";
+import { useSocket } from "@/context/socket-context";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type NotifTab = "All Notifications" | "Outcomes" | "Compliance" | "Promotions";
@@ -75,58 +76,150 @@ const NOTIFICATIONS = [
 const NOTIF_TABS: NotifTab[] = ["All Notifications", "Outcomes", "Compliance", "Promotions"];
 
 export default function OutcomeCenterTab() {
-  const [activeTab, setActiveTab] = useState<NotifTab>("All Notifications");
-  const [pushEnabled, setPushEnabled] = useState(true);
-  const [emailEnabled, setEmailEnabled] = useState(false);
-  const [smsEnabled, setSmsEnabled] = useState(true);
+  const { connected, subscribe, on } = useSocket();
+  const [activeTab, setActiveTab] = useState<NotifTab>("Outcomes");
+  const [unsettledMatches, setUnsettledMatches] = useState<Match[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [processing, setProcessing] = useState<string | null>(null);
+
+  const fetchUnsettled = useCallback(async () => {
+    try {
+      const res = await fetch("/api/matches");
+      const data = await res.json();
+      const unsettled = data.filter((m: any) => m.status === "in_play" || m.status === "completed");
+      setUnsettledMatches(unsettled.map((m: any) => ({
+        id: m.id,
+        teamA: m.team_a,
+        teamB: m.team_b,
+        status: m.status,
+        startTime: m.start_time,
+        score: m.score,
+        tournamentName: m.tournament_name || "International"
+      })));
+    } catch (err) {
+      console.error("Failed to fetch matches for settlement:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUnsettled();
+  }, [fetchUnsettled]);
+
+  const handleSettle = async (id: string, result: 'team_a' | 'team_b' | 'draw') => {
+    setProcessing(id);
+    try {
+      const res = await fetch(`/api/admin/matches/${id}/settle`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ result })
+      });
+      if (res.ok) fetchUnsettled();
+    } catch (err) {
+      console.error("Settlement error:", err);
+    } finally {
+      setProcessing(null);
+    }
+  };
 
   return (
     <div className="flex gap-5">
-
-      {/* ── Notification feed ──────────────────────────────────── */}
+      {/* ── Settlement Feed ──────────────────────────────────── */}
       <div className="flex-1 min-w-0">
-        {/* Header */}
         <div className="mb-6">
-          <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-1">Centralized Alerts</p>
-          <h2 className="text-4xl font-black text-white">Outcome Center</h2>
-          <p className="text-white/40 text-sm mt-2 max-w-lg leading-relaxed">
-            Real-time resolution for every market interaction. Monitor payouts,
-            compliance tasks, and live match shifts.
-          </p>
+          <p className="text-[9px] font-black text-[#0071e3] uppercase tracking-widest mb-1">Market Resolution Engine</p>
+          <h2 className="text-4xl font-black text-white italic tracking-tight">SETTLEMENT CENTER</h2>
         </div>
 
-        {/* Action row */}
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex gap-1 p-1 bg-white/3 border border-white/5 rounded-xl">
-            {NOTIF_TABS.map(tab => (
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex gap-1 p-1 bg-white/5 border border-white/5 rounded-2xl">
+            {["UNSETTLED MARKETS", "RECENTLY RESOLVED"].map(tab => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
-                  activeTab === tab
-                    ? "bg-white/10 text-white border-b-2 border-[#0071e3]"
-                    : "text-white/30 hover:text-white"
+                onClick={() => {}}
+                className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                  tab === "UNSETTLED MARKETS" ? "bg-[#0071e3] text-white shadow-lg shadow-[#0071e3]/20" : "text-white/40 hover:text-white"
                 }`}
               >
                 {tab}
               </button>
             ))}
           </div>
-          <div className="flex items-center gap-3">
-            <button className="px-5 py-2 rounded-xl border border-white/15 text-white/60 font-bold text-sm hover:bg-white/5 transition-all">
-              Mark all as read
-            </button>
-            <button className="px-5 py-2 rounded-xl bg-[#0071e3] text-white font-bold text-sm hover:bg-[#0064cc] active:scale-95 transition-all">
-              Preferences
-            </button>
-          </div>
+          <button onClick={fetchUnsettled} className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all">
+            <Loader className={cn("w-4 h-4 text-white/40", loading && "animate-spin")} />
+          </button>
         </div>
 
-        {/* Feed */}
-        <div className="space-y-3">
-          {NOTIFICATIONS.map(n => (
-            <NotifCard key={n.id} n={n} />
-          ))}
+        <div className="space-y-4">
+          {loading ? (
+            <div className="p-20 text-center glass-card border border-white/5 rounded-[2rem]">
+               <div className="w-10 h-10 border-4 border-[#0071e3] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+               <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Synchronizing Ledger State...</p>
+            </div>
+          ) : unsettledMatches.length > 0 ? (
+            unsettledMatches.map(match => (
+              <div key={match.id} className="glass-card border border-white/10 rounded-[2rem] p-8 overflow-hidden relative group">
+                <div className="absolute top-0 right-0 p-4">
+                  <span className={cn(
+                    "px-3 py-1 rounded-full text-[8px] font-black uppercase border",
+                    match.status === "in_play" ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                  )}>
+                    {match.status === "in_play" ? "LIVE MARKET" : "AWAITING RESULTS"}
+                  </span>
+                </div>
+
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                  <div className="flex-1">
+                    <p className="text-[9px] font-black text-white/30 uppercase tracking-[0.2em] mb-3">{match.tournamentName}</p>
+                    <div className="flex items-center gap-6">
+                       <div className="text-center min-w-[80px]">
+                         <p className="text-white font-black text-xl italic uppercase">{match.teamA}</p>
+                         <p className="text-3xl font-black text-[#0071e3] mt-1">{match.score?.teamA || "0"}</p>
+                       </div>
+                       <div className="text-white/10 font-black text-xs">VS</div>
+                       <div className="text-center min-w-[80px]">
+                         <p className="text-white font-black text-xl italic uppercase">{match.teamB}</p>
+                         <p className="text-3xl font-black text-[#0071e3] mt-1">{match.score?.teamB || "0"}</p>
+                       </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2 min-w-[200px]">
+                    <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-1">EXECUTE SETTLEMENT</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button 
+                        onClick={() => handleSettle(match.id, 'team_a')}
+                        disabled={!!processing}
+                        className="py-3 px-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-black text-[9px] uppercase tracking-widest rounded-xl hover:bg-emerald-500/20 active:scale-95 transition-all"
+                      >
+                        TEAM A WIN
+                      </button>
+                      <button 
+                        onClick={() => handleSettle(match.id, 'team_b')}
+                        disabled={!!processing}
+                        className="py-3 px-4 bg-red-500/10 border border-red-500/20 text-red-400 font-black text-[9px] uppercase tracking-widest rounded-xl hover:bg-red-500/20 active:scale-95 transition-all"
+                      >
+                        TEAM B WIN
+                      </button>
+                      <button 
+                        onClick={() => handleSettle(match.id, 'draw')}
+                        disabled={!!processing}
+                        className="col-span-2 py-3 px-4 bg-white/5 border border-white/10 text-white/40 font-black text-[9px] uppercase tracking-widest rounded-xl hover:bg-white/10 active:scale-95 transition-all"
+                      >
+                        MARKET EQUILIBRIUM (DRAW)
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="p-20 text-center glass-card border border-white/5 rounded-[2rem] space-y-4">
+               <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto opacity-20" />
+               <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">All Markets Resolved & Ledger entries finalized.</p>
+            </div>
+          )}
         </div>
       </div>
 

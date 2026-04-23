@@ -81,6 +81,7 @@ export interface Match {
   sportType: SportCategory;
   score?: MatchScore;
   elapsedMinutes?: number;
+  metadata?: string;
 }
 
 export interface MatchScore {

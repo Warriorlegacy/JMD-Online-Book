@@ -12,6 +12,8 @@ export function LiveScoreWidget({ match }: LiveScoreWidgetProps) {
     return overs !== undefined ? overs.toFixed(1) : "";
   };
 
+  const metadata = JSON.parse(match.metadata || "{}");
+
   return (
     <div className="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 border border-white/5">
       {/* Team A */}
@@ -22,6 +24,9 @@ export function LiveScoreWidget({ match }: LiveScoreWidgetProps) {
         <div className="text-2xl font-black text-white mt-1">
           {match.score?.teamA || "0"}
         </div>
+        {match.sportType === 'tennis' && metadata.sets?.teamA && (
+           <p className="text-[10px] text-white/40 font-bold mt-1">({metadata.sets.teamA.join(", ")})</p>
+        )}
       </div>
 
       {/* VS / Status */}
@@ -33,7 +38,7 @@ export function LiveScoreWidget({ match }: LiveScoreWidgetProps) {
           </span>
         </div>
         <div className="text-lg font-bold text-slate-500 mt-1">
-          {match.elapsedMinutes}'
+          {match.sportType === 'basketball' ? `Q${metadata.quarter || 1}` : `${match.elapsedMinutes}'`}
           {match.sportType === 'cricket' && ` • ${formatOvers(match)}`}
         </div>
       </div>
@@ -46,6 +51,9 @@ export function LiveScoreWidget({ match }: LiveScoreWidgetProps) {
         <div className="text-2xl font-black text-white mt-1">
           {match.score?.teamB || "0"}
         </div>
+        {match.sportType === 'tennis' && metadata.sets?.teamB && (
+           <p className="text-[10px] text-white/40 font-bold mt-1">({metadata.sets.teamB.join(", ")})</p>
+        )}
       </div>
     </div>
   );

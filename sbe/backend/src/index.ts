@@ -16,6 +16,8 @@ import walletRoutes from "./routes/wallet.js";
 import announcementRoutes from "./routes/announcements.js";
 import kycRoutes from "./routes/kyc.js";
 import referralRoutes from "./routes/referral.js";
+import tenantRoutes from "./routes/tenant.js";
+import aiRoutes from "./routes/ai.js";
 import { initPersistenceWorker } from "./worker.js";
 import { CandleService } from "./services/candles.js";
 import { OrderEngineBridge } from "./services/engine.js";
@@ -95,6 +97,8 @@ async function start() {
     await fastify.register(announcementRoutes);
     await fastify.register(kycRoutes);
     await fastify.register(referralRoutes);
+    await fastify.register(tenantRoutes);
+    await fastify.register(aiRoutes);
 
     // 3. Health Check
     fastify.get("/health", async () => {

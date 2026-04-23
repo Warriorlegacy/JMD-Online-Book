@@ -1,14 +1,10 @@
 import cron from "node-cron";
 import { SyncService } from "./services/sync-service.js";
-import { MockSportsProvider } from "./services/data/mock-sports-provider.js";
-import { ProductionSportsProvider } from "./services/data/production-sports-provider.js";
-import { CricketSportsProvider } from "./services/data/cricket-sports-provider.js";
+import { UnifiedSportsProvider } from "./services/data/unified-sports-provider.js";
+import { RiskMonitorService } from "./services/risk-monitor.js";
 
 export function initScheduler() {
-  const provider = process.env.NODE_ENV === "production" 
-    ? new CricketSportsProvider() 
-    : new MockSportsProvider();
-    
+  const provider = new UnifiedSportsProvider();
   const syncService = new SyncService(provider);
 
 
@@ -16,6 +12,9 @@ export function initScheduler() {
   cron.schedule("* * * * *", async () => {
     console.log("[Scheduler] Running Live Sync...");
     await syncService.syncLive();
+    
+    // Also check for risk alerts
+    await RiskMonitorService.checkGlobalLiability();
   });
 
   // Pre-match: Every 1 hour

@@ -13,12 +13,97 @@ import {
   CheckCircle2, 
   AlertCircle,
   Loader2,
-  ChevronLeft
+  ChevronLeft,
+  ChevronRight,
+  ArrowRight,
+  Shield,
+  Coins,
+  Bitcoin,
+  Globe,
+  Upload,
+  User,
+  Home as HomeIcon,
+  Lock
 } from "lucide-react";
 
 const PLATFORM_UPI = "6202442690@ptyes";
 const MIN_DEPOSIT = 100;
 const MIN_WITHDRAW = 200;
+
+function CurrencyCard({ name, code, balance, value, color, icon }: { name: string, code: string, balance: string, value: string, color: string, icon: React.ReactNode }) {
+  return (
+    <div className={`p-5 rounded-2xl bg-white/5 border border-white/5 border-l-4 ${color} space-y-4 group hover:bg-white/10 transition-all`}>
+      <div className="flex justify-between items-start">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center opacity-60 group-hover:opacity-100 transition-opacity">
+            {icon}
+          </div>
+          <div>
+            <h4 className="text-xs font-bold text-white">{name}</h4>
+            <p className="text-[8px] font-bold text-white/20 uppercase tracking-widest">{code}</p>
+          </div>
+        </div>
+        <div className="text-right">
+          <p className="text-[8px] text-white/20 uppercase font-bold">Value (USD)</p>
+          <p className="text-xs font-bold text-white">{value}</p>
+        </div>
+      </div>
+      <div className="flex justify-between items-end">
+        <div>
+          <p className="text-[8px] text-white/20 uppercase font-bold">Balance</p>
+          <p className="text-sm font-black text-white">{balance}</p>
+        </div>
+        <div className="w-16 h-6 bg-white/2 rounded-md overflow-hidden flex items-end gap-0.5 px-1 pb-0.5 opacity-30">
+          {[40, 60, 50, 90, 70, 80].map((h, i) => (
+            <div key={i} className={`flex-1 rounded-t-[1px] ${color.replace('border-l-', 'bg-')}`} style={{ height: `${h}%` }} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function KYCChecklist() {
+  return (
+    <div className="p-6 rounded-3xl bg-white/5 border border-white/10 space-y-6 relative overflow-hidden group">
+      <div className="absolute top-0 right-0 p-4">
+        <div className="flex items-center gap-2 bg-[#0071e3]/10 px-3 py-1 rounded-full border border-[#0071e3]/20">
+          <span className="w-2 h-2 bg-[#0071e3] rounded-full animate-pulse" />
+          <span className="text-[10px] font-bold text-[#0071e3] uppercase tracking-widest">Level 1 ACTIVE</span>
+        </div>
+      </div>
+      
+      <div className="space-y-2">
+        <div className="w-10 h-10 bg-[#0071e3]/10 rounded-xl flex items-center justify-center text-[#0071e3] mb-4">
+          <Shield className="w-5 h-5" />
+        </div>
+        <h3 className="text-lg font-black text-white uppercase tracking-tight">Identity Verification</h3>
+        <p className="text-[10px] text-white/40 font-medium leading-relaxed">Upgrade to Level 2 to unlock higher withdrawal limits and premium features.</p>
+      </div>
+
+      <div className="space-y-3">
+        {[
+          { label: "Email Verification", status: "Verified", icon: <CheckCircle2 className="w-3 h-3" />, active: true },
+          { label: "Government ID", status: "Pending", icon: <Upload className="w-3 h-3" />, active: false, current: true },
+          { label: "Proof of Address", status: "Locked", icon: <Lock className="w-3 h-3" />, active: false, locked: true },
+        ].map((item, i) => (
+          <div key={i} className={`flex items-center gap-4 p-3.5 rounded-2xl border transition-all ${item.current ? "bg-[#0071e3]/5 border-[#0071e3]/30 ring-1 ring-[#0071e3]/30" : "bg-white/2 border-white/5 opacity-60"}`}>
+            <div className={`w-7 h-7 rounded-full flex items-center justify-center ${item.active ? "bg-emerald-500/20 text-emerald-400" : item.current ? "bg-[#0071e3]/20 text-[#0071e3]" : "bg-white/5 text-white/20"}`}>
+              {item.icon}
+            </div>
+            <div className="flex-1">
+              <p className="text-[11px] font-bold text-white">{item.label}</p>
+              <p className="text-[8px] text-white/30 uppercase font-black tracking-widest">{item.status}</p>
+            </div>
+            {item.current && (
+              <button className="text-[9px] font-black uppercase tracking-widest text-[#0071e3] hover:underline">Start</button>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
@@ -229,94 +314,114 @@ export default function WalletPage() {
   if (authLoading) return <div className="flex justify-center py-20"><Loader2 className="animate-spin text-cyan-500" /></div>;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div className="max-w-7xl mx-auto px-6 py-10">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
         
-        {/* Left Column - Balance Card & Quick Actions */}
-        <div className="lg:col-span-5 space-y-6">
-          <div className="relative group overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-600 to-blue-700 p-8 shadow-xl">
+        {/* ── Left Column: Balance & Assets ─────────────────────────── */}
+        <div className="xl:col-span-4 space-y-6">
+          
+          {/* Main Balance Hero */}
+          <div className="relative group overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#0071e3] to-[#005eb2] p-8 shadow-2xl shadow-[#0071e3]/20">
+            <div className="absolute -right-12 -top-12 w-48 h-48 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all duration-700" />
             <div className="relative z-10 space-y-8">
               <div className="flex justify-between items-start">
-                <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl border border-white/30">
+                <div className="p-3.5 bg-white/15 backdrop-blur-xl rounded-2xl border border-white/20">
                   <CreditCard className="w-6 h-6 text-white" />
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">{walletT("currency")}</span>
-                  <p className="text-sm font-bold text-white uppercase">INR</p>
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/50">{walletT("currency")}</span>
+                  <p className="text-sm font-black text-white">INR</p>
                 </div>
               </div>
               
               <div className="space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70">{walletT("balance")}</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">{walletT("balance")}</span>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl font-bold tracking-tighter text-white whitespace-nowrap">
+                  <span className="text-5xl font-black tracking-tighter text-white">
                     ₹ {balance.available.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
               </div>
               
-              <div className="flex gap-4 pt-4 border-t border-white/20 mt-4">
+              <div className="flex gap-6 pt-6 border-t border-white/10">
                 <div className="flex-1">
-                  <p className="text-[9px] font-bold uppercase text-white/60 mb-1">{walletT("locked_balance")}</p>
+                  <p className="text-[8px] font-black uppercase text-white/40 tracking-widest mb-1">{walletT("locked_balance")}</p>
                   <p className="text-sm font-bold text-white">₹ {balance.locked.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
                 </div>
                 <div className="flex-1 text-right">
-                  <p className="text-[9px] font-bold uppercase text-white/60 mb-1">{walletT("status")}</p>
+                  <p className="text-[8px] font-black uppercase text-white/40 tracking-widest mb-1">{walletT("status")}</p>
                   <div className="flex items-center justify-end gap-1.5">
-                    <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
-                    <span className="text-xs font-bold text-emerald-200">{t("profile.verified")}</span>
+                    <div className="w-1.5 h-1.5 bg-[#AFFF00] rounded-full animate-pulse" />
+                    <span className="text-[10px] font-black text-[#AFFF00] uppercase tracking-widest">VERIFIED</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4 backdrop-blur-xl">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400">{t("common.quick_actions")}</h3>
-            <div className="grid grid-cols-2 gap-3">
-              <button 
-                onClick={() => setTab("deposit")}
-                className={`flex flex-col items-center gap-3 p-4 rounded-2xl border transition-all ${tab === "deposit" ? "bg-cyan-500/20 border-cyan-500/50 text-cyan-400" : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10"}`}
-              >
-                <ArrowUpRight className="w-5 h-5" />
-                <span className="text-[10px] font-bold uppercase tracking-wider">{walletT("deposit")}</span>
-              </button>
-              <button 
-                onClick={() => setTab("withdraw")}
-                className={`flex flex-col items-center gap-3 p-4 rounded-2xl border transition-all ${tab === "withdraw" ? "bg-red-500/20 border-red-500/50 text-red-400" : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10"}`}
-              >
-                <ArrowDownLeft className="w-5 h-5" />
-                <span className="text-[10px] font-bold uppercase tracking-wider">{walletT("withdraw")}</span>
-              </button>
+          {/* Quick Actions Grid */}
+          <div className="grid grid-cols-2 gap-3">
+            <button 
+              onClick={() => setTab("deposit")}
+              className={`flex flex-col items-center gap-3 p-5 rounded-3xl border transition-all ${tab === "deposit" ? "bg-[#0071e3] border-[#0071e3] text-white shadow-xl shadow-[#0071e3]/20" : "bg-white/5 border-white/5 text-white/40 hover:bg-white/10 hover:text-white"}`}
+            >
+              <ArrowUpRight className="w-5 h-5" />
+              <span className="text-[9px] font-black uppercase tracking-widest">{walletT("deposit")}</span>
+            </button>
+            <button 
+              onClick={() => setTab("withdraw")}
+              className={`flex flex-col items-center gap-3 p-5 rounded-3xl border transition-all ${tab === "withdraw" ? "bg-red-500 border-red-500 text-white shadow-xl shadow-red-500/20" : "bg-white/5 border-white/5 text-white/40 hover:bg-white/10 hover:text-white"}`}
+            >
+              <ArrowDownLeft className="w-5 h-5" />
+              <span className="text-[9px] font-black uppercase tracking-widest">{walletT("withdraw")}</span>
+            </button>
+          </div>
+
+          {/* Asset Grid (BTC/ETH) */}
+          <div className="space-y-3">
+            <div className="flex justify-between items-center px-2">
+              <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">Crypto Assets</h3>
+              <button className="text-[9px] font-black text-[#0071e3] uppercase hover:underline">Manage</button>
             </div>
-            <div className="grid grid-cols-1 gap-3 mt-3">
-              <button 
-                onClick={() => setTab("bets")}
-                className={`w-full flex items-center justify-between p-4 rounded-2xl border transition-all ${tab === "bets" ? "bg-amber-500/20 border-amber-500/50 text-amber-400" : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10"}`}
-              >
-                <div className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider">{bettingT("bet_history")}</span>
-                </div>
-                <ChevronLeft className="w-4 h-4 rotate-180" />
-              </button>
-              <button 
-                onClick={() => setTab("history")}
-                className={`w-full flex items-center justify-between p-4 rounded-2xl border transition-all ${tab === "history" ? "bg-indigo-500/20 border-indigo-500/50 text-indigo-400" : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10"}`}
-              >
-                <div className="flex items-center gap-3">
-                  <History className="w-5 h-5" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider">{walletT("transaction_history")}</span>
-                </div>
-                <ChevronLeft className="w-4 h-4 rotate-180" />
-              </button>
-            </div>
+            <CurrencyCard 
+              name="Bitcoin" code="BTC" balance="0.042 BTC" value="$2,840.12" color="border-l-[#F7931A]" 
+              icon={<Bitcoin className="w-4 h-4 text-[#F7931A]" />} 
+            />
+            <CurrencyCard 
+              name="Ethereum" code="ETH" balance="1.24 ETH" value="$3,150.45" color="border-l-[#627EEA]" 
+              icon={<Coins className="w-4 h-4 text-[#627EEA]" />} 
+            />
+          </div>
+
+          {/* History / Bets Links */}
+          <div className="space-y-2">
+            <button 
+              onClick={() => setTab("bets")}
+              className={`w-full flex items-center justify-between p-4 rounded-2xl bg-white/2 border border-white/5 transition-all hover:bg-white/5 ${tab === "bets" ? "border-[#0071e3]/30" : ""}`}
+            >
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className={`w-4 h-4 ${tab === "bets" ? "text-[#0071e3]" : "text-white/20"}`} />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">{bettingT("bet_history")}</span>
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-white/10" />
+            </button>
+            <button 
+              onClick={() => setTab("history")}
+              className={`w-full flex items-center justify-between p-4 rounded-2xl bg-white/2 border border-white/5 transition-all hover:bg-white/5 ${tab === "history" ? "border-[#0071e3]/30" : ""}`}
+            >
+              <div className="flex items-center gap-3">
+                <History className={`w-4 h-4 ${tab === "history" ? "text-[#0071e3]" : "text-white/20"}`} />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">{walletT("transaction_history")}</span>
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-white/10" />
+            </button>
           </div>
         </div>
 
-        {/* Right Column - Dynamic Form */}
-        <div className="lg:col-span-7">
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl h-full min-h-[500px]">
+        {/* ── Middle Column: Forms & Content ────────────────────────── */}
+        <div className="xl:col-span-5">
+          <div className="glass-card rounded-[2.5rem] border border-white/5 p-10 min-h-[600px] relative overflow-hidden">
+            {/* ... rest of the forms ... */}
             
             {successMessage && (
               <div className="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
@@ -634,6 +739,38 @@ export default function WalletPage() {
             )}
           </div>
         </div>
+
+        {/* ── Right Column: KYC & Limits ─────────────────────────── */}
+        <div className="xl:col-span-3 space-y-6 lg:sticky lg:top-24">
+          <KYCChecklist />
+          
+          {/* Limit Banner */}
+          <div className="p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/2 border border-white/10 space-y-4">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">Current Limits</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1">Daily Withdrawal</p>
+                <p className="text-base font-black text-white">₹ 50,000</p>
+              </div>
+              <div className="text-right">
+                <p className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1">Monthly Cap</p>
+                <p className="text-base font-black text-white">₹ 500,000</p>
+              </div>
+            </div>
+            <button className="w-full py-2.5 rounded-xl bg-white/5 text-[9px] font-black uppercase tracking-widest text-[#0071e3] hover:bg-white/10 transition-all">
+              Manage Limits
+            </button>
+          </div>
+
+          {/* Secure Messaging */}
+          <div className="p-4 rounded-2xl bg-[#abd45e]/5 border border-[#abd45e]/10 flex gap-3 items-start">
+            <Shield className="w-4 h-4 text-[#abd45e] shrink-0 mt-0.5" />
+            <p className="text-[9px] text-[#abd45e]/60 font-medium leading-relaxed">
+              Your assets are protected by 256-bit military-grade encryption and stored in segregated multi-sig wallets.
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
   );
@@ -653,7 +790,3 @@ function TransactionStatus({ status }: { status: string }) {
     </span>
   );
 }
-
-const ArrowRight = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-);

@@ -4,6 +4,7 @@ import { getMessages } from "next-intl/server";
 import { AuthProvider } from "@/context/auth-context";
 import { SocketProvider } from "@/context/socket-context";
 import { BetSlipProvider } from "@/context/bet-slip-context";
+import { TenantProvider } from "@/context/tenant-context";
 import { MobileNav } from "@/components/mobile-nav";
 import { AnnouncementTicker } from "@/components/announcement-ticker";
 import BetSlip from "@/components/bet-slip";
@@ -16,35 +17,42 @@ export const metadata: Metadata = {
   description: "Next-generation high-frequency peer-to-peer sports betting.",
 };
 
-export default async function RootLayout({
-  children,
-  params,
-}: {
+export default async function RootLayout(props: {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const { children } = props;
+  const params = await props.params;
+  const locale = params?.locale || "en";
   
   // Safely load messages with fallback
   let messages = {};
   try {
+    // next-intl expects getMessages to be called in a request context
     messages = await getMessages();
   } catch (error) {
-    console.warn("Failed to load translation messages:", error);
-    messages = {}; // Fallback to empty messages
+    console.warn(`[I18N] Failed to load messages for locale: ${locale}`, error);
+    messages = {}; // Fallback
   }
 
   return (
     <html lang={locale} className="dark scroll-smooth">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block"
+        />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background text-foreground antialiased selection:bg-primary/30 overflow-x-hidden font-sans"
         )}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <AuthProvider>
-            <SocketProvider>
-              <BetSlipProvider>
+          <TenantProvider>
+            <AuthProvider>
+              <SocketProvider>
+                <BetSlipProvider>
                 <div className="relative flex min-h-screen flex-col">
                   {/* Ticker */}
                   <AnnouncementTicker />
@@ -90,7 +98,8 @@ export default async function RootLayout({
               </BetSlipProvider>
             </SocketProvider>
           </AuthProvider>
-        </NextIntlClientProvider>
+        </TenantProvider>
+      </NextIntlClientProvider>
       </body>
     </html>
   );

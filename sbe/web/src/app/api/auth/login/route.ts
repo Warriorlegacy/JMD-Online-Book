@@ -86,7 +86,13 @@ export async function POST(request: NextRequest) {
       client.release();
     }
   } catch (err: any) {
+    const dbUrl = process.env.DATABASE_URL || "";
     console.error("[POST /api/auth/login] ERROR:", err.message);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ 
+      error: "Internal server error", 
+      dbUrlLength: dbUrl.length,
+      dbUrlPrefix: dbUrl.substring(0, 10),
+      detail: err.message 
+    }, { status: 500 });
   }
 }

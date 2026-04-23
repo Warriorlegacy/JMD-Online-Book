@@ -5,6 +5,7 @@ import { useRouter } from "@/i18n/navigation";
 import { CheckCircle2, XCircle, Clock, Eye, User, FileText, Activity, BarChart3, MessageSquare, Shield, ScrollText, Settings, LogOut, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
+import { useSocket } from "@/context/socket-context";
 import { AdminMatchRow } from "@/components/admin-match-row";
 import { DepositRequestRow } from "@/components/deposit-request-row";
 import { AnnouncementManager } from "@/components/announcement-manager";
@@ -798,6 +799,8 @@ function KYCTab() {
 
 function LiabilityTab() {
   const [data, setData] = useState<any>(null);
+  const { connected, subscribe, on } = useSocket();
+  const [riskAlerts, setRiskAlerts] = useState<any[]>([]);
   
   useEffect(() => {
     fetch('/api/admin/liability')
@@ -805,10 +808,48 @@ function LiabilityTab() {
       .then(setData);
   }, []);
 
+  useEffect(() => {
+    if (connected) {
+      subscribe("global");
+    }
+  }, [connected, subscribe]);
+
+  useEffect(() => {
+    const unsub = on<any>("notification", (alert) => {
+      if (alert.notifType === "alert") {
+        setRiskAlerts(prev => [alert, ...prev].slice(0, 5));
+      }
+    });
+    return () => unsub();
+  }, [on]);
+
   if (!data) return <div className="glass-card p-20 text-center rounded-3xl border border-white/5 text-white/20 uppercase font-bold tracking-widest text-xs">QUANTIFYING RISK...</div>;
 
   return (
     <div className="space-y-12">
+      {/* Real-time Alerts */}
+      {riskAlerts.length > 0 && (
+        <div className="space-y-4">
+          <h2 className="text-[10px] font-bold text-red-400 uppercase tracking-widest ml-1 animate-pulse">CRITICAL RISK INTERVENTIONS</h2>
+          {riskAlerts.map((alert, i) => (
+            <div key={i} className="glass-card border border-red-500/30 bg-red-500/5 p-6 rounded-3xl flex items-center justify-between animate-in slide-in-from-top-4 duration-500">
+               <div className="flex items-center gap-6">
+                 <div className="w-12 h-12 rounded-2xl bg-red-500/20 flex items-center justify-center text-red-500 border border-red-500/30">
+                    <Shield className="w-6 h-6" />
+                 </div>
+                 <div>
+                    <h4 className="text-white font-black text-sm uppercase tracking-tight">{alert.title}</h4>
+                    <p className="text-white/50 text-xs mt-1">{alert.body}</p>
+                 </div>
+               </div>
+               <button className="px-6 py-3 bg-red-500 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-red-600 transition-all">
+                 {alert.cta}
+               </button>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Global Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="glass-card p-10 rounded-3xl border border-white/10 relative overflow-hidden group">

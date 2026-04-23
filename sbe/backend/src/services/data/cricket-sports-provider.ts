@@ -20,6 +20,7 @@ export class CricketSportsProvider implements SportsDataProvider {
         teamB: m.away_team.name,
         startTime: new Date(m.start_time),
         status: "scheduled",
+        sportType: "Cricket",
         odds: [],
       }));
     } catch (error: any) {
@@ -43,6 +44,7 @@ export class CricketSportsProvider implements SportsDataProvider {
         teamB: m.away_team.name,
         startTime: new Date(m.start_time),
         status: "in_play",
+        sportType: "Cricket",
         score: {
           teamA: m.home_score,
           teamB: m.away_score,

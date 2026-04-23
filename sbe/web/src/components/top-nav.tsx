@@ -10,7 +10,7 @@ interface NavLink {
 }
 
 const TopNav = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   
   const baseNavLinks: NavLink[] = [
     { label: 'Sports', href: '/sports', active: true },
@@ -57,18 +57,41 @@ const TopNav = () => {
           <span className="material-symbols-outlined text-slate-400 hover:text-white cursor-pointer transition-colors">
             language
           </span>
-          <span className="material-symbols-outlined text-slate-400 hover:text-white cursor-pointer transition-colors">
-            account_circle
-          </span>
+          <Link href="/profile">
+            <span className="material-symbols-outlined text-slate-400 hover:text-white cursor-pointer transition-colors">
+              account_circle
+            </span>
+          </Link>
         </div>
 
-        <button className="text-[#a7c8ff] font-bold text-sm uppercase px-4 py-2 hover:opacity-80 active:scale-95 transition-all">
-          Login
-        </button>
-        
-        <button className="bg-[#3a91fa] text-[#002a55] font-bold text-sm uppercase px-6 py-2 rounded-lg shadow-lg hover:opacity-90 active:scale-95 transition-all">
-          Register
-        </button>
+        {user ? (
+          <div className="flex items-center gap-4">
+            <div className="flex flex-col items-end">
+              <span className="text-white text-xs font-bold uppercase tracking-tight">{user.username}</span>
+              <span className="text-[#abd45e] text-[10px] font-black tracking-widest">${parseFloat(user.balance || "0").toLocaleString()}</span>
+            </div>
+            <button 
+              onClick={() => logout()}
+              className="text-slate-400 hover:text-white font-bold text-xs uppercase transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        ) : (
+          <>
+            <Link href="/login">
+              <button className="text-[#a7c8ff] font-bold text-sm uppercase px-4 py-2 hover:opacity-80 active:scale-95 transition-all">
+                Login
+              </button>
+            </Link>
+            
+            <Link href="/register">
+              <button className="bg-[#3a91fa] text-[#002a55] font-bold text-sm uppercase px-6 py-2 rounded-lg shadow-lg hover:opacity-90 active:scale-95 transition-all">
+                Register
+              </button>
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );

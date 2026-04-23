@@ -60,13 +60,63 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router   = useRouter();
   const [activeNav, setActiveNav] = useState("overview");
+  const [activeBets, setActiveBets] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<{deposits: any[], withdrawals: any[]}>({deposits: [], withdrawals: []});
+  const [dataLoading, setDataLoading] = useState(true);
 
-  const balance     = parseFloat(user?.balance || "12450.00");
-  const realMoney   = balance * 0.82;
-  const bonusCredit = balance * 0.18;
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchData = async () => {
+      try {
+        const [betsRes, txRes] = await Promise.all([
+          fetch(`/api/bets/active?userId=${user.id}`),
+          fetch("/api/wallet/transactions")
+        ]);
+
+        if (betsRes.ok) setActiveBets(await betsRes.json());
+        if (txRes.ok) setTransactions(await txRes.json());
+      } catch (err) {
+        console.error("Dashboard fetch error:", err);
+      } finally {
+        setDataLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0e17]">
+        <div className="w-8 h-8 border-4 border-[#0071e3] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  const balance     = parseFloat(user?.balance || "0.00");
+  const realMoney   = balance * 1.0; // Standardizing to 100% real for now
+  const bonusCredit = 0.00;
+
+  const combinedTransactions = [
+    ...transactions.deposits.map(d => ({
+      id: d.utrNumber,
+      label: "Deposit",
+      amount: `+₹${parseFloat(d.amount).toLocaleString()}`,
+      date: new Date(d.createdAt).toLocaleDateString(),
+      status: d.status
+    })),
+    ...transactions.withdrawals.map(w => ({
+      id: w.id,
+      label: "Withdrawal",
+      amount: `-₹${parseFloat(w.amount).toLocaleString()}`,
+      date: new Date(w.createdAt).toLocaleDateString(),
+      status: w.status
+    }))
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5);
 
   return (
     <div className="min-h-screen bg-[#0a0e17] -mt-4 -mx-4 flex">
@@ -127,21 +177,21 @@ export default function DashboardPage() {
             <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-2">Account Total Balance</p>
             <div className="flex items-end gap-3 mb-5">
               <p className="text-white font-black text-5xl tracking-tight">
-                ${balance.toLocaleString("en", { minimumFractionDigits: 2 })}
+                ₹{balance.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
               </p>
               <div className="flex items-center gap-1 pb-2 text-emerald-400 text-sm font-black">
-                <ArrowUpRight className="w-4 h-4" /> +2.4%
+                <ArrowUpRight className="w-4 h-4" /> +0.0%
               </div>
             </div>
             <div className="flex items-center gap-6 mb-6">
               <div>
                 <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest mb-1">Real Money</p>
-                <p className="text-white font-black text-xl">${realMoney.toLocaleString("en", { minimumFractionDigits: 2 })}</p>
+                <p className="text-white font-black text-xl">₹{realMoney.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</p>
               </div>
               <div className="w-px h-10 bg-white/5" />
               <div>
                 <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest mb-1">Bonus Credit</p>
-                <p className="text-[#0071e3] font-black text-xl">${bonusCredit.toLocaleString("en", { minimumFractionDigits: 2 })}</p>
+                <p className="text-[#0071e3] font-black text-xl">₹{bonusCredit.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -159,53 +209,48 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <h2 className="text-white font-black text-sm uppercase tracking-tight">Active Bets</h2>
-                <span className="px-2 py-0.5 bg-[#0071e3]/20 border border-[#0071e3]/30 rounded-full text-[#0071e3] text-[9px] font-black">{ACTIVE_BETS.length}</span>
+                <span className="px-2 py-0.5 bg-[#0071e3]/20 border border-[#0071e3]/30 rounded-full text-[#0071e3] text-[9px] font-black">{activeBets.length}</span>
               </div>
               <button className="text-[#0071e3] text-[9px] font-black uppercase tracking-widest hover:underline">VIEW ALL</button>
             </div>
             <div className="space-y-3">
-              {ACTIVE_BETS.map(bet => (
+              {activeBets.length > 0 ? activeBets.map(bet => (
                 <div key={bet.id} className="rounded-2xl border border-white/5 bg-[#0d1120] p-5">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      {bet.live ? (
-                        <div className="flex items-center gap-1.5 px-2 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                          <span className="text-emerald-400 text-[9px] font-black">LIVE NOW • {bet.minute}&apos;</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-1.5 px-2 py-1 bg-white/5 border border-white/10 rounded-full">
-                          <span className="text-white/40 text-[9px] font-black">STARTS IN {bet.startsIn}</span>
-                        </div>
-                      )}
+                      <div className="flex items-center gap-1.5 px-2 py-1 bg-white/5 border border-white/10 rounded-full">
+                        <span className="text-white/40 text-[9px] font-black uppercase tracking-widest">
+                          {new Date(bet.createdAt).toLocaleDateString()} • {new Date(bet.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-[8px] font-bold text-white/20 uppercase tracking-widest">Potential Win</p>
-                      <p className="text-white font-black text-lg">${bet.potentialWin.toFixed(2)}</p>
+                      <p className="text-[8px] font-bold text-white/20 uppercase tracking-widest">Stake</p>
+                      <p className="text-white font-black text-lg">₹{parseFloat(bet.stake).toLocaleString()}</p>
                     </div>
                   </div>
-                  <p className="text-white font-black text-base">{bet.title}</p>
-                  <p className="text-white/30 text-xs mb-3">{bet.league}</p>
-                  <div className="flex items-center gap-2 p-3 rounded-xl bg-black/30 border border-white/5 mb-3">
-                    <div className="w-6 h-6 rounded-lg bg-[#0071e3]/10 border border-[#0071e3]/20 flex items-center justify-center flex-shrink-0">
-                      <span className="text-[#0071e3] text-[8px] font-black">S</span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest">Selection</p>
-                      <p className="text-white text-xs font-bold truncate">{bet.selection}</p>
-                    </div>
-                    {!bet.cashOut && <Lock className="w-3.5 h-3.5 text-white/20 flex-shrink-0" />}
-                  </div>
+                  <p className="text-white font-black text-base italic uppercase">{bet.type === 'accumulator' ? 'Accumulator' : 'Single Bet'}</p>
+                  <p className="text-white/30 text-[10px] mb-3 uppercase tracking-widest">TX REF: {bet.id.substring(0, 8)}...</p>
+                  
                   <div className="flex items-center justify-between">
-                    <p className="text-[10px] text-white/30 font-bold">STAKE: ${bet.stake.toFixed(2)}</p>
-                    {bet.cashOut && (
-                      <button className="px-5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase hover:bg-emerald-500/20 transition-all">
-                        CASH OUT ${bet.cashOut.toFixed(2)}
+                    <span className={cn(
+                      "px-3 py-1 rounded-full text-[9px] font-black uppercase border",
+                      STATUS_COLORS[bet.status as keyof typeof STATUS_COLORS] || "bg-white/10 text-white/40 border-white/10"
+                    )}>
+                      {bet.status}
+                    </span>
+                    {bet.status === 'open' && (
+                      <button className="px-5 py-2 rounded-xl bg-[#0071e3]/10 border border-[#0071e3]/20 text-[#0071e3] text-[10px] font-black uppercase hover:bg-[#0071e3]/20 transition-all">
+                        VIEW DETAILS
                       </button>
                     )}
                   </div>
                 </div>
-              ))}
+              )) : (
+                <div className="rounded-2xl border border-dashed border-white/10 p-12 text-center">
+                  <p className="text-white/20 text-xs font-black uppercase tracking-widest">No active bets found</p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -215,30 +260,39 @@ export default function DashboardPage() {
             <div className="rounded-2xl border border-white/5 bg-[#0d1120] overflow-hidden">
               <table className="w-full">
                 <thead>
-                  <tr className="text-[8px] font-black text-white/20 uppercase tracking-widest border-b border-white/5">
+                  <tr className="text-[8px] font-black text-white/20 uppercase tracking-widest border-b border-white/5 bg-white/2">
                     <th className="px-5 py-3.5 text-left">Reference</th>
-                    <th className="px-5 py-3.5 text-left">Date &amp; Time</th>
+                    <th className="px-5 py-3.5 text-left">Date</th>
                     <th className="px-5 py-3.5 text-left">Type</th>
                     <th className="px-5 py-3.5 text-left">Status</th>
                     <th className="px-5 py-3.5 text-right">Amount</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
-                  {TRANSACTIONS.map(tx => (
-                    <tr key={tx.ref} className="hover:bg-white/2 transition-colors">
-                      <td className="px-5 py-4 font-mono text-sm text-white font-bold">{tx.ref}</td>
-                      <td className="px-5 py-4 text-white/40 text-sm">{tx.date}</td>
-                      <td className="px-5 py-4 text-white/70 text-sm">{tx.type}</td>
+                  {combinedTransactions.length > 0 ? combinedTransactions.map(tx => (
+                    <tr key={tx.id} className="hover:bg-white/2 transition-colors">
+                      <td className="px-5 py-4 font-mono text-[11px] text-white font-bold">{tx.id.substring(0, 12)}...</td>
+                      <td className="px-5 py-4 text-white/40 text-[11px] font-bold uppercase">{tx.date}</td>
+                      <td className="px-5 py-4 text-white/70 text-[11px] font-black uppercase italic">{tx.label}</td>
                       <td className="px-5 py-4">
-                        <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase ${STATUS_COLORS[tx.status]}`}>
+                        <span className={cn(
+                          "px-2.5 py-1 rounded-full text-[9px] font-black uppercase border",
+                          STATUS_COLORS[tx.status as keyof typeof STATUS_COLORS] || "bg-white/10 text-white/40 border-white/10"
+                        )}>
                           {tx.status}
                         </span>
                       </td>
-                      <td className={`px-5 py-4 text-right font-mono font-black text-sm ${tx.positive ? "text-emerald-400" : "text-white"}`}>
+                      <td className={`px-5 py-4 text-right font-mono font-black text-sm ${tx.amount.startsWith('+') ? "text-emerald-400" : "text-white"}`}>
                         {tx.amount}
                       </td>
                     </tr>
-                  ))}
+                  )) : (
+                    <tr>
+                      <td colSpan={5} className="px-5 py-12 text-center text-white/20 text-xs font-black uppercase tracking-widest">
+                        No transactions found
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

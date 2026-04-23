@@ -1,0 +1,24 @@
+JMD AUTOBUILD PROMPT.pdf
+jmd-build-prompt.pdf
+Master Prompt for Sports Betting Exchange.pdf
+~\antigravity-skills\skills\theme-factory\theme-showcase.pdf
+admin_cookies.txt
+AGENTS.md
+AUTONOMOUS_PROMPT.md
+CHANGELOG.md
+CLAUDE.md
+DATABASE_DEBUG.md
+DEPLOYMENT_COMPLETE.md
+DESIGN.md
+FREE_HOSTING_GUIDE.md
+GEMINI.md
+Kinetic_implementation_plan.md
+KOYEB_SETUP.md
+Master Prompt for Sports Betting Exchange.md
+QUICKSTART_KOYEB.md
+QUICKSTART_RENDER.md
+README.md
+SESSION_SUMMARY.md
+Site Analysis — nohmy99.com.md
+summary.md
+ai-system\orchestrator.md

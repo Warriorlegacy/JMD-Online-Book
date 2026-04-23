@@ -121,8 +121,56 @@ function OddButton({
   );
 }
 
-export function TopMatchesGrid({ matches = mockMatches }: TopMatchesGridProps) {
+export function TopMatchesGrid({ matches: initialMatches }: TopMatchesGridProps) {
   const [activeTab, setActiveTab] = useState(0);
+  const [matches, setMatches] = useState<Match[]>(initialMatches || mockMatches);
+  const [isLoading, setIsLoading] = useState(!initialMatches);
+
+  React.useEffect(() => {
+    if (initialMatches) return;
+    
+    const fetchMatches = async () => {
+      try {
+        const res = await fetch("/api/matches/active");
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data = await res.json();
+        
+        // Transform API data to Match interface if needed
+        // For now, if it returns the DEMO_MATCH or array of matches
+        const activeMatches = Array.isArray(data) ? data : [data];
+        
+        // Map backend fields to frontend interface
+        const mappedMatches: Match[] = activeMatches.map((m: any) => ({
+          id: m.id,
+          time: new Date(m.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          isLive: m.status === 'in_play',
+          league: JSON.parse(m.metadata || '{}').round || "International",
+          teams: [m.team_a, m.team_b],
+          matchResult: { home: 2.0, draw: 3.5, away: 3.5 }, // Default odds if not in API
+          totalGoals: { line: 2.5, over: 1.9, under: 1.9 },
+          handicap: { line: 0, home: 1.9, away: 1.9 },
+        }));
+
+        setMatches(mappedMatches);
+      } catch (error) {
+        console.error("Failed to load active matches:", error);
+        setMatches(mockMatches);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMatches();
+  }, [initialMatches]);
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-64 flex items-center justify-center bg-[#1d1d1f] rounded-xl">
+        <div className="w-6 h-6 border-2 border-[#0071e3] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="w-full rounded-xl overflow-hidden bg-[#1d1d1f]">

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { Search, ChevronRight, Headphones, Settings, Shield } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
+import { WinnersTicker } from "@/components/winners-ticker";
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 const CASINO_SIDEBAR = [
@@ -136,6 +137,8 @@ export default function CasinoPage() {
             </div>
           </div>
         </div>
+
+        <WinnersTicker />
 
         {/* Filter tabs + count */}
         <div className="flex items-center gap-4 px-6 mt-6 mb-4">

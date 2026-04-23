@@ -17,6 +17,7 @@ export class MockSportsProvider implements SportsDataProvider {
         teamB: `Team ${i * 2 + 2}`,
         startTime: new Date(Date.now() + i * 3600000),
         status: i < 3 ? "in_play" : "scheduled",
+        sportType: "Football",
         score: i < 3 ? { teamA: "0", teamB: "0" } : undefined,
         odds: [
           { marketName: "Match Winner", selection: "Home", odds: 2.1, status: "active" },

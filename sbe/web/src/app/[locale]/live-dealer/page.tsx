@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/context/auth-context";
+import { useSocket } from "@/context/socket-context";
 import { useRouter } from "@/i18n/navigation";
 import {
   Send, ChevronDown, Settings, Headphones,
@@ -40,6 +41,7 @@ const CHIPS = [1, 5, 25, 100, 500];
 
 export default function LiveDealerPage() {
   const { user } = useAuth();
+  const { connected, subscribe, on } = useSocket();
   const router = useRouter();
 
   const [activeTable, setActiveTable] = useState(LIVE_TABLES[0]);
@@ -53,6 +55,23 @@ export default function LiveDealerPage() {
   const [activeSidebar, setActiveSidebar] = useState("live-dealer");
   const chatRef = useRef<HTMLDivElement>(null);
 
+  // Subscribe to table room
+  useEffect(() => {
+    if (connected) {
+      subscribe(activeTable.id);
+    }
+  }, [connected, activeTable.id, subscribe]);
+
+  // Listen for chat messages
+  useEffect(() => {
+    const unsub = on<ChatMessage & { room: string }>("chat_message", (data) => {
+      if (data.room === activeTable.id) {
+        setMessages(prev => [...prev, { user: data.user, text: data.text, role: data.role }]);
+      }
+    });
+    return () => unsub();
+  }, [on, activeTable.id]);
+
   // Auto-scroll chat
   useEffect(() => {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -62,8 +81,17 @@ export default function LiveDealerPage() {
   const totalBet = playerBet + bankerBet + tieBet;
 
   const sendChat = () => {
-    if (!chatMsg.trim()) return;
-    setMessages(prev => [...prev, { user: user?.username || "Player", text: chatMsg.trim(), role: "player" }]);
+    if (!chatMsg.trim() || !connected) return;
+    
+    // Send to server
+    send({
+      type: "chat_message",
+      room: activeTable.id,
+      text: chatMsg.trim(),
+      user: user?.username || "Player",
+      role: (user as any)?.role === "admin" ? "dealer" : "player"
+    });
+    
     setChatMsg("");
   };
 

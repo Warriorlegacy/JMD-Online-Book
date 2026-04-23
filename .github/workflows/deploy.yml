@@ -43,6 +43,13 @@ jobs:
         working-directory: ./sbe/backend
         run: npm run build
 
+      - name: Run God-Level System Verification
+        working-directory: ./sbe/backend
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+        run: npm run test:god
+
       - name: Build Web
         working-directory: ./sbe/web
         run: npm run build

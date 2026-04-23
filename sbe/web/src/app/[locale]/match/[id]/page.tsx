@@ -7,6 +7,9 @@ import type { Match, PriceLevel } from "@/types";
 import { OrderBook } from "@/components/order-book";
 import { MarketChart } from "@/components/market-chart";
 import { LiveScoreWidget } from "@/components/live-score-widget";
+import { LivePitch } from "@/components/live-pitch";
+import { LiveCourt } from "@/components/live-court";
+import { LiveTennisCourt } from "@/components/live-tennis-court";
 import { Search, Bell, Settings, User, ChevronRight, Brain, Loader2, Bookmark } from "lucide-react";
 
 
@@ -104,6 +107,7 @@ const normalizeMatch = (m: any): Match => ({
   sportType: m.sportType || m.sport_type || "other",
   score: m.score ? { teamA: String(m.score.teamA), teamB: String(m.score.teamB) } : undefined,
   elapsedMinutes: m.elapsedMinutes || m.elapsed_minutes,
+  metadata: m.metadata || "{}",
 });
 
 // ─── Main Component ──────────────────────────────────────────────────────────
@@ -117,6 +121,7 @@ export default function MatchPage({ params }: { params: { id: string } }) {
   const [orderBooks, setOrderBooks] = useState<Record<string, { backs: PriceLevel[]; lays: PriceLevel[] }>>({});
   const [activeNav, setActiveNav] = useState("Matches");
   const [activeSport, setActiveSport] = useState("Football");
+  const [aiInsights, setAiInsights] = useState<any>(null);
 
   // Fetch + poll match data
   useEffect(() => {
@@ -139,6 +144,21 @@ export default function MatchPage({ params }: { params: { id: string } }) {
     fetchMatch();
     const interval = setInterval(fetchMatch, 30000);
     return () => { cancelled = true; clearInterval(interval); };
+  }, [matchId]);
+
+  // Fetch AI Insights
+  useEffect(() => {
+    async function fetchInsights() {
+      try {
+        const res = await fetch(`/api/ai/insights/${matchId}`);
+        if (res.ok) {
+          setAiInsights(await res.json());
+        }
+      } catch (err) {
+        console.error("Failed to fetch AI insights", err);
+      }
+    }
+    fetchInsights();
   }, [matchId]);
 
   // WebSocket orderbook
@@ -311,92 +331,189 @@ export default function MatchPage({ params }: { params: { id: string } }) {
             <span className="text-[#0071e3]">Leg 2</span>
           </div>
 
-          {/* ── Match Hero Card ─────────────────────────────────────────── */}
+          {/* ── Match Hero & Live Visualization ─────────────────────────── */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-
-            {/* Team A */}
-            <div className="glass-card p-6 rounded-2xl border border-white/5 flex items-center justify-between group hover:border-white/10 transition-all">
-              <div>
-                <p className="text-5xl font-black text-white tracking-tighter">
-                  {match.teamA.split(" ").map(w => w[0]).join("").slice(0, 3)}
-                </p>
-                <p className="text-white/40 text-sm mt-1">{match.teamA}</p>
-              </div>
-              <div className="text-right space-y-4">
-                <div>
-                  <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">WIN PROB</p>
-                  <p className="text-white font-black text-xl">{probA}%</p>
+            
+            {/* Integrated Scoreboard Card (2 cols) */}
+            <div className="lg:col-span-2 glass-card rounded-2xl border border-white/5 overflow-hidden flex flex-col group hover:border-white/10 transition-all">
+              <div className="flex-1 p-8 flex items-center justify-between">
+                {/* Team A */}
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center border-2 border-white/10 group-hover:border-[#0071e3]/30 transition-all">
+                    <span className="text-2xl">🛡️</span>
+                  </div>
+                  <h2 className="font-black text-lg tracking-tight uppercase text-white">{match.teamA}</h2>
+                  <div className="flex gap-2">
+                    <div className="bg-white/5 px-2 py-1 rounded-md">
+                      <p className="text-[8px] text-white/20 font-bold uppercase">Prob</p>
+                      <p className="text-xs font-black text-white">{probA}%</p>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">AVG GOALS</p>
-                  <p className="text-white font-black text-xl">2.4</p>
+
+                {/* Score Center */}
+                <div className="flex flex-col items-center gap-1">
+                  {isLive && (
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-emerald-400 text-[10px] font-bold uppercase tracking-[0.2em]">Live {match.elapsedMinutes}&apos;</span>
+                    </div>
+                  )}
+                  <div className="text-6xl font-black tracking-tighter text-white flex items-center gap-5">
+                    <span>{match.score?.teamA ?? 0}</span>
+                    <span className="text-white/20 text-4xl">:</span>
+                    <span>{match.score?.teamB ?? 0}</span>
+                  </div>
+                  <span className="text-white/30 text-[10px] font-bold uppercase tracking-[0.2em] mt-2">{match.tournamentName}</span>
+                </div>
+
+                {/* Team B */}
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center border-2 border-white/10 group-hover:border-[#abd45e]/30 transition-all">
+                    <span className="text-2xl">🏟️</span>
+                  </div>
+                  <h2 className="font-black text-lg tracking-tight uppercase text-white">{match.teamB}</h2>
+                  <div className="flex gap-2">
+                    <div className="bg-white/5 px-2 py-1 rounded-md">
+                      <p className="text-[8px] text-white/20 font-bold uppercase">Prob</p>
+                      <p className="text-xs font-black text-white">{probB}%</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats Bar */}
+              <div className="grid grid-cols-3 bg-white/2 p-4 border-t border-white/5">
+                <div className="flex flex-col items-center">
+                  <span className="text-[9px] text-white/30 font-bold uppercase tracking-widest">Possession</span>
+                  <div className="flex items-center gap-3 w-full px-4 mt-1">
+                    <span className="text-[10px] font-bold text-white/60">58%</span>
+                    <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden flex">
+                      <div className="bg-[#0071e3] h-full" style={{ width: "58%" }} />
+                      <div className="bg-[#abd45e] h-full" style={{ width: "42%" }} />
+                    </div>
+                    <span className="text-[10px] font-bold text-[#abd45e]">42%</span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center border-x border-white/5 px-4">
+                  <span className="text-[9px] text-white/30 font-bold uppercase tracking-widest">Shots on Target</span>
+                  <div className="flex items-center justify-between w-full mt-1 px-2">
+                    <span className="text-sm font-black text-white">7</span>
+                    <div className="flex gap-1">
+                      <div className="w-1 h-1 rounded-full bg-[#0071e3]" />
+                      <div className="w-1 h-1 rounded-full bg-[#0071e3]" />
+                      <div className="w-1 h-1 rounded-full bg-white/10" />
+                    </div>
+                    <span className="text-sm font-black text-[#abd45e]">3</span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-[9px] text-white/30 font-bold uppercase tracking-widest">Aggregate</span>
+                  <p className="text-sm font-black text-white mt-1">
+                    {parseInt(match.score?.teamA ?? "0") + 3} - {parseInt(match.score?.teamB ?? "0") + 4}
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Score Center */}
-            <div className="glass-card p-6 rounded-2xl border border-white/5 flex flex-col items-center justify-center text-center space-y-3">
-              {isLive && (
-                <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-emerald-400 text-[9px] font-black uppercase tracking-widest">
-                    LIVE {match.elapsedMinutes || 0}&apos;
-                  </span>
-                </div>
+            {/* Live Visualization Panel */}
+            <div className="glass-card rounded-2xl border border-white/5 p-4 flex flex-col gap-4">
+              {match.sportType === "basketball" ? (
+                <LiveCourt 
+                  status={isLive ? "danger" : "safe"} 
+                  teamA={match.teamA} 
+                  teamB={match.teamB} 
+                  activeSide="b" 
+                  className="flex-1"
+                />
+              ) : match.sportType === "tennis" ? (
+                <LiveTennisCourt 
+                  status={isLive ? "rally" : "break"} 
+                  teamA={match.teamA} 
+                  teamB={match.teamB} 
+                  activeSide="a" 
+                  className="flex-1"
+                />
+              ) : (
+                <LivePitch 
+                  status={isLive ? "danger" : "safe"} 
+                  teamA={match.teamA} 
+                  teamB={match.teamB} 
+                  activeSide="b" 
+                  className="flex-1"
+                />
               )}
-              <div className="flex items-center gap-5">
-                <span className="text-white font-black text-5xl">{match.score?.teamA ?? 0}</span>
-                <span className="text-white/20 text-2xl font-black">-</span>
-                <span className="text-white font-black text-5xl">{match.score?.teamB ?? 0}</span>
-              </div>
-              {match.score && (
-                <p className="text-white/30 text-xs font-medium">
-                  Aggregate: {parseInt(match.score.teamA) + 3} - {parseInt(match.score.teamB) + 4}
-                </p>
-              )}
-              {/* 1X2 Odds buttons */}
-              <div className="grid grid-cols-3 gap-2 w-full mt-2">
-                <button
-                  onClick={() => setSelection({ matchId: match.id, matchName: `${match.teamA} v ${match.teamB}`, marketName: "Match Odds", selectionId: "team_a", selectionName: match.teamA, odds: parseFloat(teamAOdds), side: "back" })}
-                  className="py-2.5 rounded-xl bg-[#0071e3]/15 border border-[#0071e3]/20 text-[#0071e3] font-black text-lg hover:bg-[#0071e3]/25 transition-all active:scale-95"
-                >
-                  {teamAOdds}
-                </button>
-                <button
-                  onClick={() => setSelection({ matchId: match.id, matchName: `${match.teamA} v ${match.teamB}`, marketName: "Match Odds", selectionId: "draw", selectionName: "Draw", odds: parseFloat(drawOdds), side: "back" })}
-                  className="py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/70 font-black text-lg hover:bg-white/10 transition-all active:scale-95"
-                >
-                  {drawOdds}
-                </button>
-                <button
-                  onClick={() => setSelection({ matchId: match.id, matchName: `${match.teamA} v ${match.teamB}`, marketName: "Match Odds", selectionId: "team_b", selectionName: match.teamB, odds: parseFloat(teamBOdds), side: "back" })}
-                  className="py-2.5 rounded-xl bg-[#AFFF00]/10 border border-[#AFFF00]/20 text-[#AFFF00] font-black text-lg hover:bg-[#AFFF00]/20 transition-all active:scale-95"
-                >
-                  {teamBOdds}
-                </button>
-              </div>
-            </div>
-
-            {/* Team B */}
-            <div className="glass-card p-6 rounded-2xl border border-white/5 flex items-center justify-between group hover:border-white/10 transition-all">
-              <div className="text-left space-y-4">
-                <div>
-                  <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">AVG GOALS</p>
-                  <p className="text-white font-black text-xl">3.1</p>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="bg-white/5 rounded-xl p-3 flex flex-col justify-between border border-white/5">
+                  <span className="text-[8px] text-white/30 font-bold uppercase">Total Corners</span>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xl font-black text-white">12</span>
+                    <span className="text-[8px] text-[#abd45e] font-black">+2 in 10&apos;</span>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">WIN PROB</p>
-                  <p className="text-white font-black text-xl">{probB}%</p>
+                <div className="bg-white/5 rounded-xl p-3 flex flex-col justify-between border border-white/5">
+                  <span className="text-[8px] text-white/30 font-bold uppercase">Total Cards</span>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xl font-black text-yellow-400">3</span>
+                    <span className="text-[8px] text-white/20 font-black">0 RED</span>
+                  </div>
                 </div>
-              </div>
-              <div className="text-right">
-                <p className="text-5xl font-black text-white tracking-tighter">
-                  {match.teamB.split(" ").map(w => w[0]).join("").slice(0, 3)}
-                </p>
-                <p className="text-white/40 text-sm mt-1">{match.teamB}</p>
               </div>
             </div>
           </div>
+
+          {/* ── AI Insights Row ──────────────────────────────────────────── */}
+          {aiInsights && (
+            <div className="glass-card rounded-2xl border border-[#AFFF00]/20 bg-gradient-to-br from-[#0a0e17] to-[#111827] overflow-hidden relative">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#AFFF00]/10 rounded-bl-full -mr-32 -mt-32 blur-3xl pointer-events-none" />
+              <div className="p-6 border-b border-white/5 flex items-center justify-between relative z-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#AFFF00]/20 border border-[#AFFF00]/30 flex items-center justify-center text-[#AFFF00]">
+                    <Brain className="w-5 h-5 animate-pulse" />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-white text-base tracking-tight uppercase flex items-center gap-2">
+                      Kinetic AI Intelligence <span className="px-2 py-0.5 bg-[#AFFF00]/20 text-[#AFFF00] text-[8px] rounded-full">PRO</span>
+                    </h3>
+                    <p className="text-white/40 text-[10px] uppercase tracking-widest font-bold">Predictive Modeling & Analysis</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">Confidence Score</p>
+                  <p className="text-3xl font-black text-[#AFFF00]">{aiInsights.confidenceScore}%</p>
+                </div>
+              </div>
+              
+              <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
+                <div className="space-y-4">
+                  <h4 className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Live Context Analysis</h4>
+                  <p className="text-white/80 text-sm leading-relaxed font-medium bg-white/5 p-5 rounded-2xl border border-white/5">
+                    {aiInsights.liveAnalysis}
+                  </p>
+                </div>
+                
+                <div className="space-y-4">
+                  <h4 className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Calculated Value Bets</h4>
+                  <div className="space-y-3">
+                    {aiInsights.predictions?.map((pred: any, i: number) => (
+                      <div key={i} className="bg-black/30 p-4 rounded-xl border border-white/5 flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-full border-2 border-[#AFFF00]/30 flex items-center justify-center flex-shrink-0">
+                           <span className="text-[#AFFF00] font-black text-sm">{pred.probability}</span>
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-white font-black uppercase text-sm">{pred.recommendation}</span>
+                            <span className="text-white/30 text-[10px] font-bold uppercase tracking-widest">({pred.market})</span>
+                          </div>
+                          <p className="text-white/50 text-[11px] leading-relaxed">{pred.rationale}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* ── Analytics Row ──────────────────────────────────────────── */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
@@ -564,27 +681,30 @@ export default function MatchPage({ params }: { params: { id: string } }) {
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { label: match?.teamA || "Team A", odds: "1.85" },
-                    { label: "NO GOAL",                odds: "2.40" },
-                    { label: match?.teamB || "Team B", odds: "4.10" },
-                  ].map(btn => (
-                    <button
-                      key={btn.label}
-                      onClick={() => match && setSelection({
-                        matchId: match.id,
-                        matchName: `${match.teamA} v ${match.teamB}`,
-                        marketName: "Next Goal",
-                        selectionId: btn.label.toLowerCase().replace(/ /g, "_"),
-                        selectionName: btn.label,
-                        odds: parseFloat(btn.odds),
-                        side: "back",
-                      })}
-                      className="py-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all active:scale-95 text-center"
-                    >
-                      <p className="text-[9px] font-bold text-white/30 uppercase mb-1 truncate px-1">{btn.label}</p>
-                      <p className="text-2xl font-black text-white">{btn.odds}</p>
-                    </button>
-                  ))}
+                    { label: match?.teamA || "Team A", id: "next_goal_home", defaultOdds: "1.85" },
+                    { label: "NO GOAL",                id: "next_goal_none", defaultOdds: "2.40" },
+                    { label: match?.teamB || "Team B", id: "next_goal_away", defaultOdds: "4.10" },
+                  ].map(btn => {
+                    const currentOdds = getTopOdds(btn.id) || btn.defaultOdds;
+                    return (
+                      <button
+                        key={btn.id}
+                        onClick={() => match && setSelection({
+                          matchId: match.id,
+                          matchName: `${match.teamA} v ${match.teamB}`,
+                          marketName: "Next Goal",
+                          selectionId: btn.id,
+                          selectionName: btn.label,
+                          odds: parseFloat(currentOdds),
+                          side: "back",
+                        })}
+                        className="py-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all active:scale-95 text-center"
+                      >
+                        <p className="text-[9px] font-bold text-white/30 uppercase mb-1 truncate px-1">{btn.label}</p>
+                        <p className="text-2xl font-black text-white">{currentOdds}</p>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -592,24 +712,30 @@ export default function MatchPage({ params }: { params: { id: string } }) {
               <div className="glass-card p-5 rounded-2xl border border-white/5">
                 <h4 className="font-black text-white text-sm uppercase tracking-tight mb-4">TOTAL GOALS (OVER/UNDER)</h4>
                 <div className="space-y-2">
-                  {[{ label: "Over 3.5", odds: "1.68" }, { label: "Under 3.5", odds: "2.10" }].map(row => (
-                    <button
-                      key={row.label}
-                      onClick={() => match && setSelection({
-                        matchId: match.id,
-                        matchName: `${match.teamA} v ${match.teamB}`,
-                        marketName: "Total Goals",
-                        selectionId: row.label.toLowerCase().replace(/ /g, "_"),
-                        selectionName: row.label,
-                        odds: parseFloat(row.odds),
-                        side: "back",
-                      })}
-                      className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[#0071e3]/20 transition-all group"
-                    >
-                      <span className="text-white/60 font-bold text-sm group-hover:text-white transition-colors">{row.label}</span>
-                      <span className="text-[#0071e3] font-black text-xl">{row.odds}</span>
-                    </button>
-                  ))}
+                  {[
+                    { label: "Over 3.5",  id: "over_35",  defaultOdds: "1.68" },
+                    { label: "Under 3.5", id: "under_35", defaultOdds: "2.10" }
+                  ].map(row => {
+                    const currentOdds = getTopOdds(row.id) || row.defaultOdds;
+                    return (
+                      <button
+                        key={row.id}
+                        onClick={() => match && setSelection({
+                          matchId: match.id,
+                          matchName: `${match.teamA} v ${match.teamB}`,
+                          marketName: "Total Goals",
+                          selectionId: row.id,
+                          selectionName: row.label,
+                          odds: parseFloat(currentOdds),
+                          side: "back",
+                        })}
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[#0071e3]/20 transition-all group"
+                      >
+                        <span className="text-white/60 font-bold text-sm group-hover:text-white transition-colors">{row.label}</span>
+                        <span className="text-[#0071e3] font-black text-xl">{currentOdds}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -620,26 +746,29 @@ export default function MatchPage({ params }: { params: { id: string } }) {
                 </div>
                 <div className="space-y-2">
                   {[
-                    { label: `${match?.teamA || "Team A"} (-1.0)`, odds: "2.05", id: "hc_a" },
-                    { label: `${match?.teamB || "Team B"} (+1.0)`, odds: "1.75", id: "hc_b" },
-                  ].map(row => (
-                    <button
-                      key={row.id}
-                      onClick={() => match && setSelection({
-                        matchId: match.id,
-                        matchName: `${match.teamA} v ${match.teamB}`,
-                        marketName: "Asian Handicap",
-                        selectionId: row.id,
-                        selectionName: row.label,
-                        odds: parseFloat(row.odds),
-                        side: "back",
-                      })}
-                      className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[#0071e3]/20 transition-all group"
-                    >
-                      <span className="text-white/60 font-bold text-sm group-hover:text-white transition-colors truncate mr-4">{row.label}</span>
-                      <span className="text-[#0071e3] font-black text-xl flex-shrink-0">{row.odds}</span>
-                    </button>
-                  ))}
+                    { label: `${match?.teamA || "Team A"} (-1.0)`, id: "hc_a", defaultOdds: "2.05" },
+                    { label: `${match?.teamB || "Team B"} (+1.0)`, id: "hc_b", defaultOdds: "1.75" },
+                  ].map(row => {
+                    const currentOdds = getTopOdds(row.id) || row.defaultOdds;
+                    return (
+                      <button
+                        key={row.id}
+                        onClick={() => match && setSelection({
+                          matchId: match.id,
+                          matchName: `${match.teamA} v ${match.teamB}`,
+                          marketName: "Asian Handicap",
+                          selectionId: row.id,
+                          selectionName: row.label,
+                          odds: parseFloat(currentOdds),
+                          side: "back",
+                        })}
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[#0071e3]/20 transition-all group"
+                      >
+                        <span className="text-white/60 font-bold text-sm group-hover:text-white transition-colors truncate mr-4">{row.label}</span>
+                        <span className="text-[#0071e3] font-black text-xl flex-shrink-0">{currentOdds}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>

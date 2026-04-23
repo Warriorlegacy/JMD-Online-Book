@@ -24,22 +24,27 @@ export function AiAssistant() {
 
     const userMessage = message;
     setMessage('');
-    setChat(prev => [...prev, { role: 'user', content: userMessage }]);
+    const newChat = [...chat, { role: 'user' as const, content: userMessage }];
+    setChat(newChat);
     setIsTyping(true);
 
-    // Mock AI response for now
-    setTimeout(() => {
-      let response = "I'm currently in training mode, but I can help you navigate the exchange. Would you like to see the current hot markets?";
-      
-      if (userMessage.toLowerCase().includes('odds')) {
-        response = "The odds are calculated in real-time based on peer-to-peer liquidity. A blue 'Back' button means you're betting for an outcome, and a pink 'Lay' button means you're betting against it.";
-      } else if (userMessage.toLowerCase().includes('referral')) {
-        response = "You can find your referral link in the profile section. You'll earn a commission on every winning trade from your referees!";
-      }
+    try {
+      const res = await fetch("/api/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: newChat }),
+      });
 
-      setChat(prev => [...prev, { role: 'assistant', content: response }]);
+      if (!res.ok) throw new Error("Failed to get AI response");
+      
+      const data = await res.json();
+      setChat(prev => [...prev, { role: 'assistant', content: data.content }]);
+    } catch (error) {
+      console.error("AI Error:", error);
+      setChat(prev => [...prev, { role: 'assistant', content: "I'm having trouble connecting to my neural network. Please try again in a moment." }]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   return (

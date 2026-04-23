@@ -5,6 +5,7 @@ export interface MatchData {
   teamB: string;
   startTime: Date;
   status: 'scheduled' | 'in_play' | 'completed' | 'cancelled';
+  sportType: string;
   score?: {
     teamA: string;
     teamB: string;

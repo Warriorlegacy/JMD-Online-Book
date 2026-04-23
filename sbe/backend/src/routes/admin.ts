@@ -4,6 +4,7 @@ import { db } from "../db/index.js";
 import { matches, marketHistory, tournaments, depositRequests, withdrawalRequests, wallets, ledgerEntries, users, kycReviews, orders } from "../db/schema.js";
 import { eq, asc, sql, desc, and } from "drizzle-orm";
 import { supabase } from "../services/supabase.js";
+import { OrderOrchestrator } from "../services/orchestrator.js";
 
 export async function seedDemoData() {
   try {
@@ -19,16 +20,55 @@ export async function seedDemoData() {
     }).returning();
 
     // Create an in_play match
-    await db.insert(matches).values({
+    const [match] = await db.insert(matches).values({
       tournamentId: tournament.id,
       teamA: "Manchester City",
       teamB: "Arsenal",
       startTime: new Date(),
       status: "in_play",
       metadata: JSON.stringify({ venue: "Etihad Stadium", round: "Matchday 30" }),
-      });
-      if (process.env.NODE_ENV !== 'production') console.log("✅ Demo data seeded");
-    } catch (e: any) {
+    }).returning();
+
+    // Create a demo user for liquidity
+    const [demoUser] = await db.insert(users).values({
+      username: "LiquidityProvider",
+      email: "market-maker@kinetic.so",
+      passwordHash: "demo",
+      role: "admin",
+    }).returning();
+
+    await db.insert(wallets).values({
+      userId: demoUser.id,
+      balance: "1000000.00",
+      currency: "INR",
+    });
+
+    // Seed some orders for the new markets
+    const markets = [
+      { id: "next_goal_home", price: 185, stake: 50000 },
+      { id: "next_goal_none", price: 240, stake: 30000 },
+      { id: "next_goal_away", price: 410, stake: 20000 },
+      { id: "hc_a", price: 205, stake: 45000 },
+      { id: "hc_b", price: 175, stake: 60000 },
+    ];
+
+    const mockWs = { sendToUser: () => {}, publishToRoom: () => {} };
+
+    for (const m of markets) {
+      await OrderOrchestrator.placeOrder(
+        demoUser.id,
+        match.id,
+        m.id,
+        "back",
+        m.price,
+        m.stake,
+        mockWs
+      );
+    }
+
+    if (process.env.NODE_ENV !== 'production') console.log("✅ Demo data seeded with liquidity");
+  } catch (e: any) {
+    // ... rest of the error handling ...
       // Tables may not exist yet — run raw SQL to create them
       if (process.env.NODE_ENV !== 'production') console.warn("[Seed] Attempting raw SQL table creation:", e.message);
     try {
@@ -109,7 +149,7 @@ export default async function adminRoutes(fastify: FastifyInstance) {
     }
   });
 
-  // Get current active match
+  // Get all current active matches
   fastify.get("/matches/active", async (request, reply) => {
     try {
       // Use raw SQL to avoid Drizzle enum casting issues
@@ -117,26 +157,23 @@ export default async function adminRoutes(fastify: FastifyInstance) {
         sql`SELECT id, tournament_id, team_a, team_b, start_time, status, metadata, created_at 
             FROM matches 
             WHERE status = 'in_play'::match_status 
-            LIMIT 1`
+            ORDER BY start_time DESC`
       );
       
       if (result.rows.length > 0) {
-        return result.rows[0];
+        return result.rows;
       }
 
-      // Fall back to next scheduled match
+      // Fall back to next scheduled matches
       const upcoming = await db.execute(
         sql`SELECT id, tournament_id, team_a, team_b, start_time, status, metadata, created_at 
             FROM matches 
             WHERE status = 'scheduled'::match_status 
             ORDER BY start_time ASC 
-            LIMIT 1`
+            LIMIT 10`
       );
 
-      if (upcoming.rows.length === 0) {
-        return reply.code(404).send({ error: "No matches found" });
-      }
-      return upcoming.rows[0];
+      return upcoming.rows;
     } catch (e: any) {
       fastify.log.error(e);
       return reply.code(503).send({ error: "Database unavailable", message: e.message });

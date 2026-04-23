@@ -28,7 +28,7 @@ interface LiveNowCarouselProps {
   matches: LiveMatch[];
 }
 
-export default function LiveNowCarousel({ matches }: LiveNowCarouselProps) {
+export default function LiveNowCarousel({ matches = [] }: LiveNowCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);

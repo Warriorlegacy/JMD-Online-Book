@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Suspense, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import TopNav from "@/components/top-nav";
 import { LeftSidebar } from "@/components/left-sidebar";
 import LiveNowCarousel from "@/components/live-now-carousel";

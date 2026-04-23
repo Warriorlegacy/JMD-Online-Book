@@ -20,6 +20,7 @@ export class ProductionSportsProvider implements SportsDataProvider {
       teamB: f.teams.away.name,
       startTime: new Date(f.fixture.date),
       status: "scheduled",
+      sportType: "Football",
       odds: [], // Odds would require a separate call to /odds
     }));
   }
@@ -39,6 +40,7 @@ export class ProductionSportsProvider implements SportsDataProvider {
       teamB: f.teams.away.name,
       startTime: new Date(f.fixture.date),
       status: "in_play",
+      sportType: "Football",
       score: {
         teamA: f.goals.home.toString(),
         teamB: f.goals.away.toString(),

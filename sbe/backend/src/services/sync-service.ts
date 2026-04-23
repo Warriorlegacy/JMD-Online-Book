@@ -90,7 +90,7 @@ export class SyncService {
   }
 
   private async syncMatch(matchData: MatchData, tenantId: string) {
-    const tournamentId = await this.ensureTournament(matchData.tournamentName, "Football", tenantId);
+    const tournamentId = await this.ensureTournament(matchData.tournamentName, matchData.sportType, tenantId);
 
     // Upsert match
     const existingMatch = await db.select().from(matches).where(and(eq(matches.externalId, matchData.externalId!), eq(matches.tenantId, tenantId))).limit(1);

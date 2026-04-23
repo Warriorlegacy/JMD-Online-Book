@@ -3,14 +3,19 @@ import { Pool } from "pg";
 // Trim env var to guard against trailing newlines from CI/CD env injection
 const connectionString = (process.env.DATABASE_URL ?? "").trim();
 
+// guard for empty connection string to prevent crash on import
+if (!connectionString && process.env.NODE_ENV === "production") {
+  console.warn("DATABASE_URL is missing in production environment");
+}
+
 // Singleton pool — reused across Next.js serverless hot reloads
 const globalForDb = globalThis as unknown as { _pgPool?: Pool };
 
 export const pool: Pool =
   globalForDb._pgPool ??
   new Pool({
-    connectionString,
-    ssl: { rejectUnauthorized: false },
+    connectionString: connectionString || undefined,
+    ssl: connectionString ? { rejectUnauthorized: false } : false,
     max: 5,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 10000,

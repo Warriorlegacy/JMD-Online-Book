@@ -81,8 +81,8 @@ export const BetSlipProvider: React.FC<{ children: React.ReactNode }> = ({ child
                 matchId: selection.matchId,
                 selectionId: selection.selectionId,
                 type: selection.side,
-                price: odds.toString(),
-                stake: stake,
+                price: odds,
+                stake: stakeNum,
             }),
         });
 

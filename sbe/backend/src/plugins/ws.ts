@@ -32,6 +32,13 @@ export default fp(async function wsManagerPlugin(fastify: FastifyInstance) {
          } else if (msg.type === "unsubscribe") {
            const room = msg.room;
            roomSubscriptions.get(room)?.delete(userId);
+         } else if (msg.type === "chat_message") {
+           const { room, text, user, role } = msg;
+           manager.publishToRoom(room, "chat_message", { user, text, role, timestamp: Date.now() });
+         } else if (msg.type === "notification") {
+           // Admin or system notifications
+           const { room, title, body, notifType } = msg;
+           manager.publishToRoom(room || "global", "notification", { title, body, notifType, timestamp: Date.now() });
          }
        } catch (e) {
          fastify.log.error(e);

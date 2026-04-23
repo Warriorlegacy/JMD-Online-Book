@@ -9,6 +9,7 @@ interface SocketContextType {
   connected: boolean;
   subscribe: (room: string) => void;
   on: <T = any>(topic: string, handler: (data: T) => void) => () => void;
+  send: (msg: any) => void;
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -106,8 +107,14 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     };
   }, []);
 
+  const send = useCallback((msg: any) => {
+    if (socketRef.current?.readyState === WebSocket.OPEN) {
+      socketRef.current.send(JSON.stringify(msg));
+    }
+  }, []);
+
   return (
-    <SocketContext.Provider value={{ connected, subscribe, on }}>
+    <SocketContext.Provider value={{ connected, subscribe, on, send }}>
       {children}
     </SocketContext.Provider>
   );
