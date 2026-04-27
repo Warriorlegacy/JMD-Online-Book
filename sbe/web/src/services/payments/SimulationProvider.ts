@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { PaymentProvider, PaymentSession } from "./PaymentProvider";
 
 export class SimulationProvider implements PaymentProvider {
