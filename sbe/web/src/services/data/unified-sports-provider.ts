@@ -12,7 +12,7 @@ export class UnifiedSportsProvider implements SportsDataProvider {
     this.providers = [];
     
     // Always add mock for stable demo data
-    this.providers.push(new MockSportsProvider());
+    // this.providers.push(new MockSportsProvider());
 
     if (process.env.API_FOOTBALL_KEY) {
       this.providers.push(new ProductionSportsProvider());

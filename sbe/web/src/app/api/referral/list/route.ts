@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     }
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to fetch referrals" },
+      { error: "An error occurred", detail: "Failed to fetch referrals" },
       { status: 500 }
     );
   }

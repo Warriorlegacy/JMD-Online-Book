@@ -99,6 +99,6 @@ export async function POST(request: NextRequest) {
     }
   } catch (err: any) {
     console.error("[POST /api/auth/register] ERROR:", err.message, "| code:", err.code, "| detail:", err.detail);
-    return NextResponse.json({ error: "Internal server error", detail: err.message }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", detail: "An error occurred" }, { status: 500 });
   }
 }
