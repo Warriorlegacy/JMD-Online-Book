@@ -6,6 +6,7 @@ import crypto from "crypto";
 export class OrderBook {
   private matchId: string;
   private selectionId: string;
+  private lastSnapshot: any = { backs: [], lays: [] };
 
   constructor(matchId: string, selectionId: string) {
     this.matchId = matchId;
@@ -90,7 +91,7 @@ export class OrderBook {
   }
 
   getSnapshot() {
-    return { backs: [], lays: [] }; // Simplified snapshot, relies on DB queries instead
+    return this.lastSnapshot;
   }
 }
 
