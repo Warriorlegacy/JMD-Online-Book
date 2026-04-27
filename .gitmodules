@@ -1,0 +1,12 @@
+[submodule "The-VibeCode-Bible"]
+	path = The-VibeCode-Bible
+	url = https://github.com/Warriorlegacy/The-VibeCode-Bible.git
+[submodule "get-shit-done-for-antigravity"]
+	path = get-shit-done-for-antigravity
+	url = https://github.com/Warriorlegacy/get-shit-done-for-antigravity.git
+[submodule "jmd-online-book"]
+	path = jmd-online-book
+	url = https://github.com/Warriorlegacy/JMD-Online-Book.git
+[submodule "~/antigravity-skills"]
+	path = ~/antigravity-skills
+	url = https://github.com/Warriorlegacy/antigravity-skills.git
