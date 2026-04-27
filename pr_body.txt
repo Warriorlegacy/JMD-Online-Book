@@ -1,0 +1,3 @@
+🎯 **What:** Added a comprehensive test suite for the `useTenant` hook and `TenantProvider`.
+📊 **Coverage:** Covered the initial loading state, successful API fetching containing white-labeling theme values with document/DOM side-effects verification, handling of network errors, and handling of non-ok API responses gracefully.
+✨ **Result:** Improved test coverage significantly for a core piece of UI state management, preventing regressions in tenant dynamic styling configuration.
