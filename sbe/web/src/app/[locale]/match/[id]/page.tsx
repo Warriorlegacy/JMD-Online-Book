@@ -229,7 +229,7 @@ export default function MatchPage({ params }: { params: { id: string } }) {
   }
 
   const teamAOdds = getTopOdds("team_a") || "3.45";
-  const drawOdds = getTopOdds("draw") || "2.10";
+  const _drawOdds = getTopOdds("draw") || "2.10";
   const teamBOdds = getTopOdds("team_b") || "1.85";
 
   // Compute simple win prob from odds

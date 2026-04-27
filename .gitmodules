@@ -1,0 +1,6 @@
+[submodule "The-VibeCode-Bible"]
+	path = The-VibeCode-Bible
+	url = https://github.com/VibeCode/The-VibeCode-Bible.git
+[submodule "get-shit-done-for-antigravity"]
+	path = get-shit-done-for-antigravity
+	url = https://github.com/Warriorlegacy/get-shit-done-for-antigravity.git

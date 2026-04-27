@@ -1,0 +1,24 @@
+--- sbe/web/src/app/[locale]/admin/kyc/page.tsx
++++ sbe/web/src/app/[locale]/admin/kyc/page.tsx
+@@ -24,8 +24,9 @@
+       if (!res.ok) throw new Error("Failed to fetch KYC queue");
+       const data = await res.json();
+       setQueue(data);
+-    } catch (err: any) {
++    } catch (err) {
+       console.error(err);
++      alert(err instanceof Error ? err.message : String(err));
+     }
+   };
+
+@@ -67,8 +68,8 @@
+       setSelectedUser(null);
+       setNotes("");
+       fetchQueue();
+-    } catch (err: any) {
+-      alert(err.message);
++    } catch (err) {
++      alert(err instanceof Error ? err.message : String(err));
+     } finally {
+       setLoading(false);
+     }
