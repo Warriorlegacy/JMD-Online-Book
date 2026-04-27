@@ -35,7 +35,7 @@ export async function POST(
     return NextResponse.json({ success: true, message: "Withdrawal approved" });
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to approve withdrawal" },
+      { error: "An error occurred", detail: "Failed to approve withdrawal" },
       { status: 500 }
     );
   }

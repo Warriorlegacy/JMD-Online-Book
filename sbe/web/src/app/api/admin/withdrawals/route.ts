@@ -21,7 +21,7 @@ export async function GET() {
     return NextResponse.json(result.rows);
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed" },
+      { error: "An error occurred", detail: "Failed" },
       { status: 500 }
     );
   }

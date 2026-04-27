@@ -59,7 +59,7 @@ export async function POST(
     return NextResponse.json({ success: true, message: "Deposit approved and wallet credited" });
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to approve deposit" },
+      { error: "An error occurred", detail: "Failed to approve deposit" },
       { status: 500 }
     );
   }

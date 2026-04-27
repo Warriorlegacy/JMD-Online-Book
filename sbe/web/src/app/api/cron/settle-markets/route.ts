@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
   } catch (err) {
     console.error("Settlement cron error:", err);
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Settlement failed" },
+      { error: "An error occurred", detail: "Settlement failed" },
       { status: 500 }
     );
   }

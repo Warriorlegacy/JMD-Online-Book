@@ -48,7 +48,7 @@ export async function POST(
     return NextResponse.json({ success: true, message: "Deposit rejected" });
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to reject deposit" },
+      { error: "An error occurred", detail: "Failed to reject deposit" },
       { status: 500 }
     );
   }
