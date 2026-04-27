@@ -1,4 +1,9 @@
-import { db } from "../db/index";
+const fs = require('fs');
+const path = './sbe/web/src/services/settlement.ts';
+
+let code = fs.readFileSync(path, 'utf8');
+
+const newCode = `import { db } from "../db/index";
 import { wallets, trades, ledgerEntries, matches } from "../db/schema";
 import { eq, and, sql, inArray } from "drizzle-orm";
 
@@ -7,7 +12,7 @@ export class SettlementService {
    * Settles a match with high precision and currency awareness.
    */
    static async settleMatch(matchId: string, winningResult: "team_a" | "team_b" | "draw", currency: string = "INR") {
-     if (process.env.NODE_ENV !== 'production') console.log(`[Settlement] Starting high-precision settlement for match ${matchId} (${currency})`);
+     if (process.env.NODE_ENV !== 'production') console.log(\`[Settlement] Starting high-precision settlement for match \${matchId} (\${currency})\`);
 
      const unsettledTrades = await db.select().from(trades).where(and(eq(trades.matchID, matchId), eq(trades.settled, 0)));
 
@@ -116,8 +121,8 @@ export class SettlementService {
 
         return tx.update(wallets)
           .set({
-            balance: sql`${wallets.balance} ${sql.raw(balanceOp)} ${Math.abs(update.balanceDelta).toFixed(8)}`,
-            lockedBalance: sql`${wallets.lockedBalance} ${sql.raw(lockedOp)} ${Math.abs(update.lockedBalanceDelta).toFixed(8)}`,
+            balance: sql\`\${wallets.balance} \${sql.raw(balanceOp)} \${Math.abs(update.balanceDelta).toFixed(8)}\`,
+            lockedBalance: sql\`\${wallets.lockedBalance} \${sql.raw(lockedOp)} \${Math.abs(update.lockedBalanceDelta).toFixed(8)}\`,
             updatedAt: new Date(),
           })
           .where(and(eq(wallets.userId, userId), eq(wallets.currency, currency)));
@@ -150,3 +155,7 @@ export class SettlementService {
     return { success: true, affectedUsers: userIdsArray };
    }
  }
+`;
+
+fs.writeFileSync(path, newCode);
+console.log('Patched', path);
