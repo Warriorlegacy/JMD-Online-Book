@@ -95,6 +95,7 @@ test.describe('SBE Core User Journey', () => {
     await page.goto(`${BASE_URL}/en/admin`);
     
     // Check for Risk Alert banner if data exists
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const riskHeader = page.locator('text=CRITICAL RISK INTERVENTIONS');
     // This might be hidden if no alerts exist, so we check for the container
     await expect(page.locator('text=LIABILITY')).toBeVisible();
