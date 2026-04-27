@@ -61,7 +61,7 @@ async function runDebug() {
         try {
           await pool.query(`SELECT 1 FROM ${table} LIMIT 1`);
           console.log(`✅ Table "${table}" exists`);
-        } catch (e: any) {
+        } catch (_e) {
           console.warn(`❌ Table "${table}" is MISSING`);
           schemaOk = false;
         }
