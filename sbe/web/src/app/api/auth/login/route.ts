@@ -85,14 +85,9 @@ export async function POST(request: NextRequest) {
     } finally {
       client.release();
     }
-  } catch (err: any) {
-    const dbUrl = process.env.DATABASE_URL || "";
-    console.error("[POST /api/auth/login] ERROR:", err.message);
-    return NextResponse.json({ 
-      error: "Internal server error", 
-      dbUrlLength: dbUrl.length,
-      dbUrlPrefix: dbUrl.substring(0, 10),
-      detail: err.message 
-    }, { status: 500 });
+  } catch (err) {
+    const errorMsg = err instanceof Error ? err.message : "Unknown error";
+    console.error("[POST /api/auth/login] ERROR:", errorMsg);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

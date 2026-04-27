@@ -62,9 +62,9 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json({ message: "Withdrawal request submitted successfully", request: result });
-  } catch (err: any) {
+  } catch (err) {
     console.error("Withdrawal error:", err);
-    if (err.message === "Insufficient balance") {
+    if (err instanceof Error && err.message === "Insufficient balance") {
       return NextResponse.json({ error: err.message }, { status: 400 });
     }
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
