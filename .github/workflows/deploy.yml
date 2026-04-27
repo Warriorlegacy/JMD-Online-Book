@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./sbe
+        working-directory: .
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,38 +20,38 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
           cache-dependency-path: |
             sbe/backend/package-lock.json
             sbe/web/package-lock.json
 
       - name: Install Backend Dependencies
-        working-directory: ./sbe/backend
+        working-directory: ./backend
         run: npm install
 
 
       - name: Install Web Dependencies
-        working-directory: ./sbe/web
+        working-directory: ./web
         run: npm install
 
       - name: Lint Web
-        working-directory: ./sbe/web
+        working-directory: ./web
         run: npm run lint || true
 
       - name: Build Backend
-        working-directory: ./sbe/backend
+        working-directory: ./backend
         run: npm run build
 
       - name: Run God-Level System Verification
-        working-directory: ./sbe/backend
+        working-directory: ./backend
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
         run: npm run test:god
 
       - name: Build Web
-        working-directory: ./sbe/web
+        working-directory: ./web
         run: npm run build
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'http://localhost:3001' }}

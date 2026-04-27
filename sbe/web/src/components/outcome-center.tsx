@@ -78,7 +78,7 @@ const NOTIFICATIONS = [
 const NOTIF_TABS: NotifTab[] = ["All Notifications", "Outcomes", "Compliance", "Promotions"];
 
 export default function OutcomeCenterTab() {
-  const { connected, subscribe, on } = useSocket();
+  // // const { connected, subscribe, on } = useSocket();
   const [activeTab, setActiveTab] = useState<NotifTab>("Outcomes");
   const [unsettledMatches, setUnsettledMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);

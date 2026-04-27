@@ -80,7 +80,7 @@ describe("useSocket hook", () => {
   });
 
   it("should set connected state when socket opens", () => {
-    const { result } = renderHook(() => useSocket());
+    renderHook(() => useSocket());
 
     expect(result.current.connected).toBe(false);
 
@@ -92,7 +92,7 @@ describe("useSocket hook", () => {
   });
 
   it("should handle topic messages correctly", () => {
-    const { result } = renderHook(() => useSocket());
+    renderHook(() => useSocket());
     const handler = vi.fn();
 
     act(() => {
@@ -224,8 +224,7 @@ describe("useSocket hook", () => {
   });
 
   it("should close socket on error", () => {
-    const { result } = renderHook(() => useSocket());
-
+    renderHook(() => useSocket());
     act(() => {
       MockWebSocket.instances[0].triggerOpen();
       MockWebSocket.instances[0].triggerError();
