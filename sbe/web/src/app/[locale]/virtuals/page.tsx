@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/context/auth-context";
 import { useRouter } from "@/i18n/navigation";
 import {
   LayoutDashboard, BarChart2, Users, Megaphone, DollarSign,
@@ -39,7 +38,6 @@ const UPCOMING_RACES = [
 const formColor = (win: boolean) => win ? "bg-emerald-400" : "bg-white/20";
 
 export default function VirtualsPage() {
-  const { user: _user } = useAuth();
   const router = useRouter();
   const [activeSidebar, setActiveSidebar] = useState("analytics");
   const [betType, setBetType] = useState<BetType>("WIN / EACH WAY");
@@ -49,8 +47,6 @@ export default function VirtualsPage() {
   const selected = RUNNERS.find(r => r.pos === selectedRunner);
   const odds     = selected ? parseFloat(selected.odds || "0") : 0;
   const payout   = odds * parseFloat(stake || "0");
-
-  const removeSelection = () => setSelectedRunner(null);
 
   return (
     <div className="min-h-screen bg-[#0a0e17] -mt-4 -mx-4 flex">
@@ -280,7 +276,7 @@ export default function VirtualsPage() {
               <div className="p-3 rounded-xl bg-white/5 border border-white/10">
                 <div className="flex items-start justify-between mb-1">
                   <p className="text-[9px] font-black text-white/30 uppercase tracking-widest">To Win</p>
-                  <button onClick={removeSelection} className="text-white/20 hover:text-red-400 transition-colors">
+                  <button onClick={() => setSelectedRunner(null)} className="text-white/20 hover:text-red-400 transition-colors">
                     <X className="w-3.5 h-3.5" />
                   </button>
                 </div>
