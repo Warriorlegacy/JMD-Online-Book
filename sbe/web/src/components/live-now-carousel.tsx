@@ -125,7 +125,7 @@ export default function LiveNowCarousel({ matches = [] }: LiveNowCarouselProps) 
               <div className="flex items-center justify-between mb-5">
                 <div className="flex flex-col items-center gap-2 flex-1">
                   <div className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center">
-                    <span className="text-xs font-bold">{(match.homeTeam.name || "HT").substring(0, 3).toUpperCase()}</span>
+                    <span className="text-xs font-bold">{String(match?.homeTeam?.name || "HT").substring(0, 3).toUpperCase()}</span>
                   </div>
                   <span className="text-sm font-medium text-center">{match.homeTeam.name}</span>
                 </div>
@@ -138,7 +138,7 @@ export default function LiveNowCarousel({ matches = [] }: LiveNowCarouselProps) 
 
                 <div className="flex flex-col items-center gap-2 flex-1">
                   <div className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center">
-                    <span className="text-xs font-bold">{(match.awayTeam.name || "AT").substring(0, 3).toUpperCase()}</span>
+                    <span className="text-xs font-bold">{String(match?.awayTeam?.name || "AT").substring(0, 3).toUpperCase()}</span>
                   </div>
                   <span className="text-sm font-medium text-center">{match.awayTeam.name}</span>
                 </div>
