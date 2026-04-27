@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "debug:kinetic-ledger": "node debug_kinetic_ledger.js"
+  },
   "dependencies": {
     "axios": "^1.15.1",
     "node-cron": "^4.2.1"

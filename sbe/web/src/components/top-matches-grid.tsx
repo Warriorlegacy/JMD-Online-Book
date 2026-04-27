@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
+import { ArrowUpIcon, ArrowDownIcon, LayoutGrid, List } from "lucide-react";
+import { MatchCard } from "./match-card";
 
 interface MatchOdds {
   home: number;
@@ -41,53 +42,6 @@ interface TopMatchesGridProps {
   matches?: Match[];
 }
 
-const mockMatches: Match[] = [
-  {
-    id: "1",
-    time: "19:45",
-    isLive: true,
-    league: "Premier League",
-    teams: ["Manchester United", "Liverpool"],
-    score: [2, 1],
-    matchResult: { home: 2.10, draw: 3.40, away: 3.75 },
-    matchResultMovement: { home: 'up', draw: null, away: 'down' },
-    totalGoals: { line: 2.5, over: 1.85, under: 1.95 },
-    totalGoalsMovement: { over: 'up', under: null },
-    handicap: { line: 0, home: 1.90, away: 1.90 },
-    handicapMovement: { home: null, away: 'down' },
-  },
-  {
-    id: "2",
-    time: "20:00",
-    isLive: false,
-    league: "La Liga",
-    teams: ["Real Madrid", "Barcelona"],
-    matchResult: { home: 2.25, draw: 3.20, away: 3.10 },
-    totalGoals: { line: 2.5, over: 1.90, under: 1.90 },
-    handicap: { line: -0.5, home: 2.05, away: 1.78 },
-  },
-  {
-    id: "3",
-    time: "21:15",
-    isLive: false,
-    league: "Bundesliga",
-    teams: ["Bayern Munich", "Dortmund"],
-    matchResult: { home: 1.75, draw: 3.80, away: 4.50 },
-    totalGoals: { line: 3.0, over: 1.75, under: 2.10 },
-    handicap: { line: -1, home: 2.10, away: 1.72 },
-  },
-  {
-    id: "4",
-    time: "22:30",
-    isLive: false,
-    league: "Serie A",
-    teams: ["Inter Milan", "AC Milan"],
-    matchResult: { home: 2.40, draw: 3.10, away: 2.90 },
-    totalGoals: { line: 2.0, over: 1.80, under: 2.00 },
-    handicap: { line: 0, home: 1.95, away: 1.85 },
-  },
-];
-
 const marketTabs = ["All Markets", "1X2", "Over/Under", "Handicap"];
 
 function OddButton({ 
@@ -103,7 +57,7 @@ function OddButton({
     <button 
       className={cn(
         "h-10 w-full flex items-center justify-center gap-1 rounded-lg text-sm font-medium transition-all duration-200",
-        "bg-[#0071e3] text-white hover:bg-[#0077ed] active:scale-[0.98]",
+        "bg-[#0071e3]/10 border border-[#0071e3]/20 text-[#0071e3] hover:bg-[#0071e3] hover:text-white active:scale-[0.98]",
         "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0071e3] focus-visible:ring-offset-1",
         className
       )}
@@ -112,7 +66,7 @@ function OddButton({
       {movement && (
         <span className={cn(
           "text-xs transition-all",
-          movement === 'up' ? "text-emerald-300" : "text-rose-300"
+          movement === 'up' ? "text-emerald-400" : "text-rose-400"
         )}>
           {movement === 'up' ? <ArrowUpIcon className="w-3 h-3" /> : <ArrowDownIcon className="w-3 h-3" />}
         </span>
@@ -123,8 +77,10 @@ function OddButton({
 
 export function TopMatchesGrid({ matches: initialMatches }: TopMatchesGridProps) {
   const [activeTab, setActiveTab] = useState(0);
-  const [matches, setMatches] = useState<Match[]>(initialMatches || mockMatches);
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
+  const [matches, setMatches] = useState<Match[]>(initialMatches || []);
   const [isLoading, setIsLoading] = useState(!initialMatches);
+  const [error, setError] = useState<string | null>(null);
 
   React.useEffect(() => {
     if (initialMatches) return;
@@ -135,26 +91,24 @@ export function TopMatchesGrid({ matches: initialMatches }: TopMatchesGridProps)
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
         
-        // Transform API data to Match interface if needed
-        // For now, if it returns the DEMO_MATCH or array of matches
         const activeMatches = Array.isArray(data) ? data : [data];
         
-        // Map backend fields to frontend interface
         const mappedMatches: Match[] = activeMatches.map((m: any) => ({
           id: m.id,
           time: new Date(m.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           isLive: m.status === 'in_play',
           league: JSON.parse(m.metadata || '{}').round || "International",
           teams: [m.team_a, m.team_b],
-          matchResult: { home: 2.0, draw: 3.5, away: 3.5 }, // Default odds if not in API
+          matchResult: { home: 2.0, draw: 3.5, away: 3.5 },
           totalGoals: { line: 2.5, over: 1.9, under: 1.9 },
           handicap: { line: 0, home: 1.9, away: 1.9 },
         }));
 
         setMatches(mappedMatches);
-      } catch (error) {
+      } catch (error: any) {
         console.error("Failed to load active matches:", error);
-        setMatches(mockMatches);
+        setError(error.message || "Failed to load matches");
+        setMatches([]);
       } finally {
         setIsLoading(false);
       }
@@ -165,99 +119,162 @@ export function TopMatchesGrid({ matches: initialMatches }: TopMatchesGridProps)
 
   if (isLoading) {
     return (
-      <div className="w-full h-64 flex items-center justify-center bg-[#1d1d1f] rounded-xl">
+      <div className="w-full h-64 flex items-center justify-center bg-black/20 backdrop-blur-xl rounded-2xl border border-white/5">
         <div className="w-6 h-6 border-2 border-[#0071e3] border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
-
   return (
-    <div className="w-full rounded-xl overflow-hidden bg-[#1d1d1f]">
-      {/* Tab Navigation */}
-      <div className="flex border-b border-white/5 px-3 py-2 gap-1 overflow-x-auto">
-        {marketTabs.map((tab, index) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(index)}
+    <div className="w-full space-y-6">
+      {/* Grid Controls */}
+      <div className="flex items-center justify-between">
+        <div className="flex bg-white/5 p-1 rounded-full border border-white/5 overflow-x-auto no-scrollbar">
+          {marketTabs.map((tab, index) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(index)}
+              className={cn(
+                "px-5 py-1.5 rounded-full text-[13px] font-medium transition-all whitespace-nowrap",
+                activeTab === index
+                  ? "bg-[#0071e3] text-white shadow-lg shadow-[#0071e3]/20"
+                  : "text-[#86868b] hover:text-white"
+              )}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        <div className="hidden sm:flex bg-white/5 p-1 rounded-xl border border-white/5 gap-1">
+          <button 
+            onClick={() => setViewMode('grid')}
             className={cn(
-              "px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap",
-              activeTab === index
-                ? "bg-[#0071e3] text-white"
-                : "text-white/60 hover:text-white hover:bg-white/5"
+              "p-2 rounded-lg transition-all",
+              viewMode === 'grid' ? "bg-white/10 text-white shadow-sm" : "text-[#86868b] hover:text-white"
             )}
           >
-            {tab}
+            <LayoutGrid className="w-4 h-4" />
           </button>
-        ))}
-      </div>
-
-      {/* Grid Header */}
-      <div className="hidden lg:grid grid-cols-12 px-4 py-2 border-b border-white/5 text-xs font-medium uppercase tracking-wider text-white/40">
-        <div className="col-span-5 pl-2">Event</div>
-        <div className="col-span-3 text-center">1X2</div>
-        <div className="col-span-2 text-center">Total Goals</div>
-        <div className="col-span-2 text-center">Handicap</div>
-      </div>
-
-      {/* Match Rows */}
-      <div className="divide-y divide-white/5">
-        {matches.map((match) => (
-          <div
-            key={match.id}
+          <button 
+            onClick={() => setViewMode('list')}
             className={cn(
-              "grid grid-cols-1 lg:grid-cols-12 gap-3 px-4 py-3 transition-all duration-200",
-              "bg-[#272729] hover:bg-[#2a2a2d]",
-              match.isLive && "border-l-3 border-[#f59e0b]"
+              "p-2 rounded-lg transition-all",
+              viewMode === 'list' ? "bg-white/10 text-white shadow-sm" : "text-[#86868b] hover:text-white"
             )}
           >
-            {/* Event Detail - 5 columns */}
-            <div className="col-span-5 flex items-start gap-3">
-              <div className="flex flex-col items-center min-w-[50px]">
-                <span className={cn(
-                  "text-sm font-medium",
-                  match.isLive ? "text-[#f59e0b]" : "text-white/70"
-                )}>
-                  {match.isLive && <span className="mr-1 inline-block w-1.5 h-1.5 bg-[#f59e0b] rounded-full animate-pulse"></span>}
-                  {match.time}
-                </span>
-                <span className="text-[10px] uppercase text-white/40 tracking-wider">{match.league}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-medium text-white leading-tight">{match.teams[0]}</span>
-                {match.isLive && match.score && (
-                  <span className="text-xs font-bold text-white/90">{match.score[0]} - {match.score[1]}</span>
-                )}
-                <span className="text-sm font-medium text-white leading-tight">{match.teams[1]}</span>
-              </div>
-            </div>
-
-            {/* Match Result - 3 columns */}
-            <div className="col-span-3 grid grid-cols-3 gap-1">
-              <OddButton value={match.matchResult.home} movement={match.matchResultMovement?.home} />
-              <OddButton value={match.matchResult.draw} movement={match.matchResultMovement?.draw} />
-              <OddButton value={match.matchResult.away} movement={match.matchResultMovement?.away} />
-            </div>
-
-            {/* Total Goals - 2 columns */}
-            <div className="col-span-2 grid grid-cols-2 gap-1">
-              <OddButton value={match.totalGoals.over} movement={match.totalGoalsMovement?.over} />
-              <OddButton value={match.totalGoals.under} movement={match.totalGoalsMovement?.under} />
-            </div>
-
-            {/* Handicap - 2 columns */}
-            <div className="col-span-2 grid grid-cols-2 gap-1">
-              <OddButton value={match.handicap.home} movement={match.handicapMovement?.home} />
-              <OddButton value={match.handicap.away} movement={match.handicapMovement?.away} />
-            </div>
-          </div>
-        ))}
+            <List className="w-4 h-4" />
+          </button>
+        </div>
       </div>
+
+      {matches.length === 0 && !isLoading ? (
+        <div className="w-full py-20 text-center glass rounded-2xl border border-white/5">
+          <p className="text-[#86868b] font-medium">No active matches found at the moment.</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="mt-4 text-[#0071e3] hover:underline font-semibold"
+          >
+            Refresh Feed
+          </button>
+        </div>
+      ) : viewMode === 'grid' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {matches.map((match) => (
+            <MatchCard 
+              key={match.id} 
+              match={{
+                id: match.id,
+                teamA: match.teams[0],
+                teamB: match.teams[1],
+                startTime: match.time,
+                status: match.isLive ? "in_play" : "scheduled",
+                sportType: "Football",
+                score: match.score ? { teamA: match.score[0].toString(), teamB: match.score[1].toString() } : undefined,
+                league: match.league,
+                odds: [
+                  { selection: "Match Winner", back: match.matchResult.home, lay: match.matchResult.home + 0.04 }
+                ]
+              }}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="w-full rounded-2xl overflow-hidden glass border border-white/5">
+          {/* Grid Header */}
+          <div className="hidden lg:grid grid-cols-12 px-6 py-4 border-b border-white/5 text-[11px] font-bold uppercase tracking-widest text-[#86868b]">
+            <div className="col-span-5 pl-2">Event</div>
+            <div className="col-span-3 text-center">Match Result (1X2)</div>
+            <div className="col-span-2 text-center">Total Goals</div>
+            <div className="col-span-2 text-center">Handicap</div>
+          </div>
+
+          {/* Match Rows */}
+          <div className="divide-y divide-white/5">
+            {matches.map((match) => (
+              <div
+                key={match.id}
+                className={cn(
+                  "grid grid-cols-1 lg:grid-cols-12 gap-3 px-6 py-5 transition-all duration-300",
+                  "bg-white/[0.01] hover:bg-white/[0.03]",
+                  match.isLive && "border-l-4 border-[#ff3b30]"
+                )}
+              >
+                {/* Event Detail - 5 columns */}
+                <div className="col-span-5 flex items-start gap-5">
+                  <div className="flex flex-col items-center min-w-[60px] pt-1">
+                    <span className={cn(
+                      "text-[13px] font-bold",
+                      match.isLive ? "text-[#ff3b30]" : "text-white"
+                    )}>
+                      {match.time}
+                    </span>
+                    <span className="text-[10px] uppercase text-[#86868b] font-medium tracking-wider">{match.league}</span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold text-white tracking-tight">{match.teams[0]}</span>
+                      {match.isLive && match.score && (
+                        <span className="text-[13px] font-bold text-[#ff3b30] tabular-nums ml-auto">{match.score[0]}</span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold text-white tracking-tight">{match.teams[1]}</span>
+                      {match.isLive && match.score && (
+                        <span className="text-[13px] font-bold text-[#ff3b30] tabular-nums ml-auto">{match.score[1]}</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Match Result - 3 columns */}
+                <div className="col-span-3 grid grid-cols-3 gap-2">
+                  <OddButton value={match.matchResult.home} movement={match.matchResultMovement?.home} />
+                  <OddButton value={match.matchResult.draw} movement={match.matchResultMovement?.draw} />
+                  <OddButton value={match.matchResult.away} movement={match.matchResultMovement?.away} />
+                </div>
+
+                {/* Total Goals - 2 columns */}
+                <div className="col-span-2 grid grid-cols-2 gap-2">
+                  <OddButton value={match.totalGoals.over} movement={match.totalGoalsMovement?.over} />
+                  <OddButton value={match.totalGoals.under} movement={match.totalGoalsMovement?.under} />
+                </div>
+
+                {/* Handicap - 2 columns */}
+                <div className="col-span-2 grid grid-cols-2 gap-2">
+                  <OddButton value={match.handicap.home} movement={match.handicapMovement?.home} />
+                  <OddButton value={match.handicap.away} movement={match.handicapMovement?.away} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
-      <div className="px-4 py-3 border-t border-white/5 text-center">
-        <button className="text-sm text-[#2997ff] font-medium hover:underline">
-          View all matches →
+      <div className="flex justify-center pt-4">
+        <button className="px-6 py-2 rounded-full text-[13px] font-semibold text-[#0071e3] bg-[#0071e3]/10 hover:bg-[#0071e3] hover:text-white transition-all">
+          View all matches
         </button>
       </div>
     </div>

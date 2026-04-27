@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/auth-context";
 import { useRouter } from "@/i18n/navigation";
+import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, User, ShieldCheck, CreditCard,
   History, AlertTriangle, ChevronRight, ArrowUpRight,
-  Lock, ExternalLink,
 } from "lucide-react";
 
 // ── sidebar nav ──────────────────────────────────────────────────────────────
@@ -18,39 +18,6 @@ const SIDEBAR = [
   { id: "payments",    label: "Payments",           icon: CreditCard,      href: "/wallet" },
   { id: "bet-history", label: "Bet History",        icon: History,         href: "/dashboard/bet-history" },
   { id: "rg",          label: "Responsible Gaming", icon: AlertTriangle,   href: "/dashboard/limits" },
-];
-
-// ── demo data ────────────────────────────────────────────────────────────────
-const ACTIVE_BETS = [
-  {
-    id: "b1", live: true, minute: 74,
-    title: "Manchester City vs Liverpool",
-    league: "English Premier League",
-    selection: "Manchester City – Home Win @ 1.85",
-    stake: 250, potentialWin: 458.50, cashOut: 385.20,
-  },
-  {
-    id: "b2", live: false, startsIn: "4h 15m",
-    title: "Lakers vs Warriors",
-    league: "NBA Regular Season",
-    selection: "Lakers – Moneyline @ 2.40",
-    stake: 50, potentialWin: 120.00, cashOut: null,
-  },
-];
-
-const TRANSACTIONS = [
-  { ref: "#TXN-998210", date: "24 Oct, 14:32", type: "Card Deposit",   status: "success", amount: "+$1,000.00", positive: true },
-  { ref: "#TXN-998155", date: "23 Oct, 18:10", type: "Bet Placement",  status: "settled", amount: "-$250.00",   positive: false },
-  { ref: "#TXN-997401", date: "22 Oct, 09:45", type: "Withdrawal",     status: "pending", amount: "-$1,200.00", positive: false },
-];
-
-const FOR_YOU = [
-  {
-    id: "fy1", tag: "SUGGESTED",
-    title: "Champions League Weekly",
-    desc: "Based on your recent interest in UEFA markets.",
-    odds: [{ label: "REAL\nMADRID", val: "2.10" }, { label: "DRAW", val: "3.40" }, { label: "AC MILAN", val: "4.20" }],
-  },
 ];
 
 const STATUS_COLORS: Record<string, string> = {
@@ -65,7 +32,6 @@ export default function DashboardPage() {
   const [activeNav, setActiveNav] = useState("overview");
   const [activeBets, setActiveBets] = useState<any[]>([]);
   const [transactions, setTransactions] = useState<{deposits: any[], withdrawals: any[]}>({deposits: [], withdrawals: []});
-  const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
     if (!user) return;
@@ -81,8 +47,6 @@ export default function DashboardPage() {
         if (txRes.ok) setTransactions(await txRes.json());
       } catch (err) {
         console.error("Dashboard fetch error:", err);
-      } finally {
-        setDataLoading(false);
       }
     };
 
@@ -230,7 +194,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <p className="text-white font-black text-base italic uppercase">{bet.type === 'accumulator' ? 'Accumulator' : 'Single Bet'}</p>
-                  <p className="text-white/30 text-[10px] mb-3 uppercase tracking-widest">TX REF: {bet.id.substring(0, 8)}...</p>
+                  <p className="text-white/30 text-[10px] mb-3 uppercase tracking-widest">TX REF: {bet.id?.substring(0, 8)}...</p>
                   
                   <div className="flex items-center justify-between">
                     <span className={cn(
@@ -271,7 +235,7 @@ export default function DashboardPage() {
                 <tbody className="divide-y divide-white/5">
                   {combinedTransactions.length > 0 ? combinedTransactions.map(tx => (
                     <tr key={tx.id} className="hover:bg-white/2 transition-colors">
-                      <td className="px-5 py-4 font-mono text-[11px] text-white font-bold">{tx.id.substring(0, 12)}...</td>
+                      <td className="px-5 py-4 font-mono text-[11px] text-white font-bold">{tx.id?.substring(0, 12)}...</td>
                       <td className="px-5 py-4 text-white/40 text-[11px] font-bold uppercase">{tx.date}</td>
                       <td className="px-5 py-4 text-white/70 text-[11px] font-black uppercase italic">{tx.label}</td>
                       <td className="px-5 py-4">
@@ -323,40 +287,8 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* For You */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-white font-black text-sm uppercase tracking-tight">For You</h3>
-            </div>
-            {FOR_YOU.map(item => (
-              <div key={item.id} className="rounded-2xl border border-white/5 bg-[#0d1120] overflow-hidden mb-3">
-                <div className="px-2 py-1.5 bg-white/5 border-b border-white/5">
-                  <span className="text-[8px] font-black text-white/40 uppercase tracking-widest">{item.tag}</span>
-                </div>
-                {/* Match image area */}
-                <div className="h-28 bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <span className="text-4xl opacity-30">⚽</span>
-                  <div className="absolute bottom-2 left-3">
-                    <p className="text-white font-black text-xs">{item.title}</p>
-                  </div>
-                </div>
-                <div className="p-3">
-                  <p className="text-white/40 text-[10px] mb-3">{item.desc}</p>
-                  <div className="grid grid-cols-3 gap-1.5">
-                    {item.odds.map(o => (
-                      <button
-                        key={o.label}
-                        className="py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-[#0071e3]/10 hover:border-[#0071e3]/20 transition-all active:scale-95 text-center"
-                      >
-                        <p className="text-[7px] font-bold text-white/30 uppercase whitespace-pre-line">{o.label}</p>
-                        <p className="text-white font-black text-sm">{o.val}</p>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
+          {/* Promos & Security */}
+          <div className="space-y-4">
 
             {/* Enhanced Odds promo */}
             <div className="rounded-2xl border border-[#AFFF00]/15 bg-[#AFFF00]/3 p-4">

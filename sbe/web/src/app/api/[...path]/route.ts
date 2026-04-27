@@ -1,45 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.BACKEND_URL || "https://jmd-online-book.onrender.com";
-
-async function proxyRequest(request: NextRequest) {
-  const url = new URL(request.url);
-  // Remove /api from the start to get the actual backend endpoint
-  const endpoint = url.pathname.replace(/^\/api/, "");
-  const targetUrl = `${BACKEND_URL}${endpoint}${url.search}`;
-  
-  const headers = new Headers(request.headers);
-  headers.delete("host");
-
-  try {
-    const fetchOptions: RequestInit = {
-      method: request.method,
-      headers: headers,
-      cache: "no-store",
-    };
-
-    if (request.method !== "GET" && request.method !== "HEAD") {
-      fetchOptions.body = await request.blob();
-    }
-
-    const res = await fetch(targetUrl, fetchOptions);
-
-    const responseHeaders = new Headers(res.headers);
-    responseHeaders.delete("content-encoding");
-
-    return new NextResponse(res.body, {
-      status: res.status,
-      statusText: res.statusText,
-      headers: responseHeaders,
-    });
-  } catch (err: any) {
-    console.error(`[Proxy Error] ${targetUrl}:`, err);
-    return NextResponse.json({ error: "Backend unavailable", details: err.message, url: targetUrl }, { status: 503 });
-  }
+function legacyProxyRemoved(request: NextRequest) {
+  return NextResponse.json(
+    {
+      error: "Legacy backend proxy removed",
+      path: new URL(request.url).pathname,
+      message: "Use the native route handlers under /api instead of the deprecated catch-all proxy.",
+    },
+    { status: 410 }
+  );
 }
 
-export const GET = proxyRequest;
-export const POST = proxyRequest;
-export const DELETE = proxyRequest;
-export const PATCH = proxyRequest;
-export const PUT = proxyRequest;
+export const GET = legacyProxyRemoved;
+export const POST = legacyProxyRemoved;
+export const DELETE = legacyProxyRemoved;
+export const PATCH = legacyProxyRemoved;
+export const PUT = legacyProxyRemoved;

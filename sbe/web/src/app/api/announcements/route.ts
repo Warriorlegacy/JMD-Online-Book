@@ -1,14 +1,18 @@
 import { NextResponse } from "next/server";
-
-const BACKEND_URL = process.env.BACKEND_URL || "https://jmd-online-book.onrender.com";
+import { db } from "@/db";
+import { announcements } from "@/db/schema";
+import { desc, eq } from "drizzle-orm";
 
 export async function GET() {
   try {
-    const res = await fetch(`${BACKEND_URL}/announcements`);
-    if (!res.ok) return NextResponse.json([]);
-    const data = await res.json();
-    return NextResponse.json(Array.isArray(data) ? data : []);
-  } catch {
+    const data = await db
+      .select()
+      .from(announcements)
+      .where(eq(announcements.active, 1))
+      .orderBy(desc(announcements.createdAt));
+    return NextResponse.json(data);
+  } catch (err) {
+    console.error("Announcements error:", err);
     return NextResponse.json([]);
   }
 }

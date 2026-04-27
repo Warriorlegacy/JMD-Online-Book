@@ -1,27 +1,44 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const BACKEND_URL = process.env.BACKEND_URL || "https://jmd-online-book.onrender.com";
+import { db } from "@/db";
+import { orders } from "@/db/schema";
+import { eq, and, desc } from "drizzle-orm";
+import { jwtVerify } from "jose";
 
 export async function GET(request: NextRequest) {
   const token = request.cookies.get("sbe_token")?.value;
-  const { searchParams } = new URL(request.url);
-  const userId = searchParams.get("userId");
-
-  if (!userId) {
-    return NextResponse.json({ error: "userId is required" }, { status: 400 });
+  if (!token) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const res = await fetch(`${BACKEND_URL}/bets/active/${userId}`, {
-    headers: {
-      "Authorization": `Bearer ${token}`
+  try {
+    const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
+    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const userId = payload.id as string;
+
+    const { searchParams } = new URL(request.url);
+    const queryUserId = searchParams.get("userId");
+
+    // Only allow fetching own bets unless admin
+    if (queryUserId && queryUserId !== userId && payload.role !== "admin") {
+       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
-  });
 
-  if (!res.ok) {
-    const error = await res.json();
-    return NextResponse.json(error, { status: res.status });
+    const targetUserId = queryUserId || userId;
+
+    const activeOrders = await db
+      .select()
+      .from(orders)
+      .where(
+        and(
+          eq(orders.userId, targetUserId),
+          eq(orders.status, "open") // or partially_matched
+        )
+      )
+      .orderBy(desc(orders.createdAt));
+
+    return NextResponse.json(activeOrders);
+  } catch (err: any) {
+    console.error("Failed to fetch active bets:", err);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
-
-  const data = await res.json();
-  return NextResponse.json(data);
 }

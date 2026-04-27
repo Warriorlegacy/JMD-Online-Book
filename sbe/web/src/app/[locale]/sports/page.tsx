@@ -1,11 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useBetSlip } from "@/context/bet-slip-context";
 import { useSocket } from "@/context/socket-context";
 import { Match, PriceLevel } from "@/types";
 import {
-  Lock
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  Lock,
+  Search,
+  Star,
 } from "lucide-react";
 
 // ─── Static data ──────────────────────────────────────────────────────────────

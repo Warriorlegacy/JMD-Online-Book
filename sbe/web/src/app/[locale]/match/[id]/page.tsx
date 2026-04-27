@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSocket } from "@/context/socket-context";
 import { useBetSlip } from "@/context/bet-slip-context";
-import type { Match, PriceLevel } from "@/types";
+import type { Match, MatchStatus, PriceLevel } from "@/types";
 import { OrderBook } from "@/components/order-book";
 import { MarketChart } from "@/components/market-chart";
 import { LiveScoreWidget } from "@/components/live-score-widget";

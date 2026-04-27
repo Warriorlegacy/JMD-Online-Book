@@ -41,7 +41,7 @@ const CHIPS = [1, 5, 25, 100, 500];
 
 export default function LiveDealerPage() {
   const { user } = useAuth();
-  const { connected, subscribe, on } = useSocket();
+  const { connected, subscribe, on, send } = useSocket();
   const router = useRouter();
 
   const [activeTable, setActiveTable] = useState(LIVE_TABLES[0]);

@@ -1,22 +1,47 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/db";
+import { tournaments } from "@/db/schema";
+import { desc } from "drizzle-orm";
+import { verifyAdmin } from "@/lib/admin-auth";
 
 export async function GET() {
+  const { error } = await verifyAdmin();
+  if (error) return error;
+
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("sbe_token")?.value;
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    const res = await fetch(`${process.env.BACKEND_URL}/admin/tournaments`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      return NextResponse.json(data, { status: res.status });
-    }
+    const data = await db
+      .select()
+      .from(tournaments)
+      .orderBy(desc(tournaments.createdAt));
     return NextResponse.json(data);
-  } catch {
-    return NextResponse.json({ error: "Failed to fetch tournaments" }, { status: 500 });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  const { error } = await verifyAdmin();
+  if (error) return error;
+
+  try {
+    const { name, sportType, metadata } = await request.json();
+    if (!name || !sportType) {
+      return NextResponse.json({ error: "name and sportType are required" }, { status: 400 });
+    }
+
+    const [row] = await db
+      .insert(tournaments)
+      .values({ name, sportType, metadata: metadata ?? null })
+      .returning();
+
+    return NextResponse.json(row, { status: 201 });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to create tournament" },
+      { status: 500 }
+    );
   }
 }

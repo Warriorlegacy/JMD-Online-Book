@@ -8,8 +8,8 @@ const withNextIntl = createNextIntlPlugin();
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
+  turbopack: {
+    root: projectRoot,
   },
   // Prevent Webpack/Turbopack from bundling native Node.js modules
   serverExternalPackages: ["pg", "pg-native", "bcryptjs"],

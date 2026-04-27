@@ -1,4 +1,11 @@
-export type SportCategory = "cricket" | "football" | "tennis" | "horse_racing" | "casino" | "other";
+export type SportCategory =
+  | "basketball"
+  | "cricket"
+  | "football"
+  | "tennis"
+  | "horse_racing"
+  | "casino"
+  | "other";
 
 export type MatchStatus = "scheduled" | "in_play" | "completed" | "cancelled";
 

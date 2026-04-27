@@ -1,0 +1,693 @@
+{
+  "startedAt": "2026-04-27T08:35:36.072Z",
+  "mode": "remote",
+  "baseUrl": "https://web-two-gamma-49.vercel.app",
+  "repoRoot": "D:\\JMD Online Book",
+  "webRoot": "D:\\JMD Online Book\\sbe\\web",
+  "checks": {
+    "vercelCron": {
+      "ok": true,
+      "name": "vercel-cron",
+      "schedule": "0 0 * * *",
+      "path": "/api/cron/settle-markets",
+      "configPath": "sbe/web/vercel.json"
+    },
+    "backendUrlLeaks": {
+      "ok": true,
+      "name": "backend-url-leaks",
+      "count": 0,
+      "matches": []
+    },
+    "designPalette": {
+      "ok": true,
+      "name": "design-palette",
+      "disallowedColorCount": 48,
+      "disallowedColors": [
+        {
+          "color": "#1e293b",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/app/globals.css"
+          ]
+        },
+        {
+          "color": "#abd45e",
+          "count": 23,
+          "sampleFiles": [
+            "sbe/web/src/app/globals.css",
+            "sbe/web/src/app/[locale]/match/[id]/page.tsx",
+            "sbe/web/src/app/[locale]/wallet/page.tsx",
+            "sbe/web/src/components/bet-slip-sidebar.tsx",
+            "sbe/web/src/components/live-now-carousel.tsx"
+          ]
+        },
+        {
+          "color": "#162000",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/globals.css"
+          ]
+        },
+        {
+          "color": "#0a0a0a",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/app/globals.css"
+          ]
+        },
+        {
+          "color": "#1c1c1e",
+          "count": 20,
+          "sampleFiles": [
+            "sbe/web/src/app/globals.css",
+            "sbe/web/src/components/ai-assistant.tsx"
+          ]
+        },
+        {
+          "color": "#151517",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/app/globals.css"
+          ]
+        },
+        {
+          "color": "#2c2c2e",
+          "count": 5,
+          "sampleFiles": [
+            "sbe/web/src/app/globals.css"
+          ]
+        },
+        {
+          "color": "#3a3a3c",
+          "count": 7,
+          "sampleFiles": [
+            "sbe/web/src/app/globals.css"
+          ]
+        },
+        {
+          "color": "#ff3b30",
+          "count": 12,
+          "sampleFiles": [
+            "sbe/web/src/app/globals.css",
+            "sbe/web/src/components/match-card.tsx",
+            "sbe/web/src/components/top-matches-grid.tsx",
+            "sbe/web/src/components/top-nav.tsx"
+          ]
+        },
+        {
+          "color": "#8e8e93",
+          "count": 3,
+          "sampleFiles": [
+            "sbe/web/src/app/globals.css"
+          ]
+        },
+        {
+          "color": "#06b6d4",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/globals.css"
+          ]
+        },
+        {
+          "color": "#0a0e17",
+          "count": 19,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/admin/page.tsx",
+            "sbe/web/src/app/[locale]/casino/page.tsx",
+            "sbe/web/src/app/[locale]/dashboard/page.tsx",
+            "sbe/web/src/app/[locale]/live-dealer/page.tsx",
+            "sbe/web/src/app/[locale]/match/[id]/page.tsx"
+          ]
+        },
+        {
+          "color": "#0d1117",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/admin/page.tsx",
+            "sbe/web/src/app/[locale]/match/[id]/page.tsx"
+          ]
+        },
+        {
+          "color": "#f54242",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/admin/page.tsx"
+          ]
+        },
+        {
+          "color": "#4f46e5",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/affiliate/page.tsx"
+          ]
+        },
+        {
+          "color": "#0f766e",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/affiliate/page.tsx"
+          ]
+        },
+        {
+          "color": "#162a3d",
+          "count": 8,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/affiliate/page.tsx",
+            "sbe/web/src/components/live-pitch.tsx"
+          ]
+        },
+        {
+          "color": "#0d1120",
+          "count": 28,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/casino/page.tsx",
+            "sbe/web/src/app/[locale]/dashboard/page.tsx",
+            "sbe/web/src/app/[locale]/live-dealer/page.tsx",
+            "sbe/web/src/app/[locale]/promotions/page.tsx",
+            "sbe/web/src/app/[locale]/sports/page.tsx"
+          ]
+        },
+        {
+          "color": "#0d1525",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/casino/page.tsx"
+          ]
+        },
+        {
+          "color": "#0064cc",
+          "count": 5,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/casino/page.tsx",
+            "sbe/web/src/app/[locale]/dashboard/page.tsx",
+            "sbe/web/src/app/[locale]/live-dealer/page.tsx",
+            "sbe/web/src/app/[locale]/promotions/page.tsx",
+            "sbe/web/src/app/[locale]/virtuals/page.tsx"
+          ]
+        },
+        {
+          "color": "#0f1923",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/casino/[game]/page.tsx"
+          ]
+        },
+        {
+          "color": "#afff00",
+          "count": 33,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/dashboard/page.tsx",
+            "sbe/web/src/app/[locale]/match/[id]/page.tsx",
+            "sbe/web/src/app/[locale]/promotions/page.tsx",
+            "sbe/web/src/app/[locale]/sports/page.tsx",
+            "sbe/web/src/app/[locale]/virtuals/page.tsx"
+          ]
+        },
+        {
+          "color": "#0a0a00",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/live-dealer/page.tsx"
+          ]
+        },
+        {
+          "color": "#111827",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/match/[id]/page.tsx"
+          ]
+        },
+        {
+          "color": "#005eb2",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/wallet/page.tsx"
+          ]
+        },
+        {
+          "color": "#f7931a",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/wallet/page.tsx"
+          ]
+        },
+        {
+          "color": "#627eea",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/wallet/page.tsx"
+          ]
+        },
+        {
+          "color": "#10b981",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/components/admin-analytics-tab.tsx"
+          ]
+        },
+        {
+          "color": "#ef4444",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/components/admin-analytics-tab.tsx"
+          ]
+        },
+        {
+          "color": "#ff375f",
+          "count": 6,
+          "sampleFiles": [
+            "sbe/web/src/components/ai-assistant.tsx",
+            "sbe/web/src/components/match-card.tsx"
+          ]
+        },
+        {
+          "color": "#34c759",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/components/ai-assistant.tsx"
+          ]
+        },
+        {
+          "color": "#86868b",
+          "count": 28,
+          "sampleFiles": [
+            "sbe/web/src/components/ai-assistant.tsx",
+            "sbe/web/src/components/left-sidebar.tsx",
+            "sbe/web/src/components/match-card.tsx",
+            "sbe/web/src/components/top-matches-grid.tsx",
+            "sbe/web/src/components/top-nav.tsx"
+          ]
+        },
+        {
+          "color": "#0077ed",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/components/left-sidebar.tsx",
+            "sbe/web/src/components/top-nav.tsx"
+          ]
+        },
+        {
+          "color": "#d97706",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/components/live-court.tsx"
+          ]
+        },
+        {
+          "color": "#1e1b4b",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/components/live-court.tsx"
+          ]
+        },
+        {
+          "color": "#0f172a",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/components/live-court.tsx"
+          ]
+        },
+        {
+          "color": "#f59e0b",
+          "count": 3,
+          "sampleFiles": [
+            "sbe/web/src/components/live-court.tsx"
+          ]
+        },
+        {
+          "color": "#09141f",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/components/live-pitch.tsx"
+          ]
+        },
+        {
+          "color": "#a7c8ff",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/components/live-pitch.tsx"
+          ]
+        },
+        {
+          "color": "#15803d",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/components/live-tennis-court.tsx"
+          ]
+        },
+        {
+          "color": "#064e3b",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/components/live-tennis-court.tsx"
+          ]
+        },
+        {
+          "color": "#022c22",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/components/live-tennis-court.tsx"
+          ]
+        },
+        {
+          "color": "#d9f99d",
+          "count": 4,
+          "sampleFiles": [
+            "sbe/web/src/components/live-tennis-court.tsx"
+          ]
+        },
+        {
+          "color": "#d1d4dc",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/components/market-chart.tsx"
+          ]
+        },
+        {
+          "color": "#758696",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/components/market-chart.tsx"
+          ]
+        },
+        {
+          "color": "#26a69a",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/components/market-chart.tsx"
+          ]
+        },
+        {
+          "color": "#ef5350",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/components/market-chart.tsx"
+          ]
+        },
+        {
+          "color": "#ff453a",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/components/top-nav.tsx"
+          ]
+        }
+      ]
+    },
+    "lint": {
+      "name": "npm.cmd run lint",
+      "ok": true,
+      "code": 0,
+      "error": null,
+      "durationMs": 17571,
+      "stdout": "D:\\JMD Online Book\\sbe\\web\\src\\app\\[locale]\\sports\\page.tsx\n  177:10  warning  '_orderbooks' is assigned a value but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\app\\[locale]\\virtuals\\page.tsx\n  42:17  warning  '_user' is assigned a value but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\app\\[locale]\\wallet\\page.tsx\n  22:3   warning  'Globe' is defined but never used     @typescript-eslint/no-unused-vars\n  24:3   warning  'User' is defined but never used      @typescript-eslint/no-unused-vars\n  25:11  warning  'HomeIcon' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\app\\api\\admin\\announcements\\route.ts\n  4:16  warning  'eq' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\app\\api\\admin\\withdrawals\\route.ts\n  1:10  warning  'NextRequest' is defined but never used         @typescript-eslint/no-unused-vars\n  3:10  warning  'withdrawalRequests' is defined but never used  @typescript-eslint/no-unused-vars\n  4:10  warning  'desc' is defined but never used                @typescript-eslint/no-unused-vars\n  4:16  warning  'eq' is defined but never used                  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\app\\api\\cron\\settle-markets\\route.ts\n  3:10  warning  'matches' is defined but never used  @typescript-eslint/no-unused-vars\n  3:19  warning  'bets' is defined but never used     @typescript-eslint/no-unused-vars\n  3:25  warning  'trades' is defined but never used   @typescript-eslint/no-unused-vars\n  4:10  warning  'eq' is defined but never used       @typescript-eslint/no-unused-vars\n  4:14  warning  'and' is defined but never used      @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\app\\api\\wallet\\withdraw\\route.ts\n  4:19  warning  'and' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\components\\ai-assistant.tsx\n  5:34  warning  'MessageCircle' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\components\\outcome-center.tsx\n   13:7   warning  'NOTIFICATIONS' is assigned a value but only used as a type  @typescript-eslint/no-unused-vars\n   78:7   warning  'NOTIF_TABS' is assigned a value but never used              @typescript-eslint/no-unused-vars\n   81:11  warning  'connected' is assigned a value but never used               @typescript-eslint/no-unused-vars\n   81:22  warning  'subscribe' is assigned a value but never used               @typescript-eslint/no-unused-vars\n   81:33  warning  'on' is assigned a value but never used                      @typescript-eslint/no-unused-vars\n   82:10  warning  'activeTab' is assigned a value but never used               @typescript-eslint/no-unused-vars\n   82:21  warning  'setActiveTab' is assigned a value but never used            @typescript-eslint/no-unused-vars\n  297:10  warning  'NotifCard' is defined but never used                        @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\components\\top-matches-grid.tsx\n  83:10  warning  'error' is assigned a value but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\accumulator.ts\n    2:31  warning  'oddsMarkets' is defined but never used  @typescript-eslint/no-unused-vars\n    4:14  warning  'and' is defined but never used          @typescript-eslint/no-unused-vars\n  125:43  warning  'matchId' is defined but never used      @typescript-eslint/no-unused-vars\n  125:60  warning  'selectionId' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\candles.ts\n  4:19  warning  'sql' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\data\\mock-sports-provider.ts\n  50:24  warning  'externalId' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\data\\production-sports-provider.ts\n  2:41  warning  'OddsData' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\engine.ts\n  4:8  warning  'crypto' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\orchestrator.ts\n  4:33  warning  'wallets' is defined but never used  @typescript-eslint/no-unused-vars\n  5:10  warning  'eq' is defined but never used       @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\payments\\SimulationProvider.ts\n   6:55  warning  'currency' is defined but never used   @typescript-eslint/no-unused-vars\n  36:37  warning  'signature' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\sync-service.ts\n  3:19  warning  'sql' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\tests\\god-ui-test.spec.ts\n   1:29  warning  'Page' is defined but never used                 @typescript-eslint/no-unused-vars\n  98:11  warning  'riskHeader' is assigned a value but never used  @typescript-eslint/no-unused-vars\n\n✖ 45 problems (0 errors, 45 warnings)",
+      "stderr": ""
+    },
+    "typecheck": {
+      "name": "node_modules\\.bin\\tsc.cmd --noEmit",
+      "ok": true,
+      "code": 0,
+      "error": null,
+      "durationMs": 7595,
+      "stdout": "",
+      "stderr": ""
+    },
+    "build": {
+      "name": "npm.cmd run build",
+      "ok": true,
+      "code": 0,
+      "error": null,
+      "durationMs": 39442,
+      "stdout": "\n▲ Next.js 16.2.4 (Turbopack)\n- Environments: .env.local\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 11.7s\n  Running TypeScript ...\n  Finished TypeScript in 18.1s ...\n  Collecting page data using 7 workers ...\n  Generating static pages using 7 workers (0/30) ...\n  Generating static pages using 7 workers (7/30) \n  Generating static pages using 7 workers (14/30) \n  Generating static pages using 7 workers (22/30) \n✓ Generating static pages using 7 workers (30/30) in 470ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /_not-found\n├ ƒ /[locale]\n├ ƒ /[locale]/admin\n├ ƒ /[locale]/admin/kyc\n├ ƒ /[locale]/affiliate\n├ ƒ /[locale]/casino\n├ ƒ /[locale]/casino/[game]\n├ ƒ /[locale]/dashboard\n├ ƒ /[locale]/live-dealer\n├ ƒ /[locale]/login\n├ ƒ /[locale]/match/[id]\n├ ƒ /[locale]/profile\n├ ƒ /[locale]/profile/verification\n├ ƒ /[locale]/promotions\n├ ƒ /[locale]/register\n├ ƒ /[locale]/sports\n├ ƒ /[locale]/virtuals\n├ ƒ /[locale]/wallet\n├ ƒ /api/[...path]\n├ ƒ /api/admin/[...all]\n├ ƒ /api/admin/announcements\n├ ƒ /api/admin/announcements/[id]\n├ ƒ /api/admin/deposits\n├ ƒ /api/admin/deposits/[id]/approve\n├ ƒ /api/admin/deposits/[id]/reject\n├ ƒ /api/admin/matches\n├ ƒ /api/admin/matches/[id]\n├ ƒ /api/admin/matches/[id]/settle\n├ ƒ /api/admin/tournaments\n├ ƒ /api/admin/users\n├ ƒ /api/admin/withdrawals\n├ ƒ /api/admin/withdrawals/[id]/approve\n├ ƒ /api/admin/withdrawals/[id]/reject\n├ ƒ /api/ai/chat\n├ ƒ /api/ai/insights/[matchId]\n├ ƒ /api/announcements\n├ ƒ /api/auth\n├ ƒ /api/auth/login\n├ ƒ /api/auth/logout\n├ ƒ /api/auth/me\n├ ƒ /api/auth/register\n├ ƒ /api/bets/active\n├ ƒ /api/cron/settle-markets\n├ ƒ /api/matches\n├ ƒ /api/matches/[id]\n├ ƒ /api/matches/[id]/history\n├ ƒ /api/matches/active\n├ ƒ /api/orders\n├ ƒ /api/referral/list\n├ ƒ /api/referral/stats\n├ ƒ /api/tenant/config\n├ ƒ /api/wallet\n├ ƒ /api/wallet/balance\n├ ƒ /api/wallet/deposit\n├ ƒ /api/wallet/deposit/init\n├ ƒ /api/wallet/transactions\n└ ƒ /api/wallet/withdraw\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand",
+      "stderr": ""
+    },
+    "test": {
+      "name": "npm.cmd run test",
+      "ok": true,
+      "code": 0,
+      "error": null,
+      "durationMs": 7649,
+      "stdout": "> web@0.1.0 test\n> vitest run\n\n\n RUN  v4.1.4 D:/JMD Online Book/sbe/web\n\n\n Test Files  2 passed (2)\n      Tests  17 passed (17)\n   Start at  14:06:44\n   Duration  5.88s (transform 149ms, setup 0ms, import 297ms, tests 96ms, environment 10.02s)",
+      "stderr": ""
+    },
+    "database": {
+      "ok": true,
+      "name": "database",
+      "database": "postgres",
+      "schema": "public",
+      "version": "17.6",
+      "schemaChecks": {
+        "ok": true,
+        "failures": [],
+        "oddsVariant": "serverless"
+      }
+    },
+    "supabase": {
+      "ok": true,
+      "name": "supabase",
+      "status": 200,
+      "body": "[{\"id\":\"5590ac4d-5fa3-4117-ac37-86bf0462033f\"}]"
+    },
+    "runtime": {
+      "ok": true,
+      "name": "runtime",
+      "status": 200
+    },
+    "routes": {
+      "ok": true,
+      "name": "routes",
+      "probes": [
+        {
+          "ok": true,
+          "name": "auth-me",
+          "method": "GET",
+          "path": "/api/auth/me",
+          "status": 200,
+          "body": "{\"user\":{\"id\":\"c977fed3-196c-4b97-92fc-64e91352ceb6\",\"username\":\"demo_c977\",\"email\":\"demo@user.com\",\"role\":\"user\",\"balance\":\"10450.00000000\"}}"
+        },
+        {
+          "ok": true,
+          "name": "matches-list",
+          "method": "GET",
+          "path": "/api/matches",
+          "status": 200,
+          "body": "[]"
+        },
+        {
+          "ok": true,
+          "name": "matches-active",
+          "method": "GET",
+          "path": "/api/matches/active",
+          "status": 200,
+          "body": "[{\"id\":\"a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1\",\"teamA\":\"Manchester City\",\"teamB\":\"Arsenal\",\"startTime\":\"2026-04-14T08:41:01.302Z\",\"status\":\"in_play\",\"odds\":{}},{\"id\":\"03540916-7b78-4a30-a746-cc5bf5b83c28\",\"teamA\":\"Manchester City\",\"teamB\":\"Arsenal\",\"startTime\":\"2026-04-14T19:12:16.327Z\",\"status\":\"in_play\",\"odds\":{}},{\"id\":\"62ddac0d-ca96-46ea-bd66-dcf5b7e7dfee\",\"teamA\":\"Liverpool\",\"teamB\":\"Chelsea\","
+        },
+        {
+          "ok": true,
+          "name": "match-detail",
+          "method": "GET",
+          "path": "/api/matches/48977529-15e8-43be-a10b-9510848e334e",
+          "status": 200,
+          "body": "{\"id\":\"48977529-15e8-43be-a10b-9510848e334e\",\"tournamentId\":\"4cc61a60-bb64-4ebc-b5e3-12e808aa88d4\",\"teamA\":\"Liverpool\",\"teamB\":\"Chelsea\",\"startTime\":\"2026-04-18T14:32:45.295Z\",\"status\":\"scheduled\",\"metadata\":\"{\\\"venue\\\":\\\"Anfield\\\",\\\"round\\\":\\\"Matchday 30\\\"}\",\"markets\":[]}"
+        },
+        {
+          "ok": true,
+          "name": "ai-insights",
+          "method": "GET",
+          "path": "/api/ai/insights/48977529-15e8-43be-a10b-9510848e334e",
+          "status": 200,
+          "body": "{\"confidenceScore\":58,\"liveAnalysis\":\"Liverpool vs Chelsea remains in scheduled state. No final winner is locked in metadata yet, so pricing pressure remains the strongest signal. Market depth is currently limited, so the model is leaning on baseline match context.\",\"predictions\":[{\"recommendation\":\"LIVERPOOL OR CHELSEA\",\"market\":\"Match Context\",\"probability\":\"58%\",\"rationale\":\"No live odds were r"
+        },
+        {
+          "ok": true,
+          "name": "tenant-config",
+          "method": "GET",
+          "path": "/api/tenant/config",
+          "status": 200,
+          "body": "{\"id\":\"5590ac4d-5fa3-4117-ac37-86bf0462033f\",\"name\":\"Default\",\"slug\":\"default\",\"theme\":{\"primaryColor\":\"#f59e0b\",\"backgroundColor\":\"#000000\"}}"
+        },
+        {
+          "ok": true,
+          "name": "admin-matches",
+          "method": "GET",
+          "path": "/api/admin/matches",
+          "status": 200,
+          "body": "[{\"id\":\"48977529-15e8-43be-a10b-9510848e334e\",\"tournamentId\":\"4cc61a60-bb64-4ebc-b5e3-12e808aa88d4\",\"teamA\":\"Liverpool\",\"teamB\":\"Chelsea\",\"startTime\":\"2026-04-18T14:32:45.295Z\",\"status\":\"scheduled\",\"metadata\":\"{\\\"venue\\\":\\\"Anfield\\\",\\\"round\\\":\\\"Matchday 30\\\"}\",\"createdAt\":\"2026-04-17T14:32:46.391Z\",\"tournamentName\":\"Premier League 2026\",\"sportType\":\"football\"},{\"id\":\"6d580019-f2b5-4f8a-86de-2a0f19"
+        },
+        {
+          "ok": true,
+          "name": "admin-match-detail",
+          "method": "GET",
+          "path": "/api/admin/matches/48977529-15e8-43be-a10b-9510848e334e",
+          "status": 200,
+          "body": "{\"id\":\"48977529-15e8-43be-a10b-9510848e334e\",\"tournamentId\":\"4cc61a60-bb64-4ebc-b5e3-12e808aa88d4\",\"teamA\":\"Liverpool\",\"teamB\":\"Chelsea\",\"startTime\":\"2026-04-18T14:32:45.295Z\",\"status\":\"scheduled\",\"metadata\":\"{\\\"venue\\\":\\\"Anfield\\\",\\\"round\\\":\\\"Matchday 30\\\"}\",\"createdAt\":\"2026-04-17T14:32:46.391Z\"}"
+        },
+        {
+          "ok": true,
+          "name": "admin-tournaments",
+          "method": "GET",
+          "path": "/api/admin/tournaments",
+          "status": 200,
+          "body": "[{\"id\":\"4cc61a60-bb64-4ebc-b5e3-12e808aa88d4\",\"tenantId\":null,\"name\":\"Premier League 2026\",\"sportType\":\"football\",\"metadata\":\"{\\\"country\\\":\\\"England\\\",\\\"season\\\":\\\"2025-26\\\"}\",\"createdAt\":\"2026-04-17T14:32:45.791Z\"},{\"id\":\"dd02e5b0-2816-4367-8df3-9dbb2dd01a61\",\"tenantId\":null,\"name\":\"Premier League 2026\",\"sportType\":\"football\",\"metadata\":\"{\\\"country\\\": \\\"England\\\", \\\"season\\\": \\\"2025-26\\\"}\",\"creat"
+        },
+        {
+          "ok": true,
+          "name": "admin-users",
+          "method": "GET",
+          "path": "/api/admin/users",
+          "status": 200,
+          "body": "[{\"id\":\"f64d6832-78db-4c75-88e0-c99b7780f27f\",\"username\":\"soloxpiyush\",\"email\":\"piyushrajsingh092@gmail.com\",\"role\":\"user\",\"createdAt\":\"2026-04-22 14:49:06.896255\",\"balance\":\"0.00000000\"},{\"id\":\"9aabe647-4a18-407d-86c1-f3f84e80ac2d\",\"username\":\"testuser123\",\"email\":\"test123@test.com\",\"role\":\"user\",\"createdAt\":\"2026-04-21 04:55:23.413577\",\"balance\":\"0.00000000\"},{\"id\":\"7d442fef-f0ec-412f-ae22-836e5"
+        },
+        {
+          "ok": true,
+          "name": "admin-deposits",
+          "method": "GET",
+          "path": "/api/admin/deposits",
+          "status": 200,
+          "body": "[]"
+        },
+        {
+          "ok": true,
+          "name": "admin-withdrawals",
+          "method": "GET",
+          "path": "/api/admin/withdrawals",
+          "status": 200,
+          "body": "[]"
+        },
+        {
+          "ok": true,
+          "name": "admin-announcements",
+          "method": "GET",
+          "path": "/api/admin/announcements",
+          "status": 200,
+          "body": "[]"
+        },
+        {
+          "ok": true,
+          "name": "approve-deposit-route",
+          "method": "POST",
+          "path": "/api/admin/deposits/00000000-0000-0000-0000-000000000000/approve",
+          "status": 404,
+          "body": "{\"error\":\"Deposit request not found\"}"
+        },
+        {
+          "ok": true,
+          "name": "reject-deposit-route",
+          "method": "POST",
+          "path": "/api/admin/deposits/00000000-0000-0000-0000-000000000000/reject",
+          "status": 404,
+          "body": "{\"error\":\"Deposit request not found\"}"
+        },
+        {
+          "ok": true,
+          "name": "approve-withdrawal-route",
+          "method": "POST",
+          "path": "/api/admin/withdrawals/00000000-0000-0000-0000-000000000000/approve",
+          "status": 404,
+          "body": "{\"error\":\"Withdrawal request not found\"}"
+        },
+        {
+          "ok": true,
+          "name": "reject-withdrawal-route",
+          "method": "POST",
+          "path": "/api/admin/withdrawals/00000000-0000-0000-0000-000000000000/reject",
+          "status": 404,
+          "body": "{\"error\":\"Withdrawal request not found\"}"
+        },
+        {
+          "ok": true,
+          "name": "settle-match-route",
+          "method": "POST",
+          "path": "/api/admin/matches/00000000-0000-0000-0000-000000000000/settle",
+          "status": 404,
+          "body": "{\"error\":\"Match not found\"}"
+        },
+        {
+          "ok": true,
+          "name": "cron-settle-markets",
+          "method": "GET",
+          "path": "/api/cron/settle-markets",
+          "status": 200,
+          "body": "{\"success\":true,\"processed\":0,\"settled\":0,\"timestamp\":\"2026-04-27T08:37:17.380Z\"}"
+        }
+      ]
+    }
+  },
+  "warnings": [],
+  "artifacts": {
+    "json": "D:\\JMD Online Book\\artifacts\\kinetic-ledger-debug\\latest.json",
+    "markdown": "D:\\JMD Online Book\\artifacts\\kinetic-ledger-debug\\latest.md"
+  },
+  "environment": {
+    "DATABASE_URL": {
+      "present": true,
+      "length": 114
+    },
+    "JWT_SECRET": {
+      "present": true,
+      "length": 22
+    },
+    "CRON_SECRET": {
+      "present": true,
+      "length": 96
+    },
+    "NEXT_PUBLIC_SUPABASE_URL": {
+      "present": true,
+      "length": 40
+    },
+    "SUPABASE_SERVICE_ROLE_KEY": {
+      "present": true,
+      "length": 219
+    },
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
+      "present": true,
+      "length": 208
+    },
+    "NEXT_PUBLIC_APP_URL": {
+      "present": true,
+      "length": 35
+    },
+    "BACKEND_URL": {
+      "present": true,
+      "length": 36
+    },
+    "source": {
+      "envPullSucceeded": true,
+      "pulledEnvPath": "D:\\JMD Online Book\\artifacts\\kinetic-ledger-debug\\.vercel.production.env",
+      "scopeUsed": null
+    }
+  },
+  "monorepo": [
+    {
+      "name": "sbe/web",
+      "exists": true,
+      "packageJson": "sbe/web/package.json"
+    },
+    {
+      "name": "sbe/backend",
+      "exists": false,
+      "packageJson": "sbe/backend/package.json"
+    },
+    {
+      "name": "jmd-mobile",
+      "exists": true,
+      "packageJson": "jmd-mobile/package.json"
+    }
+  ],
+  "samples": {
+    "announcementId": null,
+    "depositId": null,
+    "matchId": "48977529-15e8-43be-a10b-9510848e334e",
+    "tournamentId": "4cc61a60-bb64-4ebc-b5e3-12e808aa88d4",
+    "withdrawalId": null
+  },
+  "adminUser": null,
+  "probeUser": {
+    "id": "c977fed3-196c-4b97-92fc-64e91352ceb6",
+    "username": "demo_c977",
+    "role": "user"
+  },
+  "finishedAt": "2026-04-27T08:37:18.715Z",
+  "summary": {
+    "clean": true,
+    "warnings": 48
+  }
+}

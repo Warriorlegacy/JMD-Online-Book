@@ -1,28 +1,31 @@
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/db";
+import { announcements } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { verifyAdmin } from "@/lib/admin-auth";
 
-export async function PUT(
+export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { error } = await verifyAdmin();
+  if (error) return error;
+
   try {
-    const token = await getTokenFromCookie();
     const { id } = await params;
     const body = await request.json();
-    const res = await fetch(
-      `${process.env.BACKEND_URL}/admin/announcements/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body),
-      }
-    );
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Failed to update announcement");
-    return NextResponse.json(data);
+    const updates: Partial<{ message: string; active: number }> = {};
+    if (body.message !== undefined) updates.message = body.message;
+    if (body.active !== undefined) updates.active = body.active;
+
+    const [row] = await db
+      .update(announcements)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(announcements.id, id))
+      .returning();
+
+    if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    return NextResponse.json(row);
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed" },
@@ -32,33 +35,20 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: Request,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { error } = await verifyAdmin();
+  if (error) return error;
+
   try {
-    const token = await getTokenFromCookie();
     const { id } = await params;
-    const res = await fetch(
-      `${process.env.BACKEND_URL}/admin/announcements/${id}`,
-      {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Failed to delete announcement");
-    return NextResponse.json(data);
+    await db.delete(announcements).where(eq(announcements.id, id));
+    return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed" },
       { status: 500 }
     );
   }
-}
-
-async function getTokenFromCookie() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("sbe_token")?.value;
-  if (!token) throw new Error("Unauthorized");
-  return token;
 }

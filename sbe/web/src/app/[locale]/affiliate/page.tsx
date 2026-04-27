@@ -7,6 +7,12 @@ import { useAuth } from "@/context/auth-context";
 const COMMISSION_DATA = [30, 50, 65, 48, 80, 70, 90, 65, 75, 85, 72, 95];
 const REVENUE_DATA = [45, 65, 80, 60, 95, 85, 110, 80, 92, 105, 88, 120];
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+const TRAFFIC_SOURCES = [
+  { label: "DIRECT", pct: 52, color: "#0071e3" },
+  { label: "SOCIAL", pct: 26, color: "#4f46e5" },
+  { label: "SEARCH", pct: 14, color: "#0f766e" },
+  { label: "PARTNERS", pct: 8, color: "#162a3d" },
+];
 
 interface ReferralStat {
   referralCode: string;
@@ -22,7 +28,36 @@ interface Referee {
   status: string;
 }
 
-// ... EarningsChart remains the same ...
+function EarningsChart() {
+  const maxValue = Math.max(...REVENUE_DATA, ...COMMISSION_DATA);
+
+  return (
+    <div className="flex h-full items-end gap-2">
+      {MONTHS.map((month, index) => {
+        const revenueHeight = Math.max(12, (REVENUE_DATA[index] / maxValue) * 100);
+        const commissionHeight = Math.max(8, (COMMISSION_DATA[index] / maxValue) * 100);
+
+        return (
+          <div key={month} className="flex flex-1 flex-col items-center justify-end gap-2">
+            <div className="flex h-full w-full items-end justify-center gap-1">
+              <div
+                className="w-2.5 rounded-full bg-white/10"
+                style={{ height: `${commissionHeight}%` }}
+              />
+              <div
+                className="w-2.5 rounded-full bg-[#0071e3]"
+                style={{ height: `${revenueHeight}%` }}
+              />
+            </div>
+            <span className="text-[9px] font-black uppercase tracking-widest text-white/20">
+              {month}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function AffiliateDashboard() {
   const { user } = useAuth();
@@ -198,7 +233,7 @@ export default function AffiliateDashboard() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-[#0071e3]/20 flex items-center justify-center text-[#0071e3] font-black text-[10px]">
-                        {ref.username.substring(0, 2).toUpperCase()}
+                        {(ref.username || "PN").substring(0, 2).toUpperCase()}
                       </div>
                       <span className="text-sm text-white font-black italic">{ref.username}</span>
                     </div>

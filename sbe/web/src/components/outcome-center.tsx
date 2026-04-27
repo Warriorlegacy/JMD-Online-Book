@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Bell, CheckCircle, Loader, X, ChevronRight, Shield } from "lucide-react";
 import { useSocket } from "@/context/socket-context";
+import { cn } from "@/lib/utils";
+import type { Match } from "@/types";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type NotifTab = "All Notifications" | "Outcomes" | "Compliance" | "Promotions";
@@ -81,6 +83,9 @@ export default function OutcomeCenterTab() {
   const [unsettledMatches, setUnsettledMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState<string | null>(null);
+  const [pushEnabled, setPushEnabled] = useState(true);
+  const [emailEnabled, setEmailEnabled] = useState(true);
+  const [smsEnabled, setSmsEnabled] = useState(false);
 
   const fetchUnsettled = useCallback(async () => {
     try {

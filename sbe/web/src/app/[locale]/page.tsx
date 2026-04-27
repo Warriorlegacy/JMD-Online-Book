@@ -7,6 +7,7 @@ import { LeftSidebar } from "@/components/left-sidebar";
 import LiveNowCarousel from "@/components/live-now-carousel";
 import { TopMatchesGrid } from "@/components/top-matches-grid";
 import BetSlipSidebar from "@/components/bet-slip-sidebar";
+import { AiAssistant } from "@/components/ai-assistant";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 
@@ -32,6 +33,9 @@ function HomeContent() {
           <TopMatchesGrid />
         </div>
       </main>
+
+      {/* Kinetic AI Assistant */}
+      <AiAssistant />
     </>
   );
 }

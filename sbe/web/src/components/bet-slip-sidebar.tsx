@@ -32,22 +32,7 @@ interface PopularBet {
 
 export default function BetSlipSidebar() {
   // State Management
-  const [selections, setSelections] = useState<BetSelection[]>([
-    {
-      id: "1",
-      match: "Manchester United vs Liverpool",
-      market: "Match Result",
-      selection: "Manchester United",
-      odds: 2.45
-    },
-    {
-      id: "2",
-      match: "Arsenal vs Chelsea",
-      market: "Total Goals",
-      selection: "Over 2.5",
-      odds: 1.85
-    }
-  ]);
+  const [selections, setSelections] = useState<BetSelection[]>([]);
   
   const [stake, setStake] = useState<string>("100");
   const [activeTab, setActiveTab] = useState<'bet-slip' | 'my-bets'>('bet-slip');
@@ -62,22 +47,9 @@ export default function BetSlipSidebar() {
   const potentialProfit = potentialReturn - stakeValue;
   
   // Sample Data
-  const activeBets: ActiveBet[] = [
-    {
-      id: "101",
-      match: "Real Madrid vs Barcelona",
-      selection: "Real Madrid",
-      stake: 50,
-      odds: 2.20,
-      potentialReturn: 110,
-      cashOutValue: 87.50
-    }
-  ];
+  const activeBets: ActiveBet[] = [];
   
-  const popularBets: PopularBet[] = [
-    { id: "p1", match: "Bayern vs Dortmund", selection: "Bayern Win", odds: 1.65, volume: 12450 },
-    { id: "p2", match: "PSG vs Marseille", selection: "Over 3.5", odds: 2.10, volume: 8720 },
-  ];
+  const popularBets: PopularBet[] = [];
 
   // Handlers
   const removeSelection = (id: string) => {

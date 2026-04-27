@@ -1,14 +1,18 @@
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/db";
+import { announcements } from "@/db/schema";
+import { desc, eq } from "drizzle-orm";
+import { verifyAdmin } from "@/lib/admin-auth";
 
 export async function GET() {
+  const { error } = await verifyAdmin();
+  if (error) return error;
+
   try {
-    const token = await getTokenFromCookie();
-    const res = await fetch(`${process.env.BACKEND_URL}/admin/announcements`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Failed to fetch announcements");
+    const data = await db
+      .select()
+      .from(announcements)
+      .orderBy(desc(announcements.createdAt));
     return NextResponse.json(data);
   } catch (err) {
     return NextResponse.json(
@@ -19,34 +23,24 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const { error } = await verifyAdmin();
+  if (error) return error;
+
   try {
-    const token = await getTokenFromCookie();
-    const body = await request.json();
-    const res = await fetch(
-      `${process.env.BACKEND_URL}/admin/announcements`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body),
-      }
-    );
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Failed to create announcement");
-    return NextResponse.json(data);
+    const { message, active } = await request.json();
+    if (!message) {
+      return NextResponse.json({ error: "message is required" }, { status: 400 });
+    }
+
+    const [row] = await db
+      .insert(announcements)
+      .values({ message, active: active ?? 1 })
+      .returning();
+    return NextResponse.json(row, { status: 201 });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed" },
       { status: 500 }
     );
   }
-}
-
-async function getTokenFromCookie() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("sbe_token")?.value;
-  if (!token) throw new Error("Unauthorized");
-  return token;
 }

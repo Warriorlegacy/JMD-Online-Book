@@ -1,0 +1,12 @@
+{
+  "buildCommand": "cd sbe/web && npm run build",
+  "outputDirectory": "sbe/web/.next",
+  "installCommand": "cd sbe/web && npm install",
+  "framework": "nextjs",
+  "crons": [
+    {
+      "path": "/api/cron/settle-markets",
+      "schedule": "*/5 * * * *"
+    }
+  ]
+}

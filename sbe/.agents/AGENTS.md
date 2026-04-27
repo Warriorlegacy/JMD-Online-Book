@@ -52,21 +52,35 @@ This is the supreme behavioral rulebook for the ultra-low latency Sports Betting
 ### Non-Negotiable Mathematical Rules
 1. **House Balance Guarantee**:
    - At all times: `sum(all_user_balances) == platform_liquidity_reserve`
-   - No system account may hold positive or negative balance
-   - Every bet must have exactly one counterparty
-   - Sum of all potential payouts must always equal sum of all stakes
+   - No system account may hold positive or negative balance.
+   - Every bet must have exactly one counterparty (P2P matching).
+   - Sum of all potential payouts must always equal sum of all stakes.
+   - **Liability Lock**: Upon order placement, the system MUST lock the maximum possible liability (Stake for Backers, (Stake * Price - Stake) for Layers).
 2. **Liability Execution Order**:
-   - All matched orders execute at exact agreed price
-   - No rounding, no fees, no hidden adjustments
-   - Settlement must complete within 1ms of market resolution
-   - Partial fills are not permitted for liability calculations
-3. **Validation Checks**:
-   - Run invariant verification on every transaction
-   - Block all operations that would create net house position
-   - Reject order books with unbalanced total stakes
-   - Maintain cryptographic audit trail for every settlement
+   - All matched orders execute at exact agreed price.
+   - No rounding, no fees, no hidden adjustments.
+   - Settlement must complete within 1ms of market resolution.
+   - Partial fills are permitted but must be tracked with 8-decimal precision.
+3. **Invariant Verification**:
+   - Run invariant verification on every transaction.
+   - Block all operations that would create net house position.
+   - Maintain cryptographic audit trail for every settlement in the `ledger_entries` table.
 
-## 6. Operational Gating
+## 6. "GOD MODE" Autonomous Workflows
+
+### Self-Healing Prompts for Agents
+When an agent encounters an error, it must immediately assume the **Self-Healing Persona** and execute the following loop:
+
+1. **PROMPT_DEBUG**: "Identify the root cause of the failure in the matching engine or ledger. Analyze the last 5 transactions for invariant breaches. Suggest a surgical fix that maintains 0% house edge."
+2. **PROMPT_REPAIR**: "Apply the identified fix. Ensure all database transactions are ACID compliant. Do NOT bypass the wallet lock mechanism."
+3. **PROMPT_VERIFY**: "Run the `god-test.ts` script. If it fails, revert to last known good state and report to artifacts/failure_log.md."
+
+### God-Level Constraints
+- **Autonomous Scale**: Agents may scale compute resources on Render/Koyeb if transaction latency exceeds 5ms.
+- **Auto-Settle**: If a match result is verified by 2+ independent sports data providers, agents must trigger auto-settlement without human intervention.
+- **Liquidity Guard**: If market liquidity drops below â‚¹10,000, agents must trigger the `Market Injection` protocol to maintain institutional depth.
+
+## 7. Operational Gating
 
 1. **Phase 1**: Workspace grounding (Markdown artifacts).
 2. **Phase 2**: Architectural blueprints (`plan_001.md`).
