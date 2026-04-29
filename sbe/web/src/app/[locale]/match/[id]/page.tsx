@@ -528,7 +528,7 @@ export default function MatchPage({ params }: { params: { id: string } }) {
                 {/* Team A form */}
                 <div className="flex items-center justify-between">
                   <span className="text-white/50 text-sm font-bold w-16 flex-shrink-0">
-                    {match.teamA.split(" ").pop()?.slice(0, 3).toUpperCase()}
+                    {String(match.teamA || "").split(" ").pop()?.slice(0, 3)?.toUpperCase() || ""}
                   </span>
                   <div className="flex items-center gap-2 flex-1 justify-end">
                     {DEMO_FORM_A.map((r, i) => <FormBadge key={i} result={r} />)}
@@ -537,7 +537,7 @@ export default function MatchPage({ params }: { params: { id: string } }) {
                 {/* Team B form */}
                 <div className="flex items-center justify-between">
                   <span className="text-white/50 text-sm font-bold w-16 flex-shrink-0">
-                    {match.teamB.split(" ").pop()?.slice(0, 3).toUpperCase()}
+                    {String(match.teamB || "").split(" ").pop()?.slice(0, 3)?.toUpperCase() || ""}
                   </span>
                   <div className="flex items-center gap-2 flex-1 justify-end">
                     {DEMO_FORM_B.map((r, i) => <FormBadge key={i} result={r} />)}

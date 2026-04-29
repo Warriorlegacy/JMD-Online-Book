@@ -16,8 +16,8 @@ export default function PriceLadder({
   teams
 }: PriceLadderProps) {
   const selections = [
-    { id: "team_a", name: teams[0] },
-    { id: "team_b", name: teams[1] },
+    { id: "team_a", name: String(teams?.[0] || '') },
+    { id: "team_b", name: String(teams?.[1] || '') },
     { id: "draw", name: "Draw" },
   ];
 
@@ -38,7 +38,7 @@ export default function PriceLadder({
                   key={`back-${i}`}
                   onClick={() => onSelect({
                     matchId,
-                    matchTitle: `${teams[0]} v ${teams[1]}`,
+                    matchTitle: `${String(teams?.[0] || '')} v ${String(teams?.[1] || '')}`,
                     market: "Match Odds",
                     selectionName: sel.name,
                     side: "back",
@@ -63,7 +63,7 @@ export default function PriceLadder({
                   key={`lay-${i}`}
                   onClick={() => onSelect({
                     matchId,
-                    matchTitle: `${teams[0]} v ${teams[1]}`,
+                    matchTitle: `${String(teams?.[0] || '')} v ${String(teams?.[1] || '')}`,
                     market: "Match Odds",
                     selectionName: sel.name,
                     side: "lay",
