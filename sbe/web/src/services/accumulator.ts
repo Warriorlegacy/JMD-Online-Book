@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { db } from "../db/index.js";
-import { bets, betSelections, oddsMarkets } from "../db/schema.js";
+import { bets, betSelections } from "../db/schema.js";
 import { WalletService } from "./wallet.js";
 import { eq, and } from "drizzle-orm";
 
