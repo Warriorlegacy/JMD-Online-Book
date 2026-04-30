@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { OrderBook } from "./engine";
 import { WalletService } from "./wallet";
 import { db } from "../db/index";
 import { orders as ordersTable, wallets } from "../db/schema";
-import { eq } from "drizzle-orm";
 import crypto from "crypto";
 
 interface Order {

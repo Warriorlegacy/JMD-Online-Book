@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { test, expect } from '@playwright/test';
 
 /**
  * GOD-LEVEL FRONTEND VERIFICATION SUITE (GLFVS)

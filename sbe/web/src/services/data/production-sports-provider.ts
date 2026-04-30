@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SportsDataProvider, MatchData, OddsData } from "./sports-data-provider.js";
+import { SportsDataProvider, MatchData } from "./sports-data-provider.js";
 
 export class ProductionSportsProvider implements SportsDataProvider {
   private readonly apiKey = process.env.API_FOOTBALL_KEY;
