@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
            LIMIT 1`,
           [requestedSlug]
         );
-        tenant = tenantResult.rows[0] || null;
+        tenant = tenantResult.rows?.[0] || null;
       }
 
       if (!tenant) {
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
            ORDER BY created_at DESC
            LIMIT 1`
         );
-        tenant = fallbackResult.rows[0] || null;
+        tenant = fallbackResult.rows?.[0] || null;
       }
     } finally {
       client.release();
