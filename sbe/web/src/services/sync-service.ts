@@ -30,7 +30,7 @@ export class SyncService {
 
   private async ensureTournament(name: string, sportType: string = "Football", tenantId: string) {
     const existing = await db.select().from(tournaments).where(and(eq(tournaments.name, name), eq(tournaments.tenantId, tenantId))).limit(1);
-    if (existing.length > 0) return existing[0].id;
+    if (existing.length > 0) return existing?.[0]?.id;
 
     const [newTournament] = await db.insert(tournaments).values({
       name,
@@ -99,7 +99,7 @@ export class SyncService {
     
     let matchId: string;
     if (existingMatch.length > 0) {
-      matchId = existingMatch[0].id;
+      matchId = existingMatch?.[0]?.id;
       await db.update(matches)
         .set({
           status: matchData.status,
@@ -124,7 +124,7 @@ export class SyncService {
       const existingOdd = await db.select().from(oddsMarkets).where(and(eq(oddsMarkets.matchId, matchId), eq(oddsMarkets.selection, odd.selection))).limit(1);
       
       if (existingOdd.length > 0) {
-        const oldOdds = parseFloat(existingOdd[0].odds);
+        const oldOdds = parseFloat(existingOdd?.[0]?.odds);
         if (oldOdds !== odd.odds) {
           await db.update(oddsMarkets)
             .set({
@@ -132,7 +132,7 @@ export class SyncService {
               status: odd.status,
               updatedAt: new Date(),
             })
-            .where(eq(oddsMarkets.id, existingOdd[0].id));
+            .where(eq(oddsMarkets.id, existingOdd?.[0]?.id));
           
           await pubsub.publish("odds_update", { matchId, selection: odd.selection, odds: odd.odds });
         }
