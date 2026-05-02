@@ -67,7 +67,7 @@ export class BasketballSportsProvider implements SportsDataProvider {
       params: { id: externalId },
     });
 
-    const g = response.data.response[0];
+    const g = response.data?.response?.[0];
     return {
       status: g.status.short === "FT" ? "completed" : "cancelled" as "completed" | "cancelled",
       score: {

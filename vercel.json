@@ -1,12 +1,23 @@
 {
   "buildCommand": "cd sbe/web && npm run build",
-  "outputDirectory": "sbe/web/.next",
   "installCommand": "cd sbe/web && npm install",
   "framework": "nextjs",
+  "outputDirectory": "sbe/web/.next",
   "crons": [
     {
       "path": "/api/cron/settle-markets",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 0 * * *"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://images.unsplash.com https://lh3.googleusercontent.com https://*.googleusercontent.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.onrender.com wss://*.onrender.com https://*.supabase.co wss://*.supabase.co https://api.resend.com https://images.unsplash.com https://*.vercel.app; frame-src 'none'; object-src 'none';"
+        }
+      ]
     }
   ]
 }
