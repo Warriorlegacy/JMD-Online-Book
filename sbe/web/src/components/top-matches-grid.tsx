@@ -185,12 +185,12 @@ export function TopMatchesGrid({ matches: initialMatches }: TopMatchesGridProps)
               key={match.id} 
               match={{
                 id: match.id,
-                teamA: match.teams[0],
-                teamB: match.teams[1],
+                teamA: match.teams?.[0] || "T1",
+                teamB: match.teams?.[1] || "T2",
                 startTime: match.time,
                 status: match.isLive ? "in_play" : "scheduled",
                 sportType: "Football",
-                score: match.score ? { teamA: match.score[0].toString(), teamB: match.score[1].toString() } : undefined,
+                score: match.score ? { teamA: match.score[0]?.toString() || "0", teamB: match.score[1]?.toString() || "0" } : undefined,
                 league: match.league,
                 odds: [
                   { selection: "Match Winner", back: match.matchResult.home, lay: match.matchResult.home + 0.04 }
@@ -233,9 +233,9 @@ export function TopMatchesGrid({ matches: initialMatches }: TopMatchesGridProps)
                   </div>
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-white tracking-tight">{match.teams[0]}</span>
+                      <span className="text-sm font-semibold text-white tracking-tight">{match.teams?.[0] || "T1"}</span>
                       {match.isLive && match.score && (
-                        <span className="text-[13px] font-bold text-[#ff3b30] tabular-nums ml-auto">{match.score[0]}</span>
+                        <span className="text-[13px] font-bold text-[#ff3b30] tabular-nums ml-auto">{match.score?.[0] || "0"}</span>
                       )}
                     </div>
                     <div className="flex items-center gap-2">
