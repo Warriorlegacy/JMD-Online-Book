@@ -35,11 +35,11 @@ export function OrderBook({ matchId, orderBooks, matchTitle, teams, onSelect }: 
           const sortedBacks = [...book.backs]
             .filter(l => !isNaN(parseFloat(l.price)))
             .sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
-            .slice(0, 3);
+            ?.slice(0, 3);
           const sortedLays = [...book.lays]
             .filter(l => !isNaN(parseFloat(l.price)))
             .sort((a, b) => parseFloat(a.price) - parseFloat(b.price))
-            .slice(0, 3);
+            ?.slice(0, 3);
 
           // Pad to 3
           while (sortedBacks.length < 3) sortedBacks.push({ price: "—", size: 0 });

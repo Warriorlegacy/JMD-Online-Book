@@ -354,7 +354,7 @@ export default function SportsPage() {
               ) : (
                 <>
                   {/* Real matches from API */}
-                  {matches.filter(m => m.status === "in_play" || m.status === "scheduled").slice(0, 3).map(m => (
+                  {matches.filter(m => m.status === "in_play" || m.status === "scheduled")?.slice(0, 3).map(m => (
                     <div
                       key={m.id}
                       className={`grid grid-cols-[180px_1fr_1fr_1fr] gap-2 items-center px-4 py-3.5 rounded-2xl border transition-colors cursor-pointer hover:bg-white/3 ${
