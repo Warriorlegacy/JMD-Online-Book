@@ -80,7 +80,7 @@ export default function DashboardPage() {
       date: new Date(w.createdAt).toLocaleDateString(),
       status: w.status
     }))
-  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5);
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())?.slice(0, 5);
 
   return (
     <div className="min-h-screen bg-[#0a0e17] -mt-4 -mx-4 flex">
