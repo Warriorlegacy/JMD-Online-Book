@@ -27,7 +27,7 @@ export async function GET(
          LIMIT 1`,
         [id]
       );
-      const row = result.rows[0];
+      const row = result.rows?.[0];
 
       if (!row) return NextResponse.json({ error: "Match not found" }, { status: 404 });
       return NextResponse.json(row);
@@ -74,7 +74,7 @@ export async function PATCH(
          LIMIT 1`,
         [id]
       );
-      const current = currentResult.rows[0];
+      const current = currentResult.rows?.[0];
 
       if (!current) {
         return NextResponse.json({ error: "Match not found" }, { status: 404 });
@@ -105,7 +105,7 @@ export async function PATCH(
           body.metadata !== undefined ? JSON.stringify(body.metadata) : current.metadata,
         ]
       );
-      const row = result.rows[0];
+      const row = result.rows?.[0];
 
       if (!row) return NextResponse.json({ error: "Match not found" }, { status: 404 });
       return NextResponse.json(row);

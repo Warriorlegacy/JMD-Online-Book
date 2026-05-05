@@ -3,9 +3,9 @@ import { pool } from "@/lib/db";
 
 export async function GET(request: NextRequest) {
   try {
-    const host = request.headers.get("host")?.split(":")[0] ?? "";
+    const host = request.headers.get("host")?.split(":")?.[0] ?? "";
     const requestedSlug = host.includes(".") && !host.startsWith("localhost")
-      ? host.split(".")[0]
+      ? host.split(".")?.[0]
       : null;
 
     let tenant = null;
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
            LIMIT 1`,
           [requestedSlug]
         );
-        tenant = tenantResult.rows[0] || null;
+        tenant = tenantResult.rows?.[0] || null;
       }
 
       if (!tenant) {
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
            ORDER BY created_at DESC
            LIMIT 1`
         );
-        tenant = fallbackResult.rows[0] || null;
+        tenant = fallbackResult.rows?.[0] || null;
       }
     } finally {
       client.release();

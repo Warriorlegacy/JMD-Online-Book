@@ -11,7 +11,7 @@ export class TennisSportsProvider implements SportsDataProvider {
     try {
       const response = await axios.get(`${this.baseUrl}/games`, {
         headers: { "x-apisports-key": this.apiKey },
-        params: { date: new Date().toISOString().split('T')[0] },
+        params: { date: new Date().toISOString().split('T')?.[0] },
       });
 
       return (response.data.response || []).filter((g: any) => g.status.short === "NS").map((g: any) => ({
@@ -67,7 +67,7 @@ export class TennisSportsProvider implements SportsDataProvider {
       params: { id: externalId },
     });
 
-    const g = response.data.response[0];
+    const g = response.data.response?.[0];
     return {
       status: g.status.short === "FT" ? "completed" : "cancelled" as "completed" | "cancelled",
       score: {

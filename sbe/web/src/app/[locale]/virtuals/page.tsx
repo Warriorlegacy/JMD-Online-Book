@@ -173,7 +173,7 @@ export default function VirtualsPage() {
                   <td className="py-4">
                     <div className="flex items-center gap-3">
                       <div className={`w-8 h-8 rounded-lg ${r.color} flex items-center justify-center text-white font-black text-xs flex-shrink-0`}>
-                        {r.name[0]}
+                        {r.name?.[0]}
                       </div>
                       <div>
                         <p className={`font-bold text-sm ${r.locked ? "text-white/20" : "text-white"}`}>{r.name}</p>

@@ -58,7 +58,7 @@ export function MatchCard({ match, className }: MatchCardProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold">
-              {(match.teamA || "T1").substring(0, 2).toUpperCase()}
+              {(match.teamA || "T1")?.substring(0, 2).toUpperCase()}
             </div>
             <span className="text-sm font-semibold text-white tracking-tight">{match.teamA}</span>
           </div>
@@ -67,7 +67,7 @@ export function MatchCard({ match, className }: MatchCardProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold">
-              {(match.teamB || "T2").substring(0, 2).toUpperCase()}
+              {(match.teamB || "T2")?.substring(0, 2).toUpperCase()}
             </div>
             <span className="text-sm font-semibold text-white tracking-tight">{match.teamB}</span>
           </div>
