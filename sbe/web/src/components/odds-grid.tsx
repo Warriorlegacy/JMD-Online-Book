@@ -68,13 +68,13 @@ export function OddsGrid({ matchId }: { matchId: string }) {
   // Compute displayBacks: sort descending, take top 3, pad with dash
   const validBacks = matchData.backs.filter(l => !isNaN(parseFloat(l.price)));
   validBacks.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-  const displayBacks = validBacks.slice(0, 3);
+  const displayBacks = (validBacks || []).slice(0, 3);
   while (displayBacks.length < 3) displayBacks.push({ price: "—", size: 0 });
 
   // Compute displayLays: sort ascending, take top 3, pad
   const validLays = matchData.lays.filter(l => !isNaN(parseFloat(l.price)));
   validLays.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-  const displayLays = validLays.slice(0, 3);
+  const displayLays = (validLays || []).slice(0, 3);
   while (displayLays.length < 3) displayLays.push({ price: "—", size: 0 });
 
   const handleBetClick = (price: string, side: "back" | "lay", selectionName: string, selectionId: string) => {
