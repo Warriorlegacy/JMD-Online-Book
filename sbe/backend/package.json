@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "scripts": {
-    "test": "node -e \\\"console.log('test passed')\\\"",
-    "build": "node -e \\\"console.log('build passed')\\\""
+    "test": "node -e \"console.log('test passed')\"",
+    "build": "node -e \"console.log('build passed')\""
   }
 }
