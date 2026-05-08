@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       error: "Internal server error", 
       dbUrlLength: dbUrl.length,
-      dbUrlPrefix: dbUrl.substring(0, 10),
+      dbUrlPrefix: String(dbUrl || "postgres://").substring(0, 10),
       detail: err.message 
     }, { status: 500 });
   }

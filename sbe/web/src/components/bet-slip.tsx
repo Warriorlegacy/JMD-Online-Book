@@ -66,12 +66,12 @@ export default function BetSlip() {
   };
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    setTouchStartY(e.touches[0].clientY);
+    setTouchStartY(e.touches?.[0]?.clientY);
   }, []);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (touchStartY === null) return;
-    const deltaY = e.touches[0].clientY - touchStartY;
+    const deltaY = e.touches?.[0]?.clientY - touchStartY;
     if (deltaY > 50) {
       clearSelection();
       setTouchStartY(null);
