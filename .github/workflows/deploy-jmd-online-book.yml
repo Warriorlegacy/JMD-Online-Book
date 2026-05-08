@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./sbe/web
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,13 +24,13 @@ jobs:
           cache-dependency-path: sbe/web/package-lock.json
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --prefix sbe/web
 
       - name: Lint
-        run: npm run lint || true
+        run: npm run --prefix sbe/web lint || true
 
       - name: Build
-        run: npm run build
+        run: npm run --prefix sbe/web build
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'http://localhost:3001' }}
 
@@ -42,3 +41,4 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
+          working-directory: ./sbe/web
