@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./sbe
+        working-directory: ./sbe/web
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,13 +25,13 @@ jobs:
           cache-dependency-path: sbe/web/package-lock.json
 
       - name: Install Dependencies
-        run: cd web && npm ci
+        run: npm ci
 
       - name: Lint
-        run: cd web && npm run lint || true
+        run: npm run lint || true
 
       - name: Build
-        run: cd web && npm run build
+        run: npm run build
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'http://localhost:3001' }}
 
