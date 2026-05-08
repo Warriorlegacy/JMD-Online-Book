@@ -9,9 +9,6 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./sbe
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,15 +23,15 @@ jobs:
             sbe/web/package-lock.json
 
       - name: Install Web Dependencies
-        working-directory: web
+        working-directory: sbe/web
         run: npm install
 
       - name: Lint Web
-        working-directory: web
+        working-directory: sbe/web
         run: npm run lint || true
 
       - name: Build Web
-        working-directory: web
+        working-directory: sbe/web
         run: npm run build
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'http://localhost:3001' }}
