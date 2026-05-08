@@ -194,7 +194,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <p className="text-white font-black text-base italic uppercase">{bet.type === 'accumulator' ? 'Accumulator' : 'Single Bet'}</p>
-                  <p className="text-white/30 text-[10px] mb-3 uppercase tracking-widest">TX REF: {bet.id?.substring(0, 8)}...</p>
+                  <p className="text-white/30 text-[10px] mb-3 uppercase tracking-widest">TX REF: {String(bet.id || "00000000").substring(0, 8)}...</p>
                   
                   <div className="flex items-center justify-between">
                     <span className={cn(
@@ -235,7 +235,7 @@ export default function DashboardPage() {
                 <tbody className="divide-y divide-white/5">
                   {combinedTransactions.length > 0 ? combinedTransactions.map(tx => (
                     <tr key={tx.id} className="hover:bg-white/2 transition-colors">
-                      <td className="px-5 py-4 font-mono text-[11px] text-white font-bold">{tx.id?.substring(0, 12)}...</td>
+                      <td className="px-5 py-4 font-mono text-[11px] text-white font-bold">{String(tx.id || "00000000").substring(0, 12)}...</td>
                       <td className="px-5 py-4 text-white/40 text-[11px] font-bold uppercase">{tx.date}</td>
                       <td className="px-5 py-4 text-white/70 text-[11px] font-black uppercase italic">{tx.label}</td>
                       <td className="px-5 py-4">
