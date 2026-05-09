@@ -30,37 +30,9 @@ const TOP_LEAGUES = [
   { id: "nba",     label: "NBA",               count: 5,  icon: "🏀" },
 ];
 
-const DEMO_LIVE = [
-  {
-    id: "live-1",    league: "PREMIER LEAGUE", time: "72'", teamA: "Arsenal",   teamB: "Liverpool",
-    scoreA: 2, scoreB: 1, status: "in_play" as const, live: true,
-    oddsA: 1.85, oddsD: 3.20, oddsB: 4.15,
-    extraLabel: "LIVE STREAM AVAILABLE",
-  },
-  {
-    id: "live-2",    league: "NBA", time: "Q3 04:12", teamA: "Lakers",    teamB: "Celtics",
-    scoreA: 94, scoreB: 88, status: "in_play" as const, live: true,
-    oddsA: 1.91, oddsD: null, oddsB: 2.10,
-    extraLabel: null,
-  },
-];
 
-const DEMO_TOP: Array<{
-  id: string; time: string; day: string; teamA: string; teamB: string;
-  league: string; venue: string; liveMin?: number;
-  oddsA: number; oddsD: number; oddsB: number;
-  o25: number; u25: number; hcA: string; hcB: string;
-}> = [
-  { id: "m1", time: "20:00", day: "TODAY", teamA: "Man City", teamB: "Tottenham",
-    league: "PREMIER LEAGUE", venue: "ETIHAD STADIUM",
-    oddsA: 1.42, oddsD: 4.50, oddsB: 6.80, o25: 1.65, u25: 2.10, hcA: "2.05", hcB: "1.82" },
-  { id: "m2", time: "20:45", day: "TODAY", teamA: "AC Milan",  teamB: "Juventus",
-    league: "SERIE A", venue: "SAN SIRO",
-    oddsA: 2.25, oddsD: 3.10, oddsB: 3.40, o25: 2.00, u25: 1.75, hcA: "2.25", hcB: "1.65" },
-  { id: "m3", time: "LIVE",  day: "68'",  teamA: "Bayern",   teamB: "Dortmund",
-    league: "BUNDESLIGA", venue: "", liveMin: 68,
-    oddsA: 1.22, oddsD: 4.10, oddsB: 12.0, o25: 1.55, u25: 2.30, hcA: "—", hcB: "—" },
-];
+
+
 
 const POPULAR = [
   { rank: 1, label: "Arsenal to Win", odds: 1.85 },
@@ -91,16 +63,16 @@ function OddsBtn({ value, onClick, blue }: { value: number | string; onClick?: (
   );
 }
 
-function LiveMatchCard({ m }: { m: typeof DEMO_LIVE[0] }) {
+function LiveMatchCard({ m }: { m: Match }) {
   return (
     <div className="relative flex-shrink-0 w-72 glass-card rounded-2xl border border-white/5 p-5 overflow-hidden">
       {/* League badge */}
       <div className="flex items-center justify-between mb-4">
         <span className="px-2 py-1 rounded-lg bg-[#0071e3]/15 border border-[#0071e3]/20 text-[#0071e3] text-[8px] font-black uppercase tracking-widest">
-          {m.league} • {m.time}
+          {m.tournamentName} • {m.elapsedMinutes ? `${m.elapsedMinutes}'` : '00:00'}
         </span>
-        {m.extraLabel && (
-          <span className="text-[8px] text-emerald-400 font-bold uppercase">{m.extraLabel}</span>
+        {m.status === "in_play" && (
+          <span className="text-[8px] text-emerald-400 font-bold uppercase">{m.status === "in_play" ? "LIVE STREAM AVAILABLE" : ""}</span>
         )}
       </div>
 
@@ -114,9 +86,9 @@ function LiveMatchCard({ m }: { m: typeof DEMO_LIVE[0] }) {
         </div>
         <div className="text-center">
           <div className="flex items-center gap-2">
-            <span className="text-3xl font-black text-white">{m.scoreA}</span>
+            <span className="text-3xl font-black text-white">{m.score?.teamA || '0'}</span>
             <span className="text-white/30 font-bold">-</span>
-            <span className="text-3xl font-black text-white">{m.scoreB}</span>
+            <span className="text-3xl font-black text-white">{m.score?.teamB || '0'}</span>
           </div>
           <div className="mt-1">
             <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[8px] font-black animate-pulse">
@@ -133,17 +105,17 @@ function LiveMatchCard({ m }: { m: typeof DEMO_LIVE[0] }) {
       </div>
 
       {/* Quick odds */}
-      <div className={`grid gap-2 ${m.oddsD ? "grid-cols-3" : "grid-cols-2"}`}>
+      <div className={`grid gap-2 ${m.odds?.draw || 0 ? "grid-cols-3" : "grid-cols-2"}`}>
         <button className="py-2 rounded-xl bg-[#0071e3]/10 border border-[#0071e3]/20 text-[#0071e3] font-black text-sm">
-          {m.oddsA}
+          {m.odds?.home || 0}
         </button>
-        {m.oddsD && (
+        {(m.odds?.draw || 0) !== 0 && (
           <button className="py-2 rounded-xl bg-white/5 border border-white/10 text-white/60 font-black text-sm">
-            {m.oddsD}
+            {m.odds?.draw || 0}
           </button>
         )}
         <button className="py-2 rounded-xl bg-white/5 border border-white/10 text-white/60 font-black text-sm">
-          {m.oddsB}
+          {m.odds?.away || 0}
         </button>
       </div>
     </div>
@@ -304,7 +276,7 @@ export default function SportsPage() {
                   <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => setLiveSlide(Math.min(DEMO_LIVE.length - 1, liveSlide + 1))}
+                  onClick={() => setLiveSlide(Math.min((matches?.filter(m => m.status === "in_play")?.length || 1) - 1, liveSlide + 1))}
                   className="p-2 glass-card rounded-xl border border-white/5 text-white/40 hover:text-white transition-colors"
                 >
                   <ChevronRight className="w-4 h-4" />
@@ -312,7 +284,7 @@ export default function SportsPage() {
               </div>
             </div>
             <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-              {DEMO_LIVE.map(m => <LiveMatchCard key={m.id} m={m} />)}
+              {matches?.filter(m => m.status === "in_play")?.map(m => <LiveMatchCard key={m.id} m={m} />)}
             </div>
           </div>
 
@@ -395,40 +367,40 @@ export default function SportsPage() {
                   ))}
 
                   {/* Demo matches (always visible as padding) */}
-                  {DEMO_TOP.map(m => (
+                  {matches?.filter(m => m.status !== "in_play")?.slice(0, 5)?.map(m => (
                     <div
                       key={m.id}
                       className={`grid grid-cols-[180px_1fr_1fr_1fr] gap-2 items-center px-4 py-3.5 rounded-2xl border transition-colors hover:bg-white/3 ${
-                        m.liveMin ? "border-emerald-500/20 bg-emerald-500/3" : "border-white/5 bg-[#0d1120]"
+                        m.status === "in_play" ? "border-emerald-500/20 bg-emerald-500/3" : "border-white/5 bg-[#0d1120]"
                       }`}
                     >
                       <div>
-                        {m.liveMin ? (
+                        {m.status === "in_play" ? (
                           <div className="flex items-center gap-1.5 mb-1">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                            <span className="text-[8px] font-black text-emerald-400 uppercase">{m.liveMin}' LIVE</span>
+                            <span className="text-[8px] font-black text-emerald-400 uppercase">{m.elapsedMinutes || 0}' LIVE</span>
                           </div>
                         ) : (
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-[9px] font-black text-white/50">{m.time}</span>
-                            <span className="text-[8px] text-white/20 uppercase">{m.day}</span>
+                            <span className="text-[9px] font-black text-white/50">{m.elapsedMinutes ? `${m.elapsedMinutes}'` : '00:00'}</span>
+                            <span className="text-[8px] text-white/20 uppercase">{m.startTime ? new Date(m.startTime).toLocaleDateString() : "TBA"}</span>
                           </div>
                         )}
                         <p className="text-sm font-black text-white">{m.teamA} vs {m.teamB}</p>
-                        <p className="text-[8px] text-white/20 uppercase tracking-widest mt-0.5">{m.league}{m.venue ? ` • ${m.venue}` : ""}</p>
+                        <p className="text-[8px] text-white/20 uppercase tracking-widest mt-0.5">{m.tournamentName} • TBA</p>
                       </div>
                       <div className="flex items-center justify-center gap-1.5">
-                        <OddsBtn value={m.oddsA} blue />
-                        <OddsBtn value={m.oddsD} />
-                        <OddsBtn value={m.oddsB} />
+                        <OddsBtn value={m.odds?.home || 0} blue />
+                        <OddsBtn value={m.odds?.draw || 0} />
+                        <OddsBtn value={m.odds?.away || 0} />
                       </div>
                       <div className="flex items-center justify-center gap-1.5">
-                        <OddsBtn value={m.o25} blue />
-                        <OddsBtn value={m.u25} />
+                        <OddsBtn value={"-"} blue />
+                        <OddsBtn value={"-"} />
                       </div>
                       <div className="flex items-center justify-center gap-1.5">
-                        <OddsBtn value={m.hcA} />
-                        <OddsBtn value={m.hcB} />
+                        <OddsBtn value={"-"} />
+                        <OddsBtn value={"-"} />
                       </div>
                     </div>
                   ))}
