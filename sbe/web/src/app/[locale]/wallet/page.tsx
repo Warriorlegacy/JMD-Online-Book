@@ -19,11 +19,8 @@ import {
   Shield,
   Coins,
   Bitcoin,
-  Globe,
-  Upload,
-  User,
-  Home as HomeIcon,
-  Lock
+    Upload,
+      Lock
 } from "lucide-react";
 
 const PLATFORM_UPI = "6202442690@ptyes";
