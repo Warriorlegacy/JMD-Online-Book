@@ -146,8 +146,7 @@ export default function SportsPage() {
   const [loading, setLoading] = useState(true);
   const [activeSport, setActiveSport] = useState("football");
   const [activeMarketTab, setActiveMarketTab] = useState<typeof MARKET_TABS[number]>("MAIN MARKETS");
-  const [_orderbooks, _setOrderbooks] = useState<Record<string, { backs: PriceLevel[]; lays: PriceLevel[] }>>({});
-  const [betSlipItems, setBetSlipItems] = useState<Array<{ label: string; sub: string; odds: number }>>([
+    const [betSlipItems, setBetSlipItems] = useState<Array<{ label: string; sub: string; odds: number }>>([
     { label: "Arsenal", sub: "Arsenal vs Liverpool", odds: 1.85 },
     { label: "Over 2.5", sub: "Man City vs Tottenham", odds: 1.65 },
   ]);
@@ -180,13 +179,7 @@ export default function SportsPage() {
     const unsub = on<{ room: string; snapshot: { backs: [string, number][]; lays: [string, number][] } }>(
       "orderbook_update",
       (data) => {
-        _setOrderbooks(prev => ({
-          ...prev,
-          [data.room]: {
-            backs: (data.snapshot?.backs || []).map(([p, s]) => ({ price: p, size: s })),
-            lays:  (data.snapshot?.lays  || []).map(([p, s]) => ({ price: p, size: s })),
-          },
-        }));
+
       }
     );
     return () => unsub();
