@@ -39,7 +39,7 @@ const UPCOMING_RACES = [
 const formColor = (win: boolean) => win ? "bg-emerald-400" : "bg-white/20";
 
 export default function VirtualsPage() {
-
+  const { user: _user } = useAuth();
   const router = useRouter();
   const [activeSidebar, setActiveSidebar] = useState("analytics");
   const [betType, setBetType] = useState<BetType>("WIN / EACH WAY");

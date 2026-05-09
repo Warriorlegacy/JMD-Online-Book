@@ -207,14 +207,7 @@ export default function SportsPage() {
     if (!connected) return;
     const unsub = on<{ room: string; snapshot: { backs: [string, number][]; lays: [string, number][] } }>(
       "orderbook_update",
-      (data) => {
-        _setOrderbooks(prev => ({
-          ...prev,
-          [data.room]: {
-            backs: (data.snapshot?.backs || []).map(([p, s]) => ({ price: p, size: s })),
-            lays:  (data.snapshot?.lays  || []).map(([p, s]) => ({ price: p, size: s })),
-          },
-        }));
+      () => {
       }
     );
     return () => unsub();

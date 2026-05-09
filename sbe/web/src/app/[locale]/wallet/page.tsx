@@ -19,9 +19,9 @@ import {
   Shield,
   Coins,
   Bitcoin,
-
+  Globe,
   Upload,
-
+  User,
   Home as HomeIcon,
   Lock
 } from "lucide-react";
