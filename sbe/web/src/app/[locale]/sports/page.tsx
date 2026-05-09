@@ -174,7 +174,7 @@ export default function SportsPage() {
   const [loading, setLoading] = useState(true);
   const [activeSport, setActiveSport] = useState("football");
   const [activeMarketTab, setActiveMarketTab] = useState<typeof MARKET_TABS[number]>("MAIN MARKETS");
-  const [_orderbooks, _setOrderbooks] = useState<Record<string, { backs: PriceLevel[]; lays: PriceLevel[] }>>({});
+
   const [betSlipItems, setBetSlipItems] = useState<Array<{ label: string; sub: string; odds: number }>>([
     { label: "Arsenal", sub: "Arsenal vs Liverpool", odds: 1.85 },
     { label: "Over 2.5", sub: "Man City vs Tottenham", odds: 1.65 },
