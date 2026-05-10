@@ -53,7 +53,7 @@ export class SettlementService {
             .where(and(eq(wallets.userId, layerId), eq(wallets.currency, currency)));
 
           await tx.insert(ledgerEntries).values({
-            walletId: (await tx.select().from(wallets).where(and(eq(wallets.userId, backerId), eq(wallets.currency, currency))).limit(1))?.[0]?.id || "unknown",
+            walletId: (await tx.select().from(wallets).where(and(eq(wallets.userId, backerId), eq(wallets.currency, currency))).limit(1))?.[0]?.id as string,
             amount: totalPayout.toFixed(8),
             currency,
             type: "settlement_win",
@@ -83,7 +83,7 @@ export class SettlementService {
             .where(and(eq(wallets.userId, backerId), eq(wallets.currency, currency)));
 
           await tx.insert(ledgerEntries).values({
-            walletId: (await tx.select().from(wallets).where(and(eq(wallets.userId, layerId), eq(wallets.currency, currency))).limit(1))?.[0]?.id || "unknown",
+            walletId: (await tx.select().from(wallets).where(and(eq(wallets.userId, layerId), eq(wallets.currency, currency))).limit(1))?.[0]?.id as string,
             amount: totalPayout.toFixed(8),
             currency,
             type: "settlement_lay_win",
