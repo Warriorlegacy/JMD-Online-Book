@@ -68,6 +68,7 @@ export class TennisSportsProvider implements SportsDataProvider {
     });
 
     const g = response.data?.response?.[0];
+    if (!g) return { status: "cancelled" as const, score: { teamA: "0", teamB: "0" } };
     return {
       status: g.status.short === "FT" ? "completed" : "cancelled" as "completed" | "cancelled",
       score: {
