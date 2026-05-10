@@ -57,7 +57,8 @@ export class ProductionSportsProvider implements SportsDataProvider {
       params: { id: externalId },
     });
 
-    const f = response.data.response[0];
+    const f = response.data?.response?.[0];
+    if (!f) return { status: "cancelled" as const, score: { teamA: "0", teamB: "0" } };
     return {
       status: f.fixture.status.short === "FT" ? "completed" : "cancelled" as "cancelled" | "completed",
       score: {

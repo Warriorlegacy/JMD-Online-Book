@@ -72,7 +72,7 @@ export class OrderBook {
           stake: (matchStake / 100).toFixed(2),
         }).returning();
 
-        matchedTrades.push(trade[0]);
+        if (trade?.[0]) matchedTrades.push(trade[0]);
         remainingStake -= matchStake;
       }
 
