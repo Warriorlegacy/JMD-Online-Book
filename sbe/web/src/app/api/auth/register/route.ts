@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
       client.release();
     }
   } catch (err: any) {
-    console.error("[POST /api/auth/register] ERROR:", err.message, "| code:", err.code, "| detail:", err.detail);
-    return NextResponse.json({ error: "Internal server error", detail: err.message }, { status: 500 });
+    console.error("[POST /api/auth/register] ERROR:", err instanceof Error ? err.message : String(err));
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
