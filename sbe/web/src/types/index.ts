@@ -89,6 +89,7 @@ export interface Match {
   score?: MatchScore;
   elapsedMinutes?: number;
   metadata?: string;
+  odds?: any;
 }
 
 export interface MatchScore {
