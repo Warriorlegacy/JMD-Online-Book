@@ -23,16 +23,15 @@ export default function AdminKYCPage() {
       if (!res.ok) throw new Error("Failed to fetch KYC queue");
       const data = await res.json();
       setQueue(data);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert(err instanceof Error ? err.message : String(err));
     }
   };
 
   const handleViewDocuments = async (user: any) => {
     setSelectedUser(user);
     setDocUrls({});
-    
+
     if (!user.documents) return;
 
     const urls: Record<string, string> = {};
@@ -64,12 +63,12 @@ export default function AdminKYCPage() {
         }),
       });
       if (!res.ok) throw new Error("Failed to review KYC");
-      
+
       setSelectedUser(null);
       setNotes("");
       fetchQueue();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : String(err));
+    } catch (err: any) {
+      alert(err.message);
     } finally {
       setLoading(false);
     }
@@ -101,7 +100,7 @@ export default function AdminKYCPage() {
             </div>
           ) : (
             queue.map((user) => (
-              <div 
+              <div
                 key={user.id}
                 onClick={() => handleViewDocuments(user)}
                 className={cn(
@@ -171,10 +170,10 @@ export default function AdminKYCPage() {
                       {Object.entries(selectedUser.documents || {}).map(([key]) => {
                         if (key === 'dob' || key === 'address') return null;
                         return (
-                          <a 
-                            key={key} 
-                            href={docUrls[key]} 
-                            target="_blank" 
+                          <a
+                            key={key}
+                            href={docUrls[key]}
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all group"
                           >
@@ -193,7 +192,7 @@ export default function AdminKYCPage() {
               <div className="space-y-6 pt-6 border-t border-white/5">
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-600 ml-1">Reviewer Notes</label>
-                  <textarea 
+                  <textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 text-xs font-bold text-white focus:outline-none focus:border-cyan-500 transition-all"
@@ -203,7 +202,7 @@ export default function AdminKYCPage() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <Button 
+                  <Button
                     onClick={() => { setDecision("rejected"); }}
                     className={cn(
                       "h-14 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all",
@@ -212,7 +211,7 @@ export default function AdminKYCPage() {
                   >
                     <XCircle className="mr-2 w-4 h-4" /> Reject
                   </Button>
-                  <Button 
+                  <Button
                     onClick={() => { setDecision("verified"); }}
                     className={cn(
                       "h-14 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all",
@@ -223,7 +222,7 @@ export default function AdminKYCPage() {
                   </Button>
                 </div>
 
-                <Button 
+                <Button
                   onClick={handleReview}
                   disabled={loading}
                   className="w-full h-14 bg-white text-slate-950 font-black uppercase tracking-widest text-[10px] rounded-2xl transition-all active:scale-95 disabled:opacity-50 shadow-xl"
