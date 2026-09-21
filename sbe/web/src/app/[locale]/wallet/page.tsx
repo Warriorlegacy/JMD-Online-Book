@@ -553,7 +553,7 @@ export default function WalletPage() {
                             <input 
                               type="text" 
                               value={utrNumber} 
-                              onChange={(e) => setUtrNumber(e.target.value.replace(/\D/g, '').slice(0, 12))}
+                              onChange={(e) => setUtrNumber(e.target.value.replace(/\D/g, '')?.slice(0, 12))}
                               placeholder={walletT("placeholder_utr")}
                               className="w-full h-14 bg-white/10 border border-white/10 rounded-2xl px-6 text-sm font-bold text-white focus:outline-none focus:border-cyan-500 transition-all font-mono tracking-[0.2em]"
                               required
@@ -695,7 +695,7 @@ export default function WalletPage() {
                       <div key={bet.id} className="p-6 rounded-3xl bg-white/5 border border-white/10 space-y-4 group hover:border-cyan-500/30 transition-all">
                         <div className="flex justify-between items-start">
                           <div className="space-y-1">
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{bettingT("bet_id", { id: bet.id.slice(0, 8) })}</p>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{bettingT("bet_id", { id: bet.id?.slice(0, 8) })}</p>
                             <div className="flex items-center gap-2">
                               <span className="text-xs font-bold text-white">{bettingT("accumulator")}</span>
                               <span className="px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 text-[8px] font-bold uppercase tracking-widest">{bettingT("status_open")}</span>

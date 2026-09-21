@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
       }
 
-      const user = result.rows[0];
+      const user = result.rows?.[0];
       return NextResponse.json({
         user: {
           id: user.id,

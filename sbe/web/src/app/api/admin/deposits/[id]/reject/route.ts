@@ -21,7 +21,7 @@ export async function POST(
          LIMIT 1`,
         [id]
       );
-      deposit = result.rows[0];
+      deposit = result.rows?.[0];
     } finally {
       client.release();
     }
