@@ -1,6 +1,6 @@
 import { db } from "../db/index.js";
 import { matches, oddsMarkets, tournaments, tenants } from "../db/schema.js";
-import { eq, and, sql } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { SportsDataProvider, MatchData } from "./data/sports-data-provider.js";
 import { SettlementService } from "./settlement.js";
 import { pubsub } from "./pubsub.js";
