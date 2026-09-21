@@ -1,7 +1,7 @@
 import { db } from "../db/index.js";
-import { bets, betSelections, oddsMarkets } from "../db/schema.js";
+import { bets, betSelections } from "../db/schema.js";
 import { WalletService } from "./wallet.js";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export interface AccumulatorSelection {
   matchId: string;
@@ -122,7 +122,7 @@ export class AccumulatorService {
     }
   }
 
-  private static async getSelectionStatus(matchId: string, selectionId: string): Promise<"won" | "lost" | "pending"> {
+  private static async getSelectionStatus(_matchId: string, _selectionId: string): Promise<"won" | "lost" | "pending"> {
     // This is a placeholder. In a real system, this would check the match result.
     return "pending"; 
   }
