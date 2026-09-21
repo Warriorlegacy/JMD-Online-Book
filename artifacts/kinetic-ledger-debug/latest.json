@@ -1,9 +1,9 @@
 {
-  "startedAt": "2026-04-27T08:35:36.072Z",
-  "mode": "remote",
-  "baseUrl": "https://web-two-gamma-49.vercel.app",
-  "repoRoot": "D:\\JMD Online Book",
-  "webRoot": "D:\\JMD Online Book\\sbe\\web",
+  "startedAt": "2026-04-27T20:27:09.729Z",
+  "mode": "local",
+  "baseUrl": "http://127.0.0.1:3210",
+  "repoRoot": "/app",
+  "webRoot": "/app/sbe/web",
   "checks": {
     "vercelCron": {
       "ok": true,
@@ -24,21 +24,151 @@
       "disallowedColorCount": 48,
       "disallowedColors": [
         {
-          "color": "#1e293b",
+          "color": "#0a0e17",
+          "count": 19,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/admin/page.tsx",
+            "sbe/web/src/app/[locale]/casino/page.tsx",
+            "sbe/web/src/app/[locale]/dashboard/page.tsx",
+            "sbe/web/src/app/[locale]/live-dealer/page.tsx",
+            "sbe/web/src/app/[locale]/match/[id]/page.tsx"
+          ]
+        },
+        {
+          "color": "#0d1117",
           "count": 2,
           "sampleFiles": [
-            "sbe/web/src/app/globals.css"
+            "sbe/web/src/app/[locale]/admin/page.tsx",
+            "sbe/web/src/app/[locale]/match/[id]/page.tsx"
+          ]
+        },
+        {
+          "color": "#f54242",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/admin/page.tsx"
+          ]
+        },
+        {
+          "color": "#4f46e5",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/affiliate/page.tsx"
+          ]
+        },
+        {
+          "color": "#0f766e",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/affiliate/page.tsx"
+          ]
+        },
+        {
+          "color": "#162a3d",
+          "count": 8,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/affiliate/page.tsx",
+            "sbe/web/src/components/live-pitch.tsx"
+          ]
+        },
+        {
+          "color": "#0f1923",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/casino/[game]/page.tsx"
+          ]
+        },
+        {
+          "color": "#0d1120",
+          "count": 28,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/casino/page.tsx",
+            "sbe/web/src/app/[locale]/dashboard/page.tsx",
+            "sbe/web/src/app/[locale]/live-dealer/page.tsx",
+            "sbe/web/src/app/[locale]/promotions/page.tsx",
+            "sbe/web/src/app/[locale]/sports/page.tsx"
+          ]
+        },
+        {
+          "color": "#0d1525",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/casino/page.tsx"
+          ]
+        },
+        {
+          "color": "#0064cc",
+          "count": 5,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/casino/page.tsx",
+            "sbe/web/src/app/[locale]/dashboard/page.tsx",
+            "sbe/web/src/app/[locale]/live-dealer/page.tsx",
+            "sbe/web/src/app/[locale]/promotions/page.tsx",
+            "sbe/web/src/app/[locale]/virtuals/page.tsx"
+          ]
+        },
+        {
+          "color": "#afff00",
+          "count": 33,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/dashboard/page.tsx",
+            "sbe/web/src/app/[locale]/match/[id]/page.tsx",
+            "sbe/web/src/app/[locale]/promotions/page.tsx",
+            "sbe/web/src/app/[locale]/sports/page.tsx",
+            "sbe/web/src/app/[locale]/virtuals/page.tsx"
+          ]
+        },
+        {
+          "color": "#0a0a00",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/live-dealer/page.tsx"
           ]
         },
         {
           "color": "#abd45e",
           "count": 23,
           "sampleFiles": [
-            "sbe/web/src/app/globals.css",
             "sbe/web/src/app/[locale]/match/[id]/page.tsx",
             "sbe/web/src/app/[locale]/wallet/page.tsx",
+            "sbe/web/src/app/globals.css",
             "sbe/web/src/components/bet-slip-sidebar.tsx",
             "sbe/web/src/components/live-now-carousel.tsx"
+          ]
+        },
+        {
+          "color": "#111827",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/match/[id]/page.tsx"
+          ]
+        },
+        {
+          "color": "#005eb2",
+          "count": 1,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/wallet/page.tsx"
+          ]
+        },
+        {
+          "color": "#f7931a",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/wallet/page.tsx"
+          ]
+        },
+        {
+          "color": "#627eea",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/app/[locale]/wallet/page.tsx"
+          ]
+        },
+        {
+          "color": "#1e293b",
+          "count": 2,
+          "sampleFiles": [
+            "sbe/web/src/app/globals.css"
           ]
         },
         {
@@ -106,136 +236,6 @@
           "count": 1,
           "sampleFiles": [
             "sbe/web/src/app/globals.css"
-          ]
-        },
-        {
-          "color": "#0a0e17",
-          "count": 19,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/admin/page.tsx",
-            "sbe/web/src/app/[locale]/casino/page.tsx",
-            "sbe/web/src/app/[locale]/dashboard/page.tsx",
-            "sbe/web/src/app/[locale]/live-dealer/page.tsx",
-            "sbe/web/src/app/[locale]/match/[id]/page.tsx"
-          ]
-        },
-        {
-          "color": "#0d1117",
-          "count": 2,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/admin/page.tsx",
-            "sbe/web/src/app/[locale]/match/[id]/page.tsx"
-          ]
-        },
-        {
-          "color": "#f54242",
-          "count": 1,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/admin/page.tsx"
-          ]
-        },
-        {
-          "color": "#4f46e5",
-          "count": 1,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/affiliate/page.tsx"
-          ]
-        },
-        {
-          "color": "#0f766e",
-          "count": 1,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/affiliate/page.tsx"
-          ]
-        },
-        {
-          "color": "#162a3d",
-          "count": 8,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/affiliate/page.tsx",
-            "sbe/web/src/components/live-pitch.tsx"
-          ]
-        },
-        {
-          "color": "#0d1120",
-          "count": 28,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/casino/page.tsx",
-            "sbe/web/src/app/[locale]/dashboard/page.tsx",
-            "sbe/web/src/app/[locale]/live-dealer/page.tsx",
-            "sbe/web/src/app/[locale]/promotions/page.tsx",
-            "sbe/web/src/app/[locale]/sports/page.tsx"
-          ]
-        },
-        {
-          "color": "#0d1525",
-          "count": 1,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/casino/page.tsx"
-          ]
-        },
-        {
-          "color": "#0064cc",
-          "count": 5,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/casino/page.tsx",
-            "sbe/web/src/app/[locale]/dashboard/page.tsx",
-            "sbe/web/src/app/[locale]/live-dealer/page.tsx",
-            "sbe/web/src/app/[locale]/promotions/page.tsx",
-            "sbe/web/src/app/[locale]/virtuals/page.tsx"
-          ]
-        },
-        {
-          "color": "#0f1923",
-          "count": 1,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/casino/[game]/page.tsx"
-          ]
-        },
-        {
-          "color": "#afff00",
-          "count": 33,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/dashboard/page.tsx",
-            "sbe/web/src/app/[locale]/match/[id]/page.tsx",
-            "sbe/web/src/app/[locale]/promotions/page.tsx",
-            "sbe/web/src/app/[locale]/sports/page.tsx",
-            "sbe/web/src/app/[locale]/virtuals/page.tsx"
-          ]
-        },
-        {
-          "color": "#0a0a00",
-          "count": 1,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/live-dealer/page.tsx"
-          ]
-        },
-        {
-          "color": "#111827",
-          "count": 1,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/match/[id]/page.tsx"
-          ]
-        },
-        {
-          "color": "#005eb2",
-          "count": 1,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/wallet/page.tsx"
-          ]
-        },
-        {
-          "color": "#f7931a",
-          "count": 2,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/wallet/page.tsx"
-          ]
-        },
-        {
-          "color": "#627eea",
-          "count": 2,
-          "sampleFiles": [
-            "sbe/web/src/app/[locale]/wallet/page.tsx"
           ]
         },
         {
@@ -394,39 +394,39 @@
       ]
     },
     "lint": {
-      "name": "npm.cmd run lint",
+      "name": "npm run lint",
       "ok": true,
       "code": 0,
       "error": null,
-      "durationMs": 17571,
-      "stdout": "D:\\JMD Online Book\\sbe\\web\\src\\app\\[locale]\\sports\\page.tsx\n  177:10  warning  '_orderbooks' is assigned a value but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\app\\[locale]\\virtuals\\page.tsx\n  42:17  warning  '_user' is assigned a value but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\app\\[locale]\\wallet\\page.tsx\n  22:3   warning  'Globe' is defined but never used     @typescript-eslint/no-unused-vars\n  24:3   warning  'User' is defined but never used      @typescript-eslint/no-unused-vars\n  25:11  warning  'HomeIcon' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\app\\api\\admin\\announcements\\route.ts\n  4:16  warning  'eq' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\app\\api\\admin\\withdrawals\\route.ts\n  1:10  warning  'NextRequest' is defined but never used         @typescript-eslint/no-unused-vars\n  3:10  warning  'withdrawalRequests' is defined but never used  @typescript-eslint/no-unused-vars\n  4:10  warning  'desc' is defined but never used                @typescript-eslint/no-unused-vars\n  4:16  warning  'eq' is defined but never used                  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\app\\api\\cron\\settle-markets\\route.ts\n  3:10  warning  'matches' is defined but never used  @typescript-eslint/no-unused-vars\n  3:19  warning  'bets' is defined but never used     @typescript-eslint/no-unused-vars\n  3:25  warning  'trades' is defined but never used   @typescript-eslint/no-unused-vars\n  4:10  warning  'eq' is defined but never used       @typescript-eslint/no-unused-vars\n  4:14  warning  'and' is defined but never used      @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\app\\api\\wallet\\withdraw\\route.ts\n  4:19  warning  'and' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\components\\ai-assistant.tsx\n  5:34  warning  'MessageCircle' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\components\\outcome-center.tsx\n   13:7   warning  'NOTIFICATIONS' is assigned a value but only used as a type  @typescript-eslint/no-unused-vars\n   78:7   warning  'NOTIF_TABS' is assigned a value but never used              @typescript-eslint/no-unused-vars\n   81:11  warning  'connected' is assigned a value but never used               @typescript-eslint/no-unused-vars\n   81:22  warning  'subscribe' is assigned a value but never used               @typescript-eslint/no-unused-vars\n   81:33  warning  'on' is assigned a value but never used                      @typescript-eslint/no-unused-vars\n   82:10  warning  'activeTab' is assigned a value but never used               @typescript-eslint/no-unused-vars\n   82:21  warning  'setActiveTab' is assigned a value but never used            @typescript-eslint/no-unused-vars\n  297:10  warning  'NotifCard' is defined but never used                        @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\components\\top-matches-grid.tsx\n  83:10  warning  'error' is assigned a value but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\accumulator.ts\n    2:31  warning  'oddsMarkets' is defined but never used  @typescript-eslint/no-unused-vars\n    4:14  warning  'and' is defined but never used          @typescript-eslint/no-unused-vars\n  125:43  warning  'matchId' is defined but never used      @typescript-eslint/no-unused-vars\n  125:60  warning  'selectionId' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\candles.ts\n  4:19  warning  'sql' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\data\\mock-sports-provider.ts\n  50:24  warning  'externalId' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\data\\production-sports-provider.ts\n  2:41  warning  'OddsData' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\engine.ts\n  4:8  warning  'crypto' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\orchestrator.ts\n  4:33  warning  'wallets' is defined but never used  @typescript-eslint/no-unused-vars\n  5:10  warning  'eq' is defined but never used       @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\payments\\SimulationProvider.ts\n   6:55  warning  'currency' is defined but never used   @typescript-eslint/no-unused-vars\n  36:37  warning  'signature' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\src\\services\\sync-service.ts\n  3:19  warning  'sql' is defined but never used  @typescript-eslint/no-unused-vars\n\nD:\\JMD Online Book\\sbe\\web\\tests\\god-ui-test.spec.ts\n   1:29  warning  'Page' is defined but never used                 @typescript-eslint/no-unused-vars\n  98:11  warning  'riskHeader' is assigned a value but never used  @typescript-eslint/no-unused-vars\n\n✖ 45 problems (0 errors, 45 warnings)",
+      "durationMs": 17107,
+      "stdout": "/app/sbe/web/src/app/[locale]/sports/page.tsx\n  177:10  warning  '_orderbooks' is assigned a value but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/app/[locale]/virtuals/page.tsx\n  42:17  warning  '_user' is assigned a value but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/app/[locale]/wallet/page.tsx\n  22:3   warning  'Globe' is defined but never used     @typescript-eslint/no-unused-vars\n  24:3   warning  'User' is defined but never used      @typescript-eslint/no-unused-vars\n  25:11  warning  'HomeIcon' is defined but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/app/api/admin/announcements/route.ts\n  4:16  warning  'eq' is defined but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/app/api/admin/withdrawals/route.ts\n  1:10  warning  'NextRequest' is defined but never used         @typescript-eslint/no-unused-vars\n  3:10  warning  'withdrawalRequests' is defined but never used  @typescript-eslint/no-unused-vars\n  4:10  warning  'desc' is defined but never used                @typescript-eslint/no-unused-vars\n  4:16  warning  'eq' is defined but never used                  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/app/api/cron/settle-markets/route.ts\n  3:10  warning  'matches' is defined but never used  @typescript-eslint/no-unused-vars\n  3:19  warning  'bets' is defined but never used     @typescript-eslint/no-unused-vars\n  3:25  warning  'trades' is defined but never used   @typescript-eslint/no-unused-vars\n  4:10  warning  'eq' is defined but never used       @typescript-eslint/no-unused-vars\n  4:14  warning  'and' is defined but never used      @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/app/api/wallet/withdraw/route.ts\n  4:19  warning  'and' is defined but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/components/ai-assistant.tsx\n  5:34  warning  'MessageCircle' is defined but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/components/outcome-center.tsx\n   13:7   warning  'NOTIFICATIONS' is assigned a value but only used as a type  @typescript-eslint/no-unused-vars\n   78:7   warning  'NOTIF_TABS' is assigned a value but never used              @typescript-eslint/no-unused-vars\n   81:11  warning  'connected' is assigned a value but never used               @typescript-eslint/no-unused-vars\n   81:22  warning  'subscribe' is assigned a value but never used               @typescript-eslint/no-unused-vars\n   81:33  warning  'on' is assigned a value but never used                      @typescript-eslint/no-unused-vars\n   82:10  warning  'activeTab' is assigned a value but never used               @typescript-eslint/no-unused-vars\n   82:21  warning  'setActiveTab' is assigned a value but never used            @typescript-eslint/no-unused-vars\n  297:10  warning  'NotifCard' is defined but never used                        @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/components/top-matches-grid.tsx\n  83:10  warning  'error' is assigned a value but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/services/accumulator.ts\n    2:31  warning  'oddsMarkets' is defined but never used  @typescript-eslint/no-unused-vars\n    4:14  warning  'and' is defined but never used          @typescript-eslint/no-unused-vars\n  125:43  warning  'matchId' is defined but never used      @typescript-eslint/no-unused-vars\n  125:60  warning  'selectionId' is defined but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/services/candles.ts\n  4:19  warning  'sql' is defined but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/services/data/mock-sports-provider.ts\n  50:24  warning  'externalId' is defined but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/services/data/production-sports-provider.ts\n  2:41  warning  'OddsData' is defined but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/services/engine.ts\n  4:8  warning  'crypto' is defined but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/services/orchestrator.ts\n  4:33  warning  'wallets' is defined but never used  @typescript-eslint/no-unused-vars\n  5:10  warning  'eq' is defined but never used       @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/services/payments/SimulationProvider.ts\n   6:55  warning  'currency' is defined but never used   @typescript-eslint/no-unused-vars\n  36:37  warning  'signature' is defined but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/src/services/sync-service.ts\n  3:19  warning  'sql' is defined but never used  @typescript-eslint/no-unused-vars\n\n/app/sbe/web/tests/god-ui-test.spec.ts\n   1:29  warning  'Page' is defined but never used                 @typescript-eslint/no-unused-vars\n  98:11  warning  'riskHeader' is assigned a value but never used  @typescript-eslint/no-unused-vars\n\n✖ 45 problems (0 errors, 45 warnings)",
       "stderr": ""
     },
     "typecheck": {
-      "name": "node_modules\\.bin\\tsc.cmd --noEmit",
+      "name": "/app/sbe/web/node_modules/.bin/tsc --noEmit",
       "ok": true,
       "code": 0,
       "error": null,
-      "durationMs": 7595,
+      "durationMs": 12335,
       "stdout": "",
       "stderr": ""
     },
     "build": {
-      "name": "npm.cmd run build",
+      "name": "npm run build",
       "ok": true,
       "code": 0,
       "error": null,
-      "durationMs": 39442,
-      "stdout": "\n▲ Next.js 16.2.4 (Turbopack)\n- Environments: .env.local\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 11.7s\n  Running TypeScript ...\n  Finished TypeScript in 18.1s ...\n  Collecting page data using 7 workers ...\n  Generating static pages using 7 workers (0/30) ...\n  Generating static pages using 7 workers (7/30) \n  Generating static pages using 7 workers (14/30) \n  Generating static pages using 7 workers (22/30) \n✓ Generating static pages using 7 workers (30/30) in 470ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /_not-found\n├ ƒ /[locale]\n├ ƒ /[locale]/admin\n├ ƒ /[locale]/admin/kyc\n├ ƒ /[locale]/affiliate\n├ ƒ /[locale]/casino\n├ ƒ /[locale]/casino/[game]\n├ ƒ /[locale]/dashboard\n├ ƒ /[locale]/live-dealer\n├ ƒ /[locale]/login\n├ ƒ /[locale]/match/[id]\n├ ƒ /[locale]/profile\n├ ƒ /[locale]/profile/verification\n├ ƒ /[locale]/promotions\n├ ƒ /[locale]/register\n├ ƒ /[locale]/sports\n├ ƒ /[locale]/virtuals\n├ ƒ /[locale]/wallet\n├ ƒ /api/[...path]\n├ ƒ /api/admin/[...all]\n├ ƒ /api/admin/announcements\n├ ƒ /api/admin/announcements/[id]\n├ ƒ /api/admin/deposits\n├ ƒ /api/admin/deposits/[id]/approve\n├ ƒ /api/admin/deposits/[id]/reject\n├ ƒ /api/admin/matches\n├ ƒ /api/admin/matches/[id]\n├ ƒ /api/admin/matches/[id]/settle\n├ ƒ /api/admin/tournaments\n├ ƒ /api/admin/users\n├ ƒ /api/admin/withdrawals\n├ ƒ /api/admin/withdrawals/[id]/approve\n├ ƒ /api/admin/withdrawals/[id]/reject\n├ ƒ /api/ai/chat\n├ ƒ /api/ai/insights/[matchId]\n├ ƒ /api/announcements\n├ ƒ /api/auth\n├ ƒ /api/auth/login\n├ ƒ /api/auth/logout\n├ ƒ /api/auth/me\n├ ƒ /api/auth/register\n├ ƒ /api/bets/active\n├ ƒ /api/cron/settle-markets\n├ ƒ /api/matches\n├ ƒ /api/matches/[id]\n├ ƒ /api/matches/[id]/history\n├ ƒ /api/matches/active\n├ ƒ /api/orders\n├ ƒ /api/referral/list\n├ ƒ /api/referral/stats\n├ ƒ /api/tenant/config\n├ ƒ /api/wallet\n├ ƒ /api/wallet/balance\n├ ƒ /api/wallet/deposit\n├ ƒ /api/wallet/deposit/init\n├ ƒ /api/wallet/transactions\n└ ƒ /api/wallet/withdraw\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand",
+      "durationMs": 27475,
+      "stdout": "> next build\n\n▲ Next.js 16.2.4 (Turbopack)\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 8.0s\n  Running TypeScript ...\n  Finished TypeScript in 16.2s ...\n  Collecting page data using 3 workers ...\n  Generating static pages using 3 workers (0/30) ...\n  Generating static pages using 3 workers (7/30) \n  Generating static pages using 3 workers (14/30) \n  Generating static pages using 3 workers (22/30) \n✓ Generating static pages using 3 workers (30/30) in 263ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /_not-found\n├ ƒ /[locale]\n├ ƒ /[locale]/admin\n├ ƒ /[locale]/admin/kyc\n├ ƒ /[locale]/affiliate\n├ ƒ /[locale]/casino\n├ ƒ /[locale]/casino/[game]\n├ ƒ /[locale]/dashboard\n├ ƒ /[locale]/live-dealer\n├ ƒ /[locale]/login\n├ ƒ /[locale]/match/[id]\n├ ƒ /[locale]/profile\n├ ƒ /[locale]/profile/verification\n├ ƒ /[locale]/promotions\n├ ƒ /[locale]/register\n├ ƒ /[locale]/sports\n├ ƒ /[locale]/virtuals\n├ ƒ /[locale]/wallet\n├ ƒ /api/[...path]\n├ ƒ /api/admin/[...all]\n├ ƒ /api/admin/announcements\n├ ƒ /api/admin/announcements/[id]\n├ ƒ /api/admin/deposits\n├ ƒ /api/admin/deposits/[id]/approve\n├ ƒ /api/admin/deposits/[id]/reject\n├ ƒ /api/admin/matches\n├ ƒ /api/admin/matches/[id]\n├ ƒ /api/admin/matches/[id]/settle\n├ ƒ /api/admin/tournaments\n├ ƒ /api/admin/users\n├ ƒ /api/admin/withdrawals\n├ ƒ /api/admin/withdrawals/[id]/approve\n├ ƒ /api/admin/withdrawals/[id]/reject\n├ ƒ /api/ai/chat\n├ ƒ /api/ai/insights/[matchId]\n├ ƒ /api/announcements\n├ ƒ /api/auth\n├ ƒ /api/auth/login\n├ ƒ /api/auth/logout\n├ ƒ /api/auth/me\n├ ƒ /api/auth/register\n├ ƒ /api/bets/active\n├ ƒ /api/cron/settle-markets\n├ ƒ /api/matches\n├ ƒ /api/matches/[id]\n├ ƒ /api/matches/[id]/history\n├ ƒ /api/matches/active\n├ ƒ /api/orders\n├ ƒ /api/referral/list\n├ ƒ /api/referral/stats\n├ ƒ /api/tenant/config\n├ ƒ /api/wallet\n├ ƒ /api/wallet/balance\n├ ƒ /api/wallet/deposit\n├ ƒ /api/wallet/deposit/init\n├ ƒ /api/wallet/transactions\n└ ƒ /api/wallet/withdraw\n\n\nƒ Proxy (Middleware)\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand",
       "stderr": ""
     },
     "test": {
-      "name": "npm.cmd run test",
+      "name": "npm run test",
       "ok": true,
       "code": 0,
       "error": null,
-      "durationMs": 7649,
-      "stdout": "> web@0.1.0 test\n> vitest run\n\n\n RUN  v4.1.4 D:/JMD Online Book/sbe/web\n\n\n Test Files  2 passed (2)\n      Tests  17 passed (17)\n   Start at  14:06:44\n   Duration  5.88s (transform 149ms, setup 0ms, import 297ms, tests 96ms, environment 10.02s)",
+      "durationMs": 2541,
+      "stdout": "> web@0.1.0 test\n> vitest run\n\n\n\u001b[1m\u001b[30m\u001b[46m RUN \u001b[49m\u001b[39m\u001b[22m \u001b[36mv4.1.4 \u001b[39m\u001b[90m/app/sbe/web\u001b[39m\n\n \u001b[32m✓\u001b[39m src/__tests__/calculations.unit.test.ts \u001b[2m(\u001b[22m\u001b[2m14 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 20\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m src/__tests__/calculations.properties.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 82\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m2 passed\u001b[39m\u001b[22m\u001b[90m (2)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m17 passed\u001b[39m\u001b[22m\u001b[90m (17)\u001b[39m\n\u001b[2m   Start at \u001b[22m 20:28:07\n\u001b[2m   Duration \u001b[22m 1.75s\u001b[2m (transform 104ms, setup 0ms, import 206ms, tests 103ms, environment 2.66s)\u001b[22m",
       "stderr": ""
     },
     "database": {
@@ -606,15 +606,17 @@
           "method": "GET",
           "path": "/api/cron/settle-markets",
           "status": 200,
-          "body": "{\"success\":true,\"processed\":0,\"settled\":0,\"timestamp\":\"2026-04-27T08:37:17.380Z\"}"
+          "body": "{\"success\":true,\"processed\":0,\"settled\":0,\"timestamp\":\"2026-04-27T20:28:20.671Z\"}"
         }
       ]
     }
   },
-  "warnings": [],
+  "warnings": [
+    "Falling back to the current shell environment because `vercel env pull` did not succeed."
+  ],
   "artifacts": {
-    "json": "D:\\JMD Online Book\\artifacts\\kinetic-ledger-debug\\latest.json",
-    "markdown": "D:\\JMD Online Book\\artifacts\\kinetic-ledger-debug\\latest.md"
+    "json": "/app/artifacts/kinetic-ledger-debug/latest.json",
+    "markdown": "/app/artifacts/kinetic-ledger-debug/latest.md"
   },
   "environment": {
     "DATABASE_URL": {
@@ -642,16 +644,16 @@
       "length": 208
     },
     "NEXT_PUBLIC_APP_URL": {
-      "present": true,
-      "length": 35
+      "present": false,
+      "length": 0
     },
     "BACKEND_URL": {
-      "present": true,
-      "length": 36
+      "present": false,
+      "length": 0
     },
     "source": {
-      "envPullSucceeded": true,
-      "pulledEnvPath": "D:\\JMD Online Book\\artifacts\\kinetic-ledger-debug\\.vercel.production.env",
+      "envPullSucceeded": false,
+      "pulledEnvPath": "/app/artifacts/kinetic-ledger-debug/.vercel.production.env",
       "scopeUsed": null
     }
   },
@@ -685,9 +687,9 @@
     "username": "demo_c977",
     "role": "user"
   },
-  "finishedAt": "2026-04-27T08:37:18.715Z",
+  "finishedAt": "2026-04-27T20:28:20.673Z",
   "summary": {
     "clean": true,
-    "warnings": 48
+    "warnings": 49
   }
 }
