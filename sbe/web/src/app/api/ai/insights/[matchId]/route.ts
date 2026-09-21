@@ -25,7 +25,7 @@ export async function GET(
         [matchId]
       );
 
-      const match = matchResult.rows[0];
+      const match = matchResult.rows?.[0];
       if (!match) {
         return NextResponse.json({ error: "Match not found" }, { status: 404 });
       }
@@ -75,7 +75,7 @@ function buildInsights(
       Boolean(market.selection && market.odds)
     )
     .slice(0, 3);
-  const favorite = primaryMarkets[0];
+  const favorite = primaryMarkets?.[0];
   const confidenceScore = favorite
     ? Math.max(54, Math.min(92, Math.round(100 / Number(favorite.odds || 2))))
     : 58;

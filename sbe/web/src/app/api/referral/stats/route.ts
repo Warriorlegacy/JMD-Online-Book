@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
         [userId]
       );
 
-      const row = result.rows[0] ?? {
+      const row = result.rows?.[0] ?? {
         referralCode: null,
         totalReferees: 0,
         totalEarnings: "0",

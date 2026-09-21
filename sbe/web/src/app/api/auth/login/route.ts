@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
       }
 
-      const user = result.rows[0];
+      const user = result.rows?.[0];
 
       if (!user.password_hash) {
         return NextResponse.json({ error: "Invalid credentials — account may use a different login method" }, { status: 401 });
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
         "SELECT balance FROM public.wallets WHERE user_id = $1 LIMIT 1",
         [user.id]
       );
-      const balance = walletResult.rows[0]?.balance ?? "0.00";
+      const balance = walletResult.rows?.[0]?.balance ?? "0.00";
 
       // Sign JWT — matches same secret as Fastify backend
       const token = await new SignJWT({
@@ -90,8 +90,8 @@ export async function POST(request: NextRequest) {
     console.error("[POST /api/auth/login] ERROR:", err.message);
     return NextResponse.json({ 
       error: "Internal server error", 
-      dbUrlLength: dbUrl.length,
-      dbUrlPrefix: dbUrl.substring(0, 10),
+      dbUrlLength: String(dbUrl || "").length,
+      dbUrlPrefix: String(dbUrl || "").substring(0, 10),
       detail: err.message 
     }, { status: 500 });
   }
