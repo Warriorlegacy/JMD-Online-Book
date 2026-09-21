@@ -1,9 +1,9 @@
 # Kinetic Ledger Debug Report
 
-- Started: 2026-04-27T08:35:36.072Z
-- Finished: 2026-04-27T08:37:18.715Z
-- Mode: remote
-- Target: https://web-two-gamma-49.vercel.app
+- Started: 2026-05-08T20:45:02.401Z
+- Finished: 2026-05-08T20:45:58.787Z
+- Mode: local
+- Target: http://127.0.0.1:3210
 - Health: CLEAN
 
 ## Core Checks
@@ -42,23 +42,23 @@
 - No BACKEND_URL leaks found in sbe/web source.
 
 ## Design Audit
-- #1e293b: 2 occurrence(s)
-- #abd45e: 23 occurrence(s)
-- #162000: 1 occurrence(s)
-- #0a0a0a: 2 occurrence(s)
-- #1c1c1e: 20 occurrence(s)
-- #151517: 2 occurrence(s)
-- #2c2c2e: 5 occurrence(s)
-- #3a3a3c: 7 occurrence(s)
-- #ff3b30: 12 occurrence(s)
-- #8e8e93: 3 occurrence(s)
-- #06b6d4: 1 occurrence(s)
 - #0a0e17: 19 occurrence(s)
+- #0d1117: 2 occurrence(s)
+- #f54242: 1 occurrence(s)
+- #4f46e5: 1 occurrence(s)
+- #0f766e: 1 occurrence(s)
+- #162a3d: 8 occurrence(s)
+- #0f1923: 1 occurrence(s)
+- #0d1120: 28 occurrence(s)
+- #0d1525: 1 occurrence(s)
+- #0064cc: 5 occurrence(s)
+- #afff00: 33 occurrence(s)
+- #0a0a00: 1 occurrence(s)
 
 ## Commands
 ```text
-npm.cmd run lint
-node_modules\.bin\tsc.cmd --noEmit
-npm.cmd run build
-npm.cmd run test
+npm run lint
+/app/sbe/web/node_modules/.bin/tsc --noEmit
+npm run build
+npm run test
 ```
