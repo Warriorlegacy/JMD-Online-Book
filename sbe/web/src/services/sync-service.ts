@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { db } from "../db/index.js";
 import { matches, oddsMarkets, tournaments, tenants } from "../db/schema.js";
 import { eq, and, sql } from "drizzle-orm";

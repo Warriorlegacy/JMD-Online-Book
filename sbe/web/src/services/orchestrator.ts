@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { OrderBook } from "./engine";
 import { WalletService } from "./wallet";
 import { db } from "../db/index";

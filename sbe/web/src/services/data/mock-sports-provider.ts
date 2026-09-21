@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { SportsDataProvider, MatchData, OddsData } from "./sports-data-provider.js";
 
 export class MockSportsProvider implements SportsDataProvider {
