@@ -13,6 +13,8 @@ import AnalyticsTab from "@/components/admin-analytics-tab";
 import SupportTab from "@/components/admin-support-tab";
 import OutcomeCenter from "@/components/outcome-center";
 import type { Match, Tournament } from "@/types";
+import { normalizeMatch } from '@/utils/match-normalization';
+
 
 type AdminTab = "dashboard" | "analytics" | "support" | "outcomes" | "matches" | "market" | "liability" | "deposits" | "kyc" | "users" | "announcements" | "referrals";
 
@@ -181,21 +183,6 @@ function MatchesTab() {
   const [teamB, setTeamB] = useState("");
   const [tournamentId, setTournamentId] = useState("");
   const [startTime, setStartTime] = useState("");
-
-  function normalizeMatch(m: any): Match {
-    return {
-      id: m.id,
-      tournamentId: m.tournament_id || m.tournamentId,
-      teamA: m.team_a || m.teamA,
-      teamB: m.team_b || m.teamB,
-      tournamentName: m.tournament_name || m.tournamentName,
-      startTime: m.start_time || m.startTime,
-      status: m.status,
-      sportType: m.sport_type || m.sportType,
-      score: m.score,
-      elapsedMinutes: m.elapsed_minutes || m.elapsedMinutes,
-    };
-  }
 
   const fetchMatches = useCallback(() => {
     fetch('/api/matches')
