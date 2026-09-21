@@ -529,7 +529,7 @@ function UsersTab() {
               <td className="py-6 px-8">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs">
-                    {(u.username || "U")[0].toUpperCase()}
+                    {String(u.username || "U")[0]?.toUpperCase()}
                   </div>
                   <span className="text-white font-bold group-hover:text-primary transition-colors">{u.username}</span>
                 </div>
@@ -678,7 +678,7 @@ function KYCTab() {
             <div className="glass-card rounded-3xl border border-white/10 p-12 sticky top-12 space-y-12 animate-in fade-in zoom-in-95 duration-500">
               <div className="space-y-3">
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/20 text-primary rounded-full border border-primary/20 text-[9px] font-bold tracking-widest uppercase mb-2">
-                  KYC CASE ID: {(selectedUser.id || "UUID").substring(0,8).toUpperCase()}
+                  KYC CASE ID: {(String(selectedUser.id || "UUID")).substring(0,8).toUpperCase()}
                 </div>
                 <h2 className="text-3xl font-bold text-white tracking-tight">Operator Analysis</h2>
                 <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest">Submitting Entity: {selectedUser.username}</p>
@@ -940,7 +940,7 @@ function MarketControlTab() {
       .then(res => res.json())
       .then(data => {
         setMatches(data);
-        if (data.length > 0) setSelectedMatch(data[0].id);
+        if (data.length > 0) setSelectedMatch(data?.[0]?.id);
       });
   }, []);
 
@@ -1126,7 +1126,7 @@ function ReferralsTab() {
                 <td className="py-6 px-10">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs border border-primary/20">
-                      {(ref.username || "R")[0].toUpperCase()}
+                      {String(ref.username || "R")[0]?.toUpperCase()}
                     </div>
                     <span className="text-white font-bold group-hover:text-primary transition-colors">{ref.username}</span>
                   </div>
