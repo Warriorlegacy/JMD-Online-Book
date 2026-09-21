@@ -40,7 +40,8 @@ export function MarketChart({ matchId, selectionId = "team_a" }: MarketChartProp
         chart.applyOptions({ width: chartContainerRef.current.clientWidth, height: 300 });
       }
     };
-    window.addEventListener('resize', handleResize);
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(chartContainerRef.current);
 
     // Fetch initial history
     fetch(`/api/matches/${matchId}/history?selectionId=${selectionId}`)
@@ -74,7 +75,7 @@ export function MarketChart({ matchId, selectionId = "team_a" }: MarketChartProp
     });
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
       unsubscribe();
       chart.remove();
     };

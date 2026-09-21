@@ -10,6 +10,7 @@ import type { Match } from "@/types";
 type NotifTab = "All Notifications" | "Outcomes" | "Compliance" | "Promotions";
 
 // ── Demo notifications ────────────────────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const NOTIFICATIONS = [
   {
     id: "n1", type: "alert",
@@ -78,7 +79,8 @@ const NOTIFICATIONS = [
 const NOTIF_TABS: NotifTab[] = ["All Notifications", "Outcomes", "Compliance", "Promotions"];
 
 export default function OutcomeCenterTab() {
-  const { connected, subscribe, on } = useSocket();
+  const { connected: _connected, subscribe: _subscribe, on: _on } = useSocket(); // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [activeTab, setActiveTab] = useState<NotifTab>("Outcomes");
   const [unsettledMatches, setUnsettledMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
@@ -294,6 +296,7 @@ export default function OutcomeCenterTab() {
 }
 
 // ── Notification card ─────────────────────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function NotifCard({ n }: { n: (typeof NOTIFICATIONS)[0] }) {
   if (n.type === "alert") {
     return (

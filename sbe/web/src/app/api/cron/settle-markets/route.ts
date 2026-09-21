@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
-import { matches, bets, trades } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
 import { WalletService } from "@/services/wallet";
 
 /**

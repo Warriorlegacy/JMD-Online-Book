@@ -229,6 +229,7 @@ export default function MatchPage({ params }: { params: { id: string } }) {
   }
 
   const teamAOdds = getTopOdds("team_a") || "3.45";
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const drawOdds = getTopOdds("draw") || "2.10";
   const teamBOdds = getTopOdds("team_b") || "1.85";
 
