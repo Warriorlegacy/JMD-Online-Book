@@ -39,7 +39,7 @@ const UPCOMING_RACES = [
 const formColor = (win: boolean) => win ? "bg-emerald-400" : "bg-white/20";
 
 export default function VirtualsPage() {
-  const { user: _user } = useAuth();
+  useAuth();
   const router = useRouter();
   const [activeSidebar, setActiveSidebar] = useState("analytics");
   const [betType, setBetType] = useState<BetType>("WIN / EACH WAY");
@@ -173,7 +173,7 @@ export default function VirtualsPage() {
                   <td className="py-4">
                     <div className="flex items-center gap-3">
                       <div className={`w-8 h-8 rounded-lg ${r.color} flex items-center justify-center text-white font-black text-xs flex-shrink-0`}>
-                        {r.name[0]}
+                        {String(r?.name || 'V')[0]}
                       </div>
                       <div>
                         <p className={`font-bold text-sm ${r.locked ? "text-white/20" : "text-white"}`}>{r.name}</p>

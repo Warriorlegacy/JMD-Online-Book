@@ -233,7 +233,7 @@ export default function AffiliateDashboard() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-[#0071e3]/20 flex items-center justify-center text-[#0071e3] font-black text-[10px]">
-                        {(ref.username || "PN").substring(0, 2).toUpperCase()}
+                        {String(ref?.username || "PN").substring(0, 2).toUpperCase()}
                       </div>
                       <span className="text-sm text-white font-black italic">{ref.username}</span>
                     </div>

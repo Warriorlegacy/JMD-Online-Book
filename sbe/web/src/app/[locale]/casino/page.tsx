@@ -60,7 +60,7 @@ export default function CasinoPage() {
         <div className="m-3 p-4 rounded-2xl bg-gradient-to-br from-[#0071e3]/10 to-purple-900/20 border border-white/5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0071e3] to-purple-600 flex items-center justify-center text-white font-black text-sm">
-              {(user?.username || "P")[0].toUpperCase()}
+              {String(user?.username || 'P')[0].toUpperCase()}
             </div>
             <div>
               <p className="text-white font-black text-sm">{user?.username || "Pro Bettor"}</p>
