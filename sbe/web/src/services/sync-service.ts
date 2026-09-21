@@ -119,25 +119,38 @@ export class SyncService {
       matchId = newMatch.id;
     }
 
-    // Upsert odds
+    // Fetch all existing odds for this match upfront to avoid N+1 queries
+    const allExistingOdds = await db.select()
+      .from(oddsMarkets)
+      .where(eq(oddsMarkets.matchId, matchId));
+
+    // Create a map for O(1) lookups
+    const existingOddsMap = new Map();
+    for (const row of allExistingOdds) {
+      existingOddsMap.set(row.selection, row);
+    }
+
+    const oddsToInsert = [];
+    const oddsToUpdate = [];
+    const pubsubUpdates = [];
+
+    // Process all odds
     for (const odd of matchData.odds) {
-      const existingOdd = await db.select().from(oddsMarkets).where(and(eq(oddsMarkets.matchId, matchId), eq(oddsMarkets.selection, odd.selection))).limit(1);
+      const existingOdd = existingOddsMap.get(odd.selection);
       
-      if (existingOdd.length > 0) {
-        const oldOdds = parseFloat(existingOdd[0].odds);
-        if (oldOdds !== odd.odds) {
-          await db.update(oddsMarkets)
-            .set({
-              odds: odd.odds.toString(),
-              status: odd.status,
-              updatedAt: new Date(),
-            })
-            .where(eq(oddsMarkets.id, existingOdd[0].id));
-          
-          await pubsub.publish("odds_update", { matchId, selection: odd.selection, odds: odd.odds });
+      if (existingOdd) {
+        const oldOdds = parseFloat(existingOdd.odds);
+        if (oldOdds !== odd.odds || existingOdd.status !== odd.status) {
+          oddsToUpdate.push({
+            id: existingOdd.id,
+            odds: odd.odds.toString(),
+            status: odd.status,
+            updatedAt: new Date(),
+          });
+          pubsubUpdates.push({ matchId, selection: odd.selection, odds: odd.odds });
         }
       } else {
-        await db.insert(oddsMarkets).values({
+        oddsToInsert.push({
           matchId,
           tenantId,
           marketName: odd.marketName,
@@ -146,6 +159,32 @@ export class SyncService {
           status: odd.status,
         });
       }
+    }
+
+    // Bulk insert
+    if (oddsToInsert.length > 0) {
+      await db.insert(oddsMarkets).values(oddsToInsert);
+    }
+
+    // Update existing odds (Drizzle doesn't have bulk update natively without raw SQL,
+    // but Promise.all is much faster here since we avoided N selects)
+    if (oddsToUpdate.length > 0) {
+      await Promise.all(
+        oddsToUpdate.map((updateData) =>
+          db.update(oddsMarkets)
+            .set({
+              odds: updateData.odds,
+              status: updateData.status,
+              updatedAt: updateData.updatedAt,
+            })
+            .where(eq(oddsMarkets.id, updateData.id))
+        )
+      );
+    }
+
+    // Publish all updates
+    for (const pub of pubsubUpdates) {
+      await pubsub.publish("odds_update", pub);
     }
 
     // Score update notification
