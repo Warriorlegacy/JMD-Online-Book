@@ -27,31 +27,31 @@ jobs:
             sbe/web/package-lock.json
 
       - name: Install Backend Dependencies
-        working-directory: ./sbe/backend
+        working-directory: backend
         run: npm install
 
 
       - name: Install Web Dependencies
-        working-directory: ./sbe/web
+        working-directory: web
         run: npm install
 
       - name: Lint Web
-        working-directory: ./sbe/web
+        working-directory: web
         run: npm run lint || true
 
       - name: Build Backend
-        working-directory: ./sbe/backend
+        working-directory: backend
         run: npm run build
 
       - name: Run God-Level System Verification
-        working-directory: ./sbe/backend
+        working-directory: backend
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
         run: npm run test:god
 
       - name: Build Web
-        working-directory: ./sbe/web
+        working-directory: web
         run: npm run build
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'http://localhost:3001' }}
