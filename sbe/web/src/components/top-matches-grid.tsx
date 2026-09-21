@@ -28,8 +28,9 @@ interface Match {
   time: string;
   isLive: boolean;
   league: string;
-  teams: [string, string];
-  score?: [number, number];
+  teamA: string;
+  teamB: string;
+  score?: { teamA: string, teamB: string };
   matchResult: MatchOdds;
   matchResultMovement?: { home: 'up' | 'down' | null, draw: 'up' | 'down' | null, away: 'up' | 'down' | null };
   totalGoals: TotalGoals;
@@ -98,7 +99,8 @@ export function TopMatchesGrid({ matches: initialMatches }: TopMatchesGridProps)
           time: new Date(m.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           isLive: m.status === 'in_play',
           league: JSON.parse(m.metadata || '{}').round || "International",
-          teams: [m.team_a, m.team_b],
+          teamA: m.teamA || m.team_a || "Team A",
+          teamB: m.teamB || m.team_b || "Team B",
           matchResult: { home: 2.0, draw: 3.5, away: 3.5 },
           totalGoals: { line: 2.5, over: 1.9, under: 1.9 },
           handicap: { line: 0, home: 1.9, away: 1.9 },
@@ -185,12 +187,12 @@ export function TopMatchesGrid({ matches: initialMatches }: TopMatchesGridProps)
               key={match.id} 
               match={{
                 id: match.id,
-                teamA: match.teams[0],
-                teamB: match.teams[1],
+                teamA: match.teamA,
+                teamB: match.teamB,
                 startTime: match.time,
                 status: match.isLive ? "in_play" : "scheduled",
                 sportType: "Football",
-                score: match.score ? { teamA: match.score[0].toString(), teamB: match.score[1].toString() } : undefined,
+                score: match.score,
                 league: match.league,
                 odds: [
                   { selection: "Match Winner", back: match.matchResult.home, lay: match.matchResult.home + 0.04 }
@@ -233,15 +235,15 @@ export function TopMatchesGrid({ matches: initialMatches }: TopMatchesGridProps)
                   </div>
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-white tracking-tight">{match.teams[0]}</span>
+                      <span className="text-sm font-semibold text-white tracking-tight">{match.teamA}</span>
                       {match.isLive && match.score && (
-                        <span className="text-[13px] font-bold text-[#ff3b30] tabular-nums ml-auto">{match.score[0]}</span>
+                        <span className="text-[13px] font-bold text-[#ff3b30] tabular-nums ml-auto">{match.score.teamA}</span>
                       )}
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-white tracking-tight">{match.teams[1]}</span>
+                      <span className="text-sm font-semibold text-white tracking-tight">{match.teamB}</span>
                       {match.isLive && match.score && (
-                        <span className="text-[13px] font-bold text-[#ff3b30] tabular-nums ml-auto">{match.score[1]}</span>
+                        <span className="text-[13px] font-bold text-[#ff3b30] tabular-nums ml-auto">{match.score.teamB}</span>
                       )}
                     </div>
                   </div>
