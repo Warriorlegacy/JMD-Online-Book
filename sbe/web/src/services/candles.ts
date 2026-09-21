@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { db } from "../db/index.js";
 import { marketHistory } from "../db/schema.js";
 import { pubsub } from "./pubsub.js";

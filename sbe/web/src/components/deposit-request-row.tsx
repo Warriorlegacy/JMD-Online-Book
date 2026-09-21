@@ -25,7 +25,7 @@ export function DepositRequestRow({ deposit, onApprove, onReject, isProcessing =
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
         <div className="flex items-center gap-6 flex-1">
           <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-            <span className="text-xl font-black">{deposit.username?.[0].toUpperCase()}</span>
+            <span className="text-xl font-black">{deposit?.username?.[0].toUpperCase()}</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 flex-1">
             <div>
