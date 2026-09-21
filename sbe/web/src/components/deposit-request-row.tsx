@@ -11,7 +11,7 @@ interface DepositRequestRowProps {
 
 const maskUTR = (utr: string) => {
   if (utr.length <= 8) return utr;
-  return `${utr.slice(0, 4)}****${utr.slice(-4)}`;
+  return `${String(utr || "").slice(0, 4)}****${String(utr || "").slice(-4)}`;
 };
 
 const formatTime = (dateStr: string) => {

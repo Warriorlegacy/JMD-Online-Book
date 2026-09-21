@@ -146,7 +146,7 @@ export function HeaderActions() {
           className="h-10 px-3 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all flex items-center gap-3 group"
         >
           <div className="w-6 h-6 rounded-lg bg-linear-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-[10px] font-black italic">
-            {user.username[0].toUpperCase()}
+            {String(user?.username || 'U')[0]?.toUpperCase() || 'U'}
           </div>
           <span className="hidden md:block text-[10px] font-black uppercase tracking-widest text-slate-300 group-hover:text-white transition-colors">
             {user.username}
