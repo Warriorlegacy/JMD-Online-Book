@@ -44,7 +44,7 @@ export default function LiveDealerPage() {
   const { connected, subscribe, on, send } = useSocket();
   const router = useRouter();
 
-  const [activeTable, setActiveTable] = useState(LIVE_TABLES[0]);
+  const [activeTable, setActiveTable] = useState(LIVE_TABLES?.[0]);
   const [selectedChip, setSelectedChip] = useState(5);
   const [playerBet, setPlayerBet] = useState(0);
   const [bankerBet, setBankerBet] = useState(0);
@@ -122,7 +122,7 @@ export default function LiveDealerPage() {
         <div className="m-3 p-4 rounded-2xl bg-gradient-to-br from-amber-600/20 to-amber-900/20 border border-amber-500/20">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-black text-sm">
-              {(user?.username || "P")[0].toUpperCase()}
+              {((user?.username || "P")?.[0]?.toUpperCase() || "")}
             </div>
             <div>
               <p className="text-[8px] font-black text-amber-400/70 uppercase tracking-widest">VIP MEMBER</p>

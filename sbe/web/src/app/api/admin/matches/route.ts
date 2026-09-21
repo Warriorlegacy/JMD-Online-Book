@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
         ]
       );
 
-      return NextResponse.json(result.rows[0], { status: 201 });
+      return NextResponse.json(result.rows?.[0], { status: 201 });
     } finally {
       client.release();
     }

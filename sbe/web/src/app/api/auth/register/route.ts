@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
          RETURNING id, username, email, role`,
         [username, email.toLowerCase(), passwordHash]
       );
-      const newUser = userResult.rows[0];
+      const newUser = userResult.rows?.[0];
 
       // Create wallet for new user (use numeric 0 for the balance columns)
       await client.query(
