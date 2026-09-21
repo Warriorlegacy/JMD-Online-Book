@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { withdrawalRequests } from "@/db/schema";
-import { desc, eq } from "drizzle-orm";
+// import { withdrawalRequests } from "@/db/schema";
+// import { desc, eq } from "drizzle-orm";
 import { verifyAdmin } from "@/lib/admin-auth";
 
 export async function GET() {
