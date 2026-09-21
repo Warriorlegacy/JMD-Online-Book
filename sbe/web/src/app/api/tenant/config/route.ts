@@ -3,9 +3,9 @@ import { pool } from "@/lib/db";
 
 export async function GET(request: NextRequest) {
   try {
-    const host = request.headers.get("host")?.split(":")[0] ?? "";
+    const host = request.headers.get("host")?.split(":")?.[0] ?? "";
     const requestedSlug = host.includes(".") && !host.startsWith("localhost")
-      ? host.split(".")[0]
+      ? host.split(".")?.[0]
       : null;
 
     let tenant = null;

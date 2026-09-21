@@ -796,8 +796,8 @@ export default function MatchPage({ params }: { params: { id: string } }) {
                   ))}
                 </div>
                 <div className="flex justify-between mt-1">
-                  <span className="text-[8px] text-[#0071e3] font-bold">{match?.teamA?.split(" ")[0] || "H"}</span>
-                  <span className="text-[8px] text-[#AFFF00] font-bold">{match?.teamB?.split(" ")[0] || "A"}</span>
+                  <span className="text-[8px] text-[#0071e3] font-bold">{match?.teamA?.split(" ")?.[0] || "H"}</span>
+                  <span className="text-[8px] text-[#AFFF00] font-bold">{match?.teamB?.split(" ")?.[0] || "A"}</span>
                 </div>
               </div>
             </div>
