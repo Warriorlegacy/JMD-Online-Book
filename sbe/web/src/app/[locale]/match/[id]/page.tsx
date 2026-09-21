@@ -206,7 +206,7 @@ export default function MatchPage({ params }: { params: { id: string } }) {
   const getTopOdds = (key: string) => {
     const ob = orderBooks[key] || { backs: [], lays: [] };
     const backs = ob.backs.filter(l => !isNaN(parseFloat(l.price))).sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-    return backs[0]?.price || null;
+    return backs?.[0]?.price || null;
   };
 
   if (loading) {
@@ -528,7 +528,7 @@ export default function MatchPage({ params }: { params: { id: string } }) {
                 {/* Team A form */}
                 <div className="flex items-center justify-between">
                   <span className="text-white/50 text-sm font-bold w-16 flex-shrink-0">
-                    {match.teamA.split(" ").pop()?.slice(0, 3).toUpperCase()}
+                    {String(match.teamA.split(" ").pop() || "").slice(0, 3).toUpperCase()}
                   </span>
                   <div className="flex items-center gap-2 flex-1 justify-end">
                     {DEMO_FORM_A.map((r, i) => <FormBadge key={i} result={r} />)}
@@ -537,7 +537,7 @@ export default function MatchPage({ params }: { params: { id: string } }) {
                 {/* Team B form */}
                 <div className="flex items-center justify-between">
                   <span className="text-white/50 text-sm font-bold w-16 flex-shrink-0">
-                    {match.teamB.split(" ").pop()?.slice(0, 3).toUpperCase()}
+                    {String(match.teamB.split(" ").pop() || "").slice(0, 3).toUpperCase()}
                   </span>
                   <div className="flex items-center gap-2 flex-1 justify-end">
                     {DEMO_FORM_B.map((r, i) => <FormBadge key={i} result={r} />)}
@@ -796,8 +796,8 @@ export default function MatchPage({ params }: { params: { id: string } }) {
                   ))}
                 </div>
                 <div className="flex justify-between mt-1">
-                  <span className="text-[8px] text-[#0071e3] font-bold">{match?.teamA?.split(" ")[0] || "H"}</span>
-                  <span className="text-[8px] text-[#AFFF00] font-bold">{match?.teamB?.split(" ")[0] || "A"}</span>
+                  <span className="text-[8px] text-[#0071e3] font-bold">{(match?.teamA?.split(" ")?.[0] || "H") || "H"}</span>
+                  <span className="text-[8px] text-[#AFFF00] font-bold">{(match?.teamB?.split(" ")?.[0] || "A") || "A"}</span>
                 </div>
               </div>
             </div>
