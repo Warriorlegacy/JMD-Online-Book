@@ -304,7 +304,7 @@ export default function SportsPage() {
                   <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => setLiveSlide(Math.min(DEMO_LIVE.length - 1, liveSlide + 1))}
+                  onClick={() => setLiveSlide(Math.min(matches.filter(m => m.status === 'in_play').length - 1, liveSlide + 1))}
                   className="p-2 glass-card rounded-xl border border-white/5 text-white/40 hover:text-white transition-colors"
                 >
                   <ChevronRight className="w-4 h-4" />
@@ -312,7 +312,7 @@ export default function SportsPage() {
               </div>
             </div>
             <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-              {DEMO_LIVE.map(m => <LiveMatchCard key={m.id} m={m} />)}
+              {matches.filter(m => m.status === 'in_play').map(m => <LiveMatchCard key={m.id} m={{id: m.id, league: m.tournamentName || 'INTERNATIONAL', time: m.elapsedMinutes ? `${m.elapsedMinutes}'` : 'LIVE', teamA: m.teamA, teamB: m.teamB, scoreA: parseInt(m.score?.teamA || '0'), scoreB: parseInt(m.score?.teamB || '0'), status: 'in_play', live: true, oddsA: 1.85, oddsD: 3.20, oddsB: 4.15, extraLabel: ""}} />)}
             </div>
           </div>
 
@@ -394,44 +394,6 @@ export default function SportsPage() {
                     </div>
                   ))}
 
-                  {/* Demo matches (always visible as padding) */}
-                  {DEMO_TOP.map(m => (
-                    <div
-                      key={m.id}
-                      className={`grid grid-cols-[180px_1fr_1fr_1fr] gap-2 items-center px-4 py-3.5 rounded-2xl border transition-colors hover:bg-white/3 ${
-                        m.liveMin ? "border-emerald-500/20 bg-emerald-500/3" : "border-white/5 bg-[#0d1120]"
-                      }`}
-                    >
-                      <div>
-                        {m.liveMin ? (
-                          <div className="flex items-center gap-1.5 mb-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                            <span className="text-[8px] font-black text-emerald-400 uppercase">{m.liveMin}' LIVE</span>
-                          </div>
-                        ) : (
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-[9px] font-black text-white/50">{m.time}</span>
-                            <span className="text-[8px] text-white/20 uppercase">{m.day}</span>
-                          </div>
-                        )}
-                        <p className="text-sm font-black text-white">{m.teamA} vs {m.teamB}</p>
-                        <p className="text-[8px] text-white/20 uppercase tracking-widest mt-0.5">{m.league}{m.venue ? ` • ${m.venue}` : ""}</p>
-                      </div>
-                      <div className="flex items-center justify-center gap-1.5">
-                        <OddsBtn value={m.oddsA} blue />
-                        <OddsBtn value={m.oddsD} />
-                        <OddsBtn value={m.oddsB} />
-                      </div>
-                      <div className="flex items-center justify-center gap-1.5">
-                        <OddsBtn value={m.o25} blue />
-                        <OddsBtn value={m.u25} />
-                      </div>
-                      <div className="flex items-center justify-center gap-1.5">
-                        <OddsBtn value={m.hcA} />
-                        <OddsBtn value={m.hcB} />
-                      </div>
-                    </div>
-                  ))}
                 </>
               )}
             </div>
