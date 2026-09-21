@@ -28,7 +28,7 @@ export function AdminMatchRow({ match, onSetInPlay, onSettle, isProcessing = fal
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-8">
            <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 group-hover:text-primary group-hover:border-primary/30 transition-all">
-              <span className="text-2xl font-bold italic">{(match.teamA || "T")[0]}{(match.teamB || "C")[0]}</span>
+              <span className="text-2xl font-bold italic">{(match.teamA || "T")[0] || "T"}{(match.teamB || "C")[0] || "C"}</span>
            </div>
            <div>
               <div className="text-lg font-black text-white uppercase italic tracking-tight flex items-center gap-3">

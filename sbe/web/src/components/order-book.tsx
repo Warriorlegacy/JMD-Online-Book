@@ -13,8 +13,8 @@ interface OrderBookProps {
 
 export function OrderBook({ matchId, orderBooks, matchTitle, teams, onSelect }: OrderBookProps) {
   const selections = [
-    { id: "team_a", name: teams[0] },
-    { id: "team_b", name: teams[1] },
+    { id: "team_a", name: teams?.[0] || "Team A" },
+    { id: "team_b", name: teams?.[1] || "Team B" },
     { id: "draw", name: "Draw" },
   ];
 

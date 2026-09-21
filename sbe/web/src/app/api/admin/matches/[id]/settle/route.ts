@@ -25,7 +25,7 @@ export async function POST(
          LIMIT 1`,
         [id]
       );
-      match = result.rows[0];
+      match = result.rows?.[0];
     } finally {
       client.release();
     }

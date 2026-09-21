@@ -58,7 +58,7 @@ export function MatchCard({ match, className }: MatchCardProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold">
-              {(match.teamA || "T1").substring(0, 2).toUpperCase()}
+              {String(match.teamA || "T1").substring(0, 2).toUpperCase()}
             </div>
             <span className="text-sm font-semibold text-white tracking-tight">{match.teamA}</span>
           </div>
@@ -67,7 +67,7 @@ export function MatchCard({ match, className }: MatchCardProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold">
-              {(match.teamB || "T2").substring(0, 2).toUpperCase()}
+              {String(match.teamB || "T2").substring(0, 2).toUpperCase()}
             </div>
             <span className="text-sm font-semibold text-white tracking-tight">{match.teamB}</span>
           </div>
@@ -81,7 +81,7 @@ export function MatchCard({ match, className }: MatchCardProps) {
           <span className="text-[9px] font-bold text-[#86868b] uppercase tracking-widest pl-1">Back</span>
           <button className="h-10 rounded-xl bg-[#0071e3]/10 border border-[#0071e3]/20 hover:bg-[#0071e3] hover:border-[#0071e3] group/btn transition-all duration-300">
             <span className="text-[13px] font-bold text-[#0071e3] group-hover/btn:text-white transition-colors">
-              {match.odds?.[0]?.back.toFixed(2) || "2.10"}
+              {match.odds?.[0]?.back?.toFixed(2) || "2.10"}
             </span>
           </button>
         </div>
@@ -89,7 +89,7 @@ export function MatchCard({ match, className }: MatchCardProps) {
           <span className="text-[9px] font-bold text-[#86868b] uppercase tracking-widest pl-1 text-right">Lay</span>
           <button className="h-10 rounded-xl bg-[#ff375f]/10 border border-[#ff375f]/20 hover:bg-[#ff375f] hover:border-[#ff375f] group/btn transition-all duration-300">
             <span className="text-[13px] font-bold text-[#ff375f] group-hover/btn:text-white transition-colors">
-              {match.odds?.[0]?.lay.toFixed(2) || "2.14"}
+              {match.odds?.[0]?.lay?.toFixed(2) || "2.14"}
             </span>
           </button>
         </div>

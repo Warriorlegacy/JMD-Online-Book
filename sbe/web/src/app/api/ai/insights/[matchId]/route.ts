@@ -25,7 +25,7 @@ export async function GET(
         [matchId]
       );
 
-      const match = matchResult.rows[0];
+      const match = matchResult.rows?.[0];
       if (!match) {
         return NextResponse.json({ error: "Match not found" }, { status: 404 });
       }
