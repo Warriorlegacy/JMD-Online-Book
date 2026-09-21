@@ -16,7 +16,7 @@ export async function GET() {
     return NextResponse.json(data);
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed" },
+      { error: "An error occurred", detail: "Failed" },
       { status: 500 }
     );
   }
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(row, { status: 201 });
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed" },
+      { error: "An error occurred", detail: "Failed" },
       { status: 500 }
     );
   }

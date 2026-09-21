@@ -90,9 +90,7 @@ export async function POST(request: NextRequest) {
     console.error("[POST /api/auth/login] ERROR:", err.message);
     return NextResponse.json({ 
       error: "Internal server error", 
-      dbUrlLength: dbUrl.length,
-      dbUrlPrefix: dbUrl.substring(0, 10),
-      detail: err.message 
+      detail: "An error occurred"
     }, { status: 500 });
   }
 }

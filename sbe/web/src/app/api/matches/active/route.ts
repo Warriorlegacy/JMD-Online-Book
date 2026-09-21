@@ -78,6 +78,6 @@ export async function GET() {
     }
   } catch (error: any) {
     console.error("Matches API error:", error);
-    return NextResponse.json({ error: "Internal Server Error", message: error.message }, { status: 500 });
+    return NextResponse.json({ error: "Internal Server Error", message: "An error occurred" }, { status: 500 });
   }
 }

@@ -69,7 +69,7 @@ export async function POST(
     return NextResponse.json({ success: true, matchId: id, winner });
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed" },
+      { error: "An error occurred", detail: "Failed" },
       { status: 500 }
     );
   }

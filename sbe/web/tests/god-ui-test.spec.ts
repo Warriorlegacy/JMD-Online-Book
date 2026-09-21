@@ -15,7 +15,7 @@ test.describe('SBE Core User Journey', () => {
     await page.goto(BASE_URL);
     
     // Check for dynamic title (configured in TenantProvider)
-    await expect(page).toHaveTitle(/Kinetic Ledger/);
+    await expect(page).toHaveTitle(/SBE | Sports Betting Exchange/);
     
     // Verify CSS variable injection for brand colors
     const primaryColor = await page.evaluate(() => 

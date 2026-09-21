@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
     }
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to fetch referral stats" },
+      { error: "An error occurred", detail: "Failed to fetch referral stats" },
       { status: 500 }
     );
   }

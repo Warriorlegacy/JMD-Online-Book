@@ -25,7 +25,7 @@ export async function GET() {
     }
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed" },
+      { error: "An error occurred", detail: "Failed" },
       { status: 500 }
     );
   }
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     }
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to create match" },
+      { error: "An error occurred", detail: "Failed to create match" },
       { status: 500 }
     );
   }

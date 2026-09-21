@@ -44,7 +44,7 @@ export async function POST(
     return NextResponse.json({ success: true, message: "Withdrawal rejected and funds released" });
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to reject withdrawal" },
+      { error: "An error occurred", detail: "Failed to reject withdrawal" },
       { status: 500 }
     );
   }

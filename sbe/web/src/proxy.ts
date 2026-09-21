@@ -16,14 +16,27 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2. Check if the pathname already has a locale
+  // 2. Check Authentication for Protected Routes
+  const protectedPaths = ["/wallet", "/admin"];
+  const isProtectedPath = protectedPaths.some((p) => pathname.includes(p));
+
+  if (isProtectedPath) {
+    const token = request.cookies.get("sbe_token")?.value;
+    if (!token) {
+      // Redirect to login if unauthenticated on a protected path
+      const loginUrl = new URL(`/${defaultLocale}/`, request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
+  // 3. Check if the pathname already has a locale
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
   if (pathnameHasLocale) return NextResponse.next();
 
-  // 3. Redirect if there is no locale
+  // 4. Redirect if there is no locale
   request.nextUrl.pathname = `/${defaultLocale}${pathname}`;
   return NextResponse.redirect(request.nextUrl);
 }

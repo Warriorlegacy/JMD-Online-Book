@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
   } catch (err: any) {
     console.error("Withdrawal error:", err);
     if (err.message === "Insufficient balance") {
-      return NextResponse.json({ error: err.message }, { status: 400 });
+      return NextResponse.json({ error: "Insufficient balance" }, { status: 400 });
     }
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }

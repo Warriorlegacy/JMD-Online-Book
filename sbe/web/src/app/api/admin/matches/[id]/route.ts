@@ -36,7 +36,7 @@ export async function GET(
     }
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed" },
+      { error: "An error occurred", detail: "Failed" },
       { status: 500 }
     );
   }
@@ -114,7 +114,7 @@ export async function PATCH(
     }
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to update match" },
+      { error: "An error occurred", detail: "Failed to update match" },
       { status: 500 }
     );
   }
@@ -138,7 +138,7 @@ export async function DELETE(
     }
   } catch (err) {
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to delete match" },
+      { error: "An error occurred", detail: "Failed to delete match" },
       { status: 500 }
     );
   }
